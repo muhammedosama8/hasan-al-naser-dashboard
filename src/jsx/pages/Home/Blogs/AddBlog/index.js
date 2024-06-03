@@ -239,7 +239,7 @@ const AddBlog = () => {
                     }}
                     onClick={() => deleteImg()}
                   >
-                    <i className="la la-trash"></i>
+                    <i className="la la-trash text-danger"></i>
                   </button>
                   <div className="avatar-preview">
                     {!!blog?.image_src ? (
