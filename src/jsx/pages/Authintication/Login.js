@@ -8,7 +8,7 @@ import {
   loginAction,
 } from "../../../store/actions/AuthActions";
 import { Translate } from "../../Enums/Tranlate";
-import login from "../../../images/logo-bg1.png";
+import login from "../../../images/logo.png";
 
 function Login(props) {
   const navigate = useNavigate();

@@ -44406,7 +44406,7 @@ table.dataTable thead .sorting {
   width: 100%;
   z-index: -1;
   content: "";
-  background: var(--bg-primary);
+  background: #dedede;
 }
 @media only screen and (max-width: 768px) {
   .login-wrapper {
