@@ -205,7 +205,7 @@ Fixing Order => Base + Typography >> General Layout + Grid >> Page Layout + Comp
   --white: #fff;
   --gray: #6c757d;
   --gray-dark: #343a40;
-  --primary: #35425A;
+  --primary: #2e9596;
   --secondary: #707070;
   --success: #2bc155;
   --info: #2421da;
@@ -213,7 +213,7 @@ Fixing Order => Base + Typography >> General Layout + Grid >> Page Layout + Comp
   --danger: #ff4847;
   --light: #f4f5f9;
   --dark: #b1b1b1;
-  --bg-primary: #35425A;
+  --bg-primary: #2e9596;
   --breakpoint-xs: 0;
   --breakpoint-sm: 576px;
   --breakpoint-md: 768px;

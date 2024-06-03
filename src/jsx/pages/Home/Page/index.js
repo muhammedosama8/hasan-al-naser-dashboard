@@ -563,7 +563,7 @@ const Page = () => {
                         }}
                         onClick={() => deleteClientImg(client?.id)}
                       >
-                        <i className="la la-trash"></i>
+                        <i className="la la-trash text-danger"></i>
                       </button>}
                       <div className="avatar-preview">
                         {!!client.src ? (
@@ -641,7 +641,7 @@ const Page = () => {
                         }}
                         onClick={() => deletePartnerImg(partner?.id)}
                       >
-                        <i className="la la-trash"></i>
+                        <i className="la la-trash text-danger"></i>
                       </button>}
                       <div className="avatar-preview">
                         {!!partner.src ? (

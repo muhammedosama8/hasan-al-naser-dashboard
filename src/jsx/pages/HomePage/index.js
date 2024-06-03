@@ -313,7 +313,7 @@ console.log(formData)
                         }}
                         onClick={() => deleteBannerImg(index)}
                       >
-                        <i className="la la-trash"></i>
+                        <i className="la la-trash text-danger"></i>
                       </button>
                           <div className="avatar-preview h-25rem">
                             {!!banner.src ? (
@@ -414,7 +414,7 @@ console.log(formData)
                         }}
                         onClick={() => deleteBannerCatalog(index)}
                       >
-                        <i className="la la-trash"></i>
+                        <i className="la la-trash text-danger"></i>
                       </button>
                           <div className="avatar-preview h-10rem">
                             {!!banner.catalog ? (
@@ -537,7 +537,7 @@ console.log(formData)
                         }}
                         onClick={() => deleteImg(index)}
                       >
-                        <i className="la la-trash"></i>
+                        <i className="la la-trash text-danger"></i>
                       </button>}
                       <div className="avatar-preview h-10rem w-100">
                         {!!img.src ? (
@@ -601,7 +601,7 @@ console.log(formData)
                           setFormData({...formData, barcode: {...formData.barcode, src: ''}})
                         }}
                       >
-                        <i className="la la-trash"></i>
+                        <i className="la la-trash text-danger"></i>
                       </button>}
                       <div className="avatar-preview">
                         {!!formData.barcode?.src ? (
