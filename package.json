@@ -1,0 +1,65 @@
+{
+  "name": "hasan-al-naser",
+  "version": "0.1.0",
+  "homepage": "",
+  "private": true,
+  "dependencies": {
+    "@n8tb1t/use-scroll-position": "^2.0.3",
+    "@testing-library/jest-dom": "^5.16.5",
+    "@testing-library/user-event": "^13.5.0",
+    "availity-reactstrap-validation": "^2.7.1",
+    "axios": "^1.2.0",
+    "bootstrap": "^4.6.2",
+    "bootstrap-daterangepicker": "^3.1.0",
+    "country-codes-list": "^1.6.11",
+    "draft-js": "^0.11.7",
+    "draftjs-to-html": "^0.9.1",
+    "html-to-draftjs": "^1.5.0",
+    "https-browserify": "^1.0.0",
+    "react": "^18.2.0",
+    "react-bootstrap": "^1.6.1",
+    "react-bootstrap-daterangepicker": "^8.0.0",
+    "react-dom": "^18.2.0",
+    "react-draft-wysiwyg": "^1.14.7",
+    "react-perfect-scrollbar": "^1.5.8",
+    "react-redux": "^8.0.5",
+    "react-router-dom": "^6.4.4",
+    "react-scripts": "^4.0.3",
+    "react-select": "^5.7.0",
+    "react-toastify": "^8.0.0",
+    "reactstrap": "^9.2.0",
+    "redux": "^4.2.0",
+    "redux-thunk": "^2.4.2",
+    "sass": "^1.64.1",
+    "sweetalert": "^2.1.2",
+    "web-vitals": "^2.1.4"
+  },
+  "scripts": {
+    "start": "react-scripts --openssl-legacy-provider start",
+    "build": "react-scripts --openssl-legacy-provider build",
+    "test": "react-scripts test",
+    "eject": "react-scripts eject",
+    "sass": "node-sass --watch src/scss/main.scss src/css/style.css --source-map src/css/style.css.map"
+  },
+  "eslintConfig": {
+    "extends": [
+      "react-app",
+      "react-app/jest"
+    ]
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  },
+  "devDependencies": {
+    "react-error-overlay": "^6.0.9"
+  }
+}

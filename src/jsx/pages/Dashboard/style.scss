@@ -1,0 +1,20 @@
+.dashboard {
+  .card {
+    border-radius: 16px;
+    border: 1px solid #e6ecf2;
+  }
+}
+.skeleton-loader {
+  .loader-header {
+    height: 30px;
+    width: 60%;
+    background-color: #dedede8f;
+    margin-bottom: 10px;
+  }
+  .loader-content {
+    height: 15px;
+    width: 100%;
+    background-color: #dedede8f;
+    margin-top: 16px;
+  }
+}

@@ -1,0 +1,19 @@
+.filter-pagination{
+    .previous-button,
+    .next-button{
+        background-color: #fff;
+        border: 1px solid #7e7e7e!important;
+        border-radius: 10px;
+        color: #7e7e7e;
+        display: inline-block;
+        font-size: 16px;
+        margin: 0 5px;
+        padding: 8px 20px;
+        width: auto;
+    }
+
+    button[disabled] {
+        cursor: default;
+        opacity: .5;
+    }
+}

@@ -1,0 +1,10 @@
+import BaseService from "./BaseService";
+import { API_BASE_URL_ENV } from "../jsx/common/common";
+
+const apiEndpoint = API_BASE_URL_ENV() + "/setting/servicesFee";
+
+export default class SettingService extends BaseService {
+    constructor() {
+        super(apiEndpoint);
+    }
+}

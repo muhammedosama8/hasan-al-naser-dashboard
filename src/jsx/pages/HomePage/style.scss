@@ -1,0 +1,56 @@
+.banners{
+    .image-placeholder{
+        max-width: 100%;
+    }
+    .avatar-preview{
+        height: 25rem;
+        width: 100% !important;
+    }
+    
+}
+.branding-description{
+    .rdw-editor-main{
+        height: 200px;
+    }
+}
+.our-clients{
+    .image-placeholder{
+        .avatar-preview{
+            height: 9rem !important;
+        }
+        
+        img{
+            border-radius: 30px;
+        }
+    }
+}
+.add-client{
+    text-align: center;
+    i{
+        font-size: 50px;
+        background: #dedede;
+        color: #fff;
+        border-radius: 50%;
+        padding: 10px;
+    }
+}
+.delete-img{
+    position: absolute;
+    top: -13px;
+    right: 16px;
+    padding: 2px 6px;
+    z-index: 1;
+    background: #fff;
+    border: 1px solid #dedede;
+    border-radius: 50%;
+    .la{
+        color: var(--primary);
+        font-size: 18px;
+    }
+}
+.h-25rem{
+    height: 25rem !important;
+}
+.h-10rem{
+    height: 10rem !important;
+}

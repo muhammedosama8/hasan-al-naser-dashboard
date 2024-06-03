@@ -1,0 +1,26 @@
+.edit{
+    background: none;
+    border: none;
+    position: absolute;
+    top: 20px;
+    .la{
+        font-size: 24px;
+        &:hover{
+            color: var(--primary);
+        }
+    }
+}
+.user{
+    cursor: pointer;
+    &:hover{
+        color: rgba(0, 0, 255, 0.9);
+    }
+}
+.en .edit{
+    right: 20px;
+    left: auto;
+}
+.ar .edit{
+    left: 20px;
+    right: auto;
+}

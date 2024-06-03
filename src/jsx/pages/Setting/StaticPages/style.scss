@@ -1,0 +1,40 @@
+.pages-card{
+    background-image: url('../../../../images/cover.jpg');
+    background-size: cover;
+    text-align: center;
+    padding: 4rem 0;
+    cursor: pointer;
+
+    h1{
+        color: #fff;
+    }
+   
+}
+.description{
+    border: 1px solid hsl(0, 0%, 80%);
+    padding: 6px 12px;
+    width: 100%;
+    border-radius: 0.3rem;
+    max-height: 200px;
+    min-height: 100px;
+    height: 200px;
+}
+.delete{
+    position: absolute;
+    top: -5px;
+    z-index: 2;
+    background: red;
+    color: #fff;
+    padding: 2px 6px;
+    border-radius: 50%
+}
+.ar .delete { left: 5px;}
+.en .delete { right: 5px;}
+.DraftEditor-editorContainer{
+    height: 13rem!important;
+}
+.editorField{
+    border: 1px solid #dedede;
+    border-radius: 8px;
+    padding: 1rem 0.5rem;
+}

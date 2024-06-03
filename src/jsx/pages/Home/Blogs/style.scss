@@ -1,0 +1,40 @@
+.add-blog{
+    .rdw-editor-main{
+        height: 400px;
+    }
+    .image-placeholder{
+        max-width: 100%;
+        .avatar-preview{
+            height: 22rem !important;
+            width: 100%;
+        }
+        .delete-img{
+            position: absolute;
+            top: 9px;
+            padding: 2px 6px;
+            z-index: 1;
+            background: #fff;
+            border: 0;
+            border-radius: 50%;
+            .la{
+                color: var(--primary);
+                font-size: 18px;
+            }
+        }
+        img{
+            border-radius: 30px;
+        }
+    }
+}
+.css-1nmdiq5-menu{
+    z-index: 999999!important;
+}
+
+.color{
+    font-size: 20px;
+    margin-top: 3px;
+    color: #fff;
+}
+  
+  
+  
