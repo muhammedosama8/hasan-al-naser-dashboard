@@ -18,7 +18,7 @@ const AddProducts = () => {
     name: "",
     type: '',
     description: EditorState.createEmpty(),
-    images: [{ src: "" }, { src: "" }, { src: "" }, { src: "" }, { src: "" }],
+    images: [{ src: "" }],//, { src: "" }, { src: "" }, { src: "" }, { src: "" }
   });
   const [errors, setErrors] = useState({
     desc_ar: false,
@@ -30,7 +30,7 @@ const AddProducts = () => {
   const [imagesForAll, setImagesForAll] = useState(false);
   const [hasVariant, setHasVariant] = useState(false);
   const [customVariant, setCustomVariant] = useState([]);
-  const [files, setFiles] = useState([{}, {}, {}, {}, {}]);
+  const [files, setFiles] = useState([{}]);//, {}, {}, {}, {}
   const navigate = useNavigate();
   const location = useLocation();
   const Auth = useSelector((state) => state.auth);
@@ -440,7 +440,7 @@ const AddProducts = () => {
 
         <Row>
         <Col md={12} sm={12} className="mb-3 mt-5">
-          {Translate[lang].images}
+          {Translate[lang].image}
         </Col>
           {product?.images?.map((data, index) => {
             return (
