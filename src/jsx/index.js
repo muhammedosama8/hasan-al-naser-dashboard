@@ -20,13 +20,10 @@ import AddAdmin from "./pages/Admin/AddAdmin";
 import Permission from "./pages/Rules";
 import Profile from "./pages/Profile";
 import SocialMedia from "./pages/Home/SocialMedia";
-import Blogs from "./pages/Home/Blogs";
-import AddBlog from "./pages/Home/Blogs/AddBlog";
-import Carrers from "./pages/Carrers";
 import ContactUs from "./pages/ContactUs";
-import Design from "./pages/Design";
-import Pixel from "./pages/Pixel";
 import HomePage from "./pages/HomePage";
+import Products from "./pages/Products";
+import AddProducts from "./pages/Products/AddProducts";
 
 const Markup = () => {
   const allroutes = [
@@ -44,20 +41,15 @@ const Markup = () => {
     // Home
     { url: "home/social", component: <SocialMedia /> },
     { url: "home/page", component: <HomePage /> },
-    { url: "home/blogs", component: <Blogs /> },
-    { url: "home/add-blog", component: <AddBlog /> },
-    { url: "home/add-blog/:id", component: <AddBlog /> },
-    { url: "home/carrers", component: <Carrers /> },
     { url: "home/contact-us", component: <ContactUs /> },
 
-    // Design
-    { url: "design", component: <Design /> },
+    // Products
+    { url: "home/products", component: <Products /> },
+    { url: "home/products/add-products", component: <AddProducts /> },
+    { url: "home/products/add-products/:id", component: <AddProducts /> },
 
     //Profile
     { url: "profile", component: <Profile /> },
-
-    // Pixel
-    { url: "seo-pixel", component: <Pixel /> },
 
     // Error
     { url: "*", component: <Error404 /> },

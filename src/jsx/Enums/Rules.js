@@ -5,7 +5,7 @@ export const Rules = [
   { label: "Seo - pixel", value: "seo_pixel" },
   { label: "Branding", value: "branding" },
   { label: "Design", value: "design" },
-  // { label: "Users", value: "users" },
+  { label: "Products", value: "products" },
   // { label: "KYC Requests", value: "kyc_requests" },
   // {label: 'Order', value: 'order'},
   // {label: 'Promo Code', value: 'promo_code'},

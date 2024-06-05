@@ -30,6 +30,12 @@ export const MenuList = [
               rule: 'home',
           },
           {
+              title:'Products',
+              text:'products',
+              to: 'home/products',
+              rule: 'home',
+          },
+          {
             title: "Social Media",
             text: "social_media",
             to: "home/social",
