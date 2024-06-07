@@ -15733,11 +15733,11 @@ html[dir="rtl"]
   font-size: 16px;
 }
 .en .deznav .metismenu ul a {
-  padding-left: 5.7rem;
+  padding-left: 4.7rem;
   text-align: left;
 }
 .ar .deznav .metismenu ul a {
-  padding-right: 5.7rem;
+  padding-right: 4.7rem;
   text-align: right;
 }
 @media only screen and (max-width: 1400px) {
