@@ -440,19 +440,21 @@ const AddProducts = () => {
 
         <Row>
         <Col md={12} sm={12} className="mb-3 mt-5">
-          {Translate[lang].image}
+          {Translate[lang].images}
         </Col>
           {product?.images?.map((data, index) => {
             return (
               <Col md={3} sm={6} className="mb-3" key={index}>
                 <div className="image-placeholder" style={{maxWidth: '100%'}}>
-                  <div className="avatar-edit">
+                  <div className="avatar-edit h-100">
                     <input
                       type="file"
+                      className="d-block w-100 h-100 cursor-pointer"
+                      style={{opacity: '0'}}
                       onChange={(e) => fileHandler(e, index)}
                       id={`imageUpload${index}`}
                     />
-                    <label htmlFor={`imageUpload${index}`} name=""></label>
+                    {/* <label htmlFor={`imageUpload${index}`} name=""></label> */}
                   </div>
                   <button
                     className="delete-img"
