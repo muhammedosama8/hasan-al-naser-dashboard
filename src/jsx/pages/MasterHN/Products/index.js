@@ -1,38 +1,25 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Button, Card, Table } from "react-bootstrap";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import BlogService from "../../../../services/BlogService";
 import Loader from "../../../common/Loader";
 import NoData from "../../../common/NoData";
+import Pagination from "../../../common/Pagination/Pagination";
 import { Translate } from "../../../Enums/Tranlate";
 import CardItem from "./CardItem";
 
-const Blogs = () =>{
-    const [blogs, setBlogs] =useState([])
+const MasterHNProducts = () =>{
+    const [products, setProducts] =useState([])
     const [hasData, setHasData] =useState(0)
     const [search, setSearch] =useState(null)
     const [loading, setLoading] =useState(false)
     const [indexEdit, setIndexEdit] = useState(null)
     const [ shouldUpdate, setShouldUpdate] = useState(false)
     const navigate = useNavigate()
+    const Auth = useSelector(state=> state.auth?.auth)
     const lang = useSelector(state=> state.auth?.lang)
-    const blogService = new BlogService()
-
-    useEffect(()=>{
-      setLoading(true)
-      blogService.getList().then(res=>{
-        if(res.status ===200){
-          if(res?.data?.data?.length > 0){
-            setBlogs(res?.data?.data)
-            setHasData(1)
-          } else{
-            setHasData(0)
-          }
-        }
-        setLoading(false)
-      })
-    }, [shouldUpdate])
+    const isExist = (data)=> Auth?.admin?.admin_roles?.includes(data)
+    // const productsService = new ProductsService()
 
     return(
         <>
@@ -52,11 +39,11 @@ const Blogs = () =>{
               style={{position: 'absolute',zIndex:'1', right: lang === 'en' && '16px', left: lang === 'ar' && '16px', top: '50%', transform: 'translate(0, -50%)'}}
             ></div>
           </div>
-          <Button variant="primary" className='me-2 h-75' onClick={()=> navigate('/home/add-blog')}>
-              {Translate[lang]?.add} {Translate[lang]?.blog}
-          </Button>
+          {<Button variant="primary" className='me-2 h-75' onClick={()=> navigate('/masterHN/products/add-products')}>
+              {Translate[lang]?.add} {Translate[lang]?.products}
+          </Button>}
         </div>
-        
+
         <Card>
             <Card.Body className={`${hasData === 0 && 'text-center'} `}>
             {loading && <div style={{height: '300px'}}>
@@ -72,19 +59,16 @@ const Blogs = () =>{
                       <strong>{Translate[lang]?.image}</strong>
                     </th>
                     <th>
-                      <strong>{Translate[lang]?.title}</strong>
+                      <strong>{Translate[lang]?.name}</strong>
                     </th>
                     <th>
-                      <strong>{Translate[lang]?.category}</strong>
-                    </th>
-                    <th>
-                      <strong>{Translate[lang]?.date}</strong>
+                      <strong>{Translate[lang]?.type}</strong>
                     </th>
                     <th></th>
                   </tr>
                 </thead>
                 <tbody>
-                  {blogs?.map((item, index)=>{
+                  {products?.map((item, index)=>{
                     return <CardItem 
                     key= {index}
                     index= {index}
@@ -97,9 +81,19 @@ const Blogs = () =>{
                 </tbody>
               </Table>}
               {hasData === 0 && <NoData />}
+              {/* <Pagination
+                  setData={setProducts}
+                  service={productsService}
+                  shouldUpdate={shouldUpdate}
+                  setHasData={setHasData}
+                  // isDeleted={isDeleted}
+                  setLoading={setLoading}
+                  type={'normal'}
+                  search={search}
+                /> */}
             </Card.Body>
           </Card>
         </>
     )
 }
-export default Blogs;
+export default MasterHNProducts;

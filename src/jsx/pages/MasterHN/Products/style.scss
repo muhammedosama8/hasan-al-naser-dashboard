@@ -1,16 +1,12 @@
-.add-blog{
-    .rdw-editor-main{
-        height: 400px;
-    }
+.add-product{
     .image-placeholder{
-        max-width: 100%;
         .avatar-preview{
-            height: 22rem !important;
-            width: 100%;
+            height: 14rem !important;
         }
         .delete-img{
             position: absolute;
-            top: 9px;
+            top: 16px;
+            right: 16px;
             padding: 2px 6px;
             z-index: 1;
             background: #fff;
@@ -36,5 +32,28 @@
     color: #fff;
 }
   
-  
-  
+.wrapperClassName{
+    height: 400px
+}
+.editorClassName{
+    padding: 12px;
+}
+.tabs-div {
+    // padding-bottom: 5px;
+    border-bottom: 1px solid #e8eaeb;
+    // margin-bottom: 1rem;
+    display: flex;
+    gap: 12px;
+    width: fit-content;
+
+    span {
+      padding: 5px;
+      font-size: 15px;
+      cursor: pointer;
+      font-weight: 500;
+    }
+    p{
+        width: fit-content;
+        cursor: pointer;
+    }
+  }

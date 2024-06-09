@@ -49,6 +49,27 @@ export const MenuList = [
           },
       ]
   },
+  // Home
+  {
+      title:'MasterHN',
+      text:'masterHN',
+      classsChange: 'mm-collapse',
+      iconStyle: <i className="la la-simplybuilt" />,
+      content : [
+          {
+              title:'Categories',
+              text:'categories',
+              to: 'masterHN/categories',
+              rule: 'home',
+          },
+          {
+              title:'Products',
+              text:'products',
+              to: 'masterHN/products',
+              rule: 'home',
+          }
+      ]
+  },
 
   // <i className='la la-cubes'></i>,
   // <i className='la la-cube'></i>,

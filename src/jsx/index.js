@@ -24,6 +24,9 @@ import ContactUs from "./pages/ContactUs";
 import HomePage from "./pages/HomePage";
 import Products from "./pages/Products";
 import AddProducts from "./pages/Products/AddProducts";
+import MasterHNProducts from "./pages/MasterHN/Products";
+import MasterHNAddProducts from "./pages/MasterHN/Products/AddProducts";
+import Categories from "./pages/MasterHN/Categories";
 
 const Markup = () => {
   const allroutes = [
@@ -47,6 +50,13 @@ const Markup = () => {
     { url: "home/products", component: <Products /> },
     { url: "home/products/add-products", component: <AddProducts /> },
     { url: "home/products/add-products/:id", component: <AddProducts /> },
+
+    // Master HN
+    { url: "masterHN/products", component: <MasterHNProducts /> },
+    { url: "masterHN/products/add-products", component: <MasterHNAddProducts /> },
+    { url: "masterHN/products/add-products/:id", component: <MasterHNAddProducts /> },
+  
+    { url: "masterHN/categories", component: <Categories /> },
 
     //Profile
     { url: "profile", component: <Profile /> },

@@ -1,4 +1,5 @@
 export const English = {
+  masterHN: 'Master HN',
   dashboard: "Dashboard",
   home: "Home",
   admins: "Admins",

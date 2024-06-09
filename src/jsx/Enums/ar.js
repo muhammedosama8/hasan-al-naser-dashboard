@@ -1,4 +1,5 @@
 export const Arabic = {
+  masterHN: 'ماستر اتش ان',
   dashboard: "الصفحه الرئيسيه",
   home: "الصفحه الرئيسيه",
   admins: "المدراء",

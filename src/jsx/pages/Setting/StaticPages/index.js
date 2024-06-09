@@ -5,8 +5,8 @@ import { Translate } from "../../../Enums/Tranlate";
 import './style.scss'
 const pages = [
     { name: 'About',type: 'about',label: 'about', path:'/pages/about' },
-    { name: 'Privacy',type: 'Privacy', label: 'privacy', path:'/pages/privacy' },
-    { name: 'FAQs',type: 'faqs', label: 'faqs', path:'/pages/faqs' }
+    // { name: 'Privacy',type: 'Privacy', label: 'privacy', path:'/pages/privacy' },
+    // { name: 'FAQs',type: 'faqs', label: 'faqs', path:'/pages/faqs' }
 ]
 const StaticPages = () =>{
     const navigate= useNavigate()
