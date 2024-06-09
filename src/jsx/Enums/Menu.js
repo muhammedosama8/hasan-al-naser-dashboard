@@ -49,7 +49,7 @@ export const MenuList = [
           },
       ]
   },
-  // Home
+  // MasterHN
   {
       title:'MasterHN',
       text:'masterHN',

@@ -19,7 +19,7 @@ import Admins from "./pages/Admin";
 import AddAdmin from "./pages/Admin/AddAdmin";
 import Permission from "./pages/Rules";
 import Profile from "./pages/Profile";
-import SocialMedia from "./pages/Home/SocialMedia";
+import SocialMedia from "./pages/Setting/SocialMedia";
 import ContactUs from "./pages/ContactUs";
 import HomePage from "./pages/HomePage";
 import Products from "./pages/Products";
