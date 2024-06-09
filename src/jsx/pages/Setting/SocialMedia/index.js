@@ -86,52 +86,54 @@ const SocialMedia = ()=>{
         <Card.Body className="position-relative">
             <form onSubmit={onSubmit}>
                 <Row className="mb-3">
-                {SocialMediaLinks?.map((link, index)=>{
-                    return <Col md={6} className='mb-3' key={index}>
-                        <label className="text-label">
-                            {/* <input
-                                type='checkbox'
-                                className="mr-2"
-                                name='social'
-                                disabled={(!selectedSocial.includes(link.label) && selectedSocial?.length === 5) || !isAdd }
-                                // value={selectedSocial.includes[link.label}
-                                onChange={(e)=> {
-                                    if(e.target.checked){
-                                        if(selectedSocial?.length === 5) {
-                                            return
-                                        }
-                                        setSelectedSocial([...selectedSocial, link.label])
-                                    } else {
-                                        let update= selectedSocial?.filter(res=> res !== link.label)
-                                        setSelectedSocial(update)
-                                    }
-                                }}
-                            /> */}
-                            {Translate[lang][link.value]} :
-                        </label>
-                        <input
-                            type="text"
-                            name={link.value}
-                            disabled={!isAdd}
-                            style={{
-                                background: !isAdd ? 'rgb(238 238 238)' : '#fff'
-                            }}
-                            className="form-control"
-                            placeholder={`${Translate[lang][link.value]} Link`}
-                            value={links[link?.value]}
-                            onChange={(e)=> inputHandler(e)}
-                        />
-                    </Col>
-                })}
+                    {SocialMediaLinks?.map((link, index)=>{
+                        if(link.value === "time_from" || link.value === "time_to"){
+                            return <Col md={3} className='mb-3' key={index}>
+                                <label className="text-label">
+                                    {Translate[lang][link.value]}
+                                </label>
+                                <input
+                                    type="time"
+                                    name={link.value}
+                                    disabled={!isAdd}
+                                    style={{
+                                        background: !isAdd ? 'rgb(238 238 238)' : '#fff'
+                                    }}
+                                    required
+                                    className="form-control"
+                                    placeholder={Translate[lang][link.value]}
+                                    value={links[link?.value]}
+                                    onChange={(e)=> inputHandler(e)}
+                                />
+                            </Col>
+                        } else {
+                            return <Col md={6} className='mb-3' key={index}>
+                                <label className="text-label">{Translate[lang][link.value]}</label>
+                                <input
+                                    type="text"
+                                    name={link.value}
+                                    disabled={!isAdd}
+                                    style={{
+                                        background: !isAdd ? 'rgb(238 238 238)' : '#fff'
+                                    }}
+                                    // required
+                                    className="form-control"
+                                    placeholder={Translate[lang][link.value]}
+                                    value={links[link?.value]}
+                                    onChange={(e)=> inputHandler(e)}
+                                />
+                            </Col>
+                        }
+                    })}
                 </Row>
-            {isExist('social_media') && <div className="d-flex justify-content-end">
-                {isAdd && <Button variant="primary" type="submit" disabled={loading}>
-                    {Translate[lang].submit}
-                </Button>}
-                {!isAdd && <Button variant="primary" type="button" onClick={()=> setIsAdd(true)}>
-                    {Translate[lang].edit}
-                </Button>}
-            </div>}
+                {isExist('social_media') && <div className="d-flex justify-content-end">
+                    {isAdd && <Button variant="primary" type="submit" disabled={loading}>
+                        {Translate[lang].submit}
+                    </Button>}
+                    {!isAdd && <Button variant="primary" type="button" onClick={()=> setIsAdd(true)}>
+                        {Translate[lang].edit}
+                    </Button>}
+                </div>}
             </form>
         </Card.Body>
     </Card>

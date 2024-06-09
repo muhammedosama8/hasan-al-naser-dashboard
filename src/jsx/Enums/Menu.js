@@ -35,12 +35,12 @@ export const MenuList = [
               to: 'home/products',
               rule: 'home',
           },
-          {
-            title: "Social Media",
-            text: "social_media",
-            to: "home/social",
-            rule: "home",
-          },
+          // {
+          //   title: "Social Media",
+          //   text: "social_media",
+          //   to: "home/social",
+          //   rule: "home",
+          // },
           {
             title: "Contact Us",
             text: "contact_us",
@@ -69,6 +69,14 @@ export const MenuList = [
               rule: 'home',
           }
       ]
+  },
+  // Social Media
+  {
+    title: "Social Media",
+    classsChange: "mm-collapse",
+    iconStyle: <i className="la la-wrench"></i>,
+    to: "home/social",
+    text: "social_media",
   },
 
   // <i className='la la-cubes'></i>,
