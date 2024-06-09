@@ -16,7 +16,8 @@ import { EditorState, convertToRaw, ContentState } from "draft-js";
 const MasterHNAddProducts = () => {
   const [product, setProduct] = useState({
     name: "",
-    type: '',
+    category: '',
+    price: '',
     description: EditorState.createEmpty(),
     images: [{ src: "" },{ src: "" }, { src: "" }, { src: "" }, { src: "" }],
   });
@@ -405,18 +406,32 @@ const MasterHNAddProducts = () => {
               onChange={(e) => handlerText(e)}
             />
           </Col>
-          {/* <Col md={6} className="mb-3">
-            <label>{Translate[lang].type}</label>
+          <Col md={6} className="mb-3">
+            <label>{Translate[lang].category}</label>
             <Select
-              options={[
-                {label: 'Preumium Products', value: 'preumium_products'},
-                {label: 'High Pressure', value: 'high_pressure'},
-              ]}
-              name="name"
-              value={product.type}
-              onChange={(e) => setProduct({...product, type: e})}
+              options={[]}
+              name="category"
+              value={product.category}
+              onChange={(e) => setProduct({...product, category: e})}
             />
-          </Col> */}
+          </Col>
+          <Col md={6} className="mb-3">
+            <AvField
+              label={Translate[lang]?.price}
+              type="number"
+              placeholder={Translate[lang]?.price}
+              bsSize="lg"
+              name="price"
+              validate={{
+                required: {
+                  value: true,
+                  errorMessage: Translate[lang].field_required,
+                }
+              }}
+              value={product.price}
+              onChange={(e) => handlerText(e)}
+            />
+          </Col>
           <Col md={12} className="mb-3">
             <label className="text-label">
               {Translate[lang]?.description}*
