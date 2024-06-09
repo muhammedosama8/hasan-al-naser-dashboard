@@ -54,7 +54,12 @@
 .h-10rem{
     height: 10rem !important;
 }
-.rdw-editor-wrapper{
+.public-DraftEditor-content > div{
     border: 1px solid #dedede;
     border-radius: 4px;
+    padding: 12px;
+    height: 93%;
+}
+.editorClassName{
+    padding: 0!important;
 }
