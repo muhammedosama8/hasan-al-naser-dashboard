@@ -77,9 +77,12 @@ const AddAdmin = () => {
          f_name: formData?.first_name,
          l_name: formData?.last_name,
          country_code: "+965",
-         rules: formData.rules
+         rules: formData.rules,
+         email: formData?.email,
+         phone: formData?.phone
       }
       if(location?.state?.edit){
+         if(!!formData?.password) data['password'] = formData?.password
          setLoading(true)
          adminService.update(location.state?.id, data).then((response) =>{
             if(response?.status === 200){
@@ -89,13 +92,7 @@ const AddAdmin = () => {
             setLoading(false)
          })
       } else {
-         // if(!formData.country_code){
-         //    toast.error('Select Country')
-         //    return
-         // }
          data['password'] = formData?.password
-         data['email'] = formData?.email
-         data['phone'] = formData?.phone
 
          setLoading(true)
          adminService.create(data).then((response) =>{
@@ -146,7 +143,7 @@ const AddAdmin = () => {
 						onChange={(e)=> inputHandler(e)}
 					/>
             </div>
-           {!location?.state?.edit &&  <div className="col-lg-6 col-sm-6 mb-3">
+            <div className="col-lg-6 col-sm-6 mb-3">
                <AvField
 						label ={`${Translate[lang]?.email}`}
 						name ='email'
@@ -162,8 +159,8 @@ const AddAdmin = () => {
 						placeholder='example@example.com'
 						onChange={(e)=> inputHandler(e)}
 					/>
-            </div>}
-            {!location?.state?.edit && <div className="col-lg-6 col-sm-6 mb-3">
+            </div>
+            <div className="col-lg-6 col-sm-6 mb-3">
                <AvField
 						label ={`${Translate[lang]?.password}`}
 						name ='password'
@@ -172,7 +169,7 @@ const AddAdmin = () => {
 						errorMessage="Please enter a valid Password"
 						validate={{
 							required: {
-								value:true,
+								value: !location?.state?.edit,
 								errorMessage: Translate[lang].field_required
 							},
 						}}
@@ -181,7 +178,7 @@ const AddAdmin = () => {
 						placeholder={`${Translate[lang]?.password}`}
 						onChange={(e)=> inputHandler(e)}
 					/>
-            </div>}
+            </div>
             {/* {!location?.state?.edit && <div className="col-lg-3 col-sm-6 mb-3">
                   <label className="text-label">{Translate[lang]?.country_code}</label>
                   <Select
@@ -192,7 +189,7 @@ const AddAdmin = () => {
                      onChange={(e)=> setFormData({...formData, country_code: e})}
                   />
             </div>} */}
-            {!location?.state?.edit && <div className="col-lg-6 col-sm-6 mb-3">
+            <div className="col-lg-6 col-sm-6 mb-3">
                   <AvField
 						label ={`${Translate[lang]?.phone}`}
 						name ='phone'
@@ -208,7 +205,7 @@ const AddAdmin = () => {
 						placeholder={`${Translate[lang]?.phone}`}
 						onChange={(e)=> inputHandler(e)}
 					/>
-            </div>}
+            </div>
             <Table className="w-50" responsive>
                     <thead>
                         <tr>

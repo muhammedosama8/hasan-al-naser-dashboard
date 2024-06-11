@@ -36,7 +36,9 @@
     height: 400px
 }
 .editorClassName{
-    padding: 12px;
+    padding: 12px !important;
+    border: 1px solid #dedede;
+    border-radius: 8px;
 }
 .tabs-div {
     // padding-bottom: 5px;

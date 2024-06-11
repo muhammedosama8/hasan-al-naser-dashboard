@@ -45,7 +45,7 @@ const Pagination = ({
       setLoading(false);
     });
     window.scrollTo({ top: 0, left: 0, behavior: "smooth" });
-  }, [page, isDeleted, shouldUpdate, search, status]);
+  }, [page, isDeleted, shouldUpdate, search, type, status]);
 
   useEffect(() => {
     setPage(1);

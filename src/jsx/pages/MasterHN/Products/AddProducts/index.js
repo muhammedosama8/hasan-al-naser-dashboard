@@ -18,6 +18,7 @@ const MasterHNAddProducts = () => {
     name: "",
     category: '',
     price: '',
+    amount: '',
     description: EditorState.createEmpty(),
     images: [{ src: "" },{ src: "" }, { src: "" }, { src: "" }, { src: "" }],
   });
@@ -432,9 +433,26 @@ const MasterHNAddProducts = () => {
               onChange={(e) => handlerText(e)}
             />
           </Col>
+          <Col md={6} className="mb-3">
+            <AvField
+              label={Translate[lang]?.amount}
+              type="number"
+              placeholder={Translate[lang]?.amount}
+              bsSize="lg"
+              name="amount"
+              validate={{
+                required: {
+                  value: true,
+                  errorMessage: Translate[lang].field_required,
+                }
+              }}
+              value={product.amount}
+              onChange={(e) => handlerText(e)}
+            />
+          </Col>
           <Col md={12} className="mb-3">
             <label className="text-label">
-              {Translate[lang]?.description}*
+              {Translate[lang]?.description}
             </label>
             <Editor
               editorState ={product?.description}

@@ -7,10 +7,11 @@ import NoData from "../../common/NoData";
 import Pagination from "../../common/Pagination/Pagination";
 import { Translate } from "../../Enums/Tranlate";
 import CardItem from "./CardItem";
+import ProductsService from "../../../services/ProductsService";
 
 const Products = () =>{
-    const tabs = ['Preumium Products', 'High Pressure']
-    const [selectTab, setSelectTab] = useState('Preumium Products')
+    const tabs = ['Premium Products', 'High Pressure']
+    const [selectTab, setSelectTab] = useState('Premium Products')
     const [products, setProducts] =useState([])
     const [hasData, setHasData] =useState(0)
     const [search, setSearch] =useState(null)
@@ -21,7 +22,7 @@ const Products = () =>{
     const Auth = useSelector(state=> state.auth?.auth)
     const lang = useSelector(state=> state.auth?.lang)
     const isExist = (data)=> Auth?.admin?.admin_roles?.includes(data)
-    // const productsService = new ProductsService()
+    const productsService = new ProductsService()
 
     return(
         <>
@@ -103,16 +104,15 @@ const Products = () =>{
                 </tbody>
               </Table>}
               {hasData === 0 && <NoData />}
-              {/* <Pagination
+              <Pagination
                   setData={setProducts}
                   service={productsService}
                   shouldUpdate={shouldUpdate}
                   setHasData={setHasData}
-                  // isDeleted={isDeleted}
                   setLoading={setLoading}
-                  type={'normal'}
+                  type={selectTab?.toLowerCase().replace(' ','_')}
                   search={search}
-                /> */}
+                />
             </Card.Body>
           </Card>
         </>

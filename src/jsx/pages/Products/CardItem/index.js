@@ -5,8 +5,9 @@ import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import DeleteModal from "../../../common/DeleteModal";
 import { Translate } from "../../../Enums/Tranlate";
+import ProductsService from "../../../../services/ProductsService";
 
-const CardItem = ({item, index, setShouldUpdate,setIndexEdit, indexEdit}) =>{
+const CardItem = ({item, index, setShouldUpdate,setIndexEdit, }) =>{
     const [deleteModal, setDeleteModal] = useState(false)
     const [isDeleted, setIsDeleted] = useState(false)
     const [quantity, setQuantity] = useState(item.amount)
@@ -15,7 +16,7 @@ const CardItem = ({item, index, setShouldUpdate,setIndexEdit, indexEdit}) =>{
     const lang = useSelector(state=> state.auth?.lang)
     const isExist = (data)=> Auth?.admin?.admin_roles?.includes(data)
     const navigate = useNavigate()
-    // const productsService = new ProductsService()
+    const productsService = new ProductsService()
 
     // const changeIsDeleted = ()=>{
     //   productsService.remove(item.id, { isDeleted: false }).then(res=>{
@@ -58,43 +59,18 @@ const CardItem = ({item, index, setShouldUpdate,setIndexEdit, indexEdit}) =>{
                     </td>
                     <td>
                         <img
-                          src={item?.images[0]?.url}
+                          src={item?.show_product_images[0]?.url}
                           className="rounded-lg"
                           width="40"
                           height="40"
                           alt={item.id}
                         />
                     </td>
-                    <td>{lang === 'en' ? item.name_en : item.name_ar}</td>
+                    <td>{item.title}</td>
                     <td>
-                      <Badge variant="success light">{lang === 'en' ? item.category?.name_en : item.category?.name_ar}</Badge>
+                      <Badge variant="success light">{item.type}</Badge>
                     </td>
-                    <td>{item.price}</td>
-                    {/* <td>
-                      <input
-                        type='number'
-                        value={quantity}
-                        min={1}
-                        style={{
-                          width: '5rem',
-                          padding: '5px',
-                          border: '1px solid #dedede',
-                          borderRadius: '5px'
-                        }}
-                        onChange={(e)=>{
-                          setQuantity(e.target.value)
-                        }}
-                        onFocus={()=>setIndexEdit(index)}
-                      />
-                      {index === indexEdit &&<i 
-                        className="la la-check-circle ml-2"
-                        style={{
-                          fontSize: '1.35rem',
-                          cursor: 'pointer'
-                        }}
-                        onClick={updateQuantity}
-                      ></i>}
-                    </td>
+                    {/* 
                     <td>
                       <Form.Check
                         type="switch"
@@ -105,7 +81,7 @@ const CardItem = ({item, index, setShouldUpdate,setIndexEdit, indexEdit}) =>{
                       />
                     </td> */}
                     <td>
-                      {/* {isExist('products') && <Dropdown>
+                      {isExist('home') && <Dropdown>
                         <Dropdown.Toggle
                           className="light sharp i-false"
                         >
@@ -113,23 +89,20 @@ const CardItem = ({item, index, setShouldUpdate,setIndexEdit, indexEdit}) =>{
                         </Dropdown.Toggle>
                         <Dropdown.Menu>
                           <Dropdown.Item onClick={()=>{
-                            navigate(`/products/add-products/${item.id}`)
+                            navigate(`/home/products/add-products/${item.id}`, {state: item})
                           }}>{Translate[lang]?.edit}</Dropdown.Item>
-                          {!isDeleted && <Dropdown.Item onClick={()=> setDeleteModal(true)}>{Translate[lang]?.deactive}</Dropdown.Item>}
-                        {isDeleted && <Dropdown.Item onClick={()=> changeIsDeleted()}>{Translate[lang]?.active}</Dropdown.Item>}
+                          <Dropdown.Item onClick={()=> {}}>{Translate[lang]?.active}</Dropdown.Item>
                         </Dropdown.Menu>
-                      </Dropdown>} */}
-                      <i className="la la-eye cursor-pointer" onClick={()=>navigate(`/products/${item.id}`, {state: item.code})}></i>
+                      </Dropdown>}
                     </td>
-                    {/* {deleteModal && <DeleteModal
+                    {deleteModal && <DeleteModal
                       open={deleteModal}
-                      titleMsg={lang==='en' ? item.name_en : item.name_ar}
+                      titleMsg={item.title}
                       deletedItem={item}
                       modelService={productsService}
                       onCloseModal={setDeleteModal}
                       setShouldUpdate={setShouldUpdate}
-                      isDeleted={true}
-                    />} */}
+                    />}
                   </tr>
     )
 }

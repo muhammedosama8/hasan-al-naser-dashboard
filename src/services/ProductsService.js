@@ -2,9 +2,9 @@ import BaseService from "./BaseService";
 import http from "./HttpService";
 import { API_BASE_URL_ENV } from "../jsx/common/common";
 
-const apiEndpoint = API_BASE_URL_ENV() + "/home/partner";
+const apiEndpoint = API_BASE_URL_ENV() + "/home/showProduct";
 
-export default class PartnersService extends BaseService {
+export default class ProductsService extends BaseService {
   constructor() {
     super(apiEndpoint);
   }

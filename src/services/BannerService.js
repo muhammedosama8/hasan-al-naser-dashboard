@@ -9,8 +9,4 @@ export default class BannerService extends BaseService {
     constructor() {
         super(apiEndpoint);
     }
-
-    update(data) {
-        return http.put(apiEndpoint, data);
-    }
 }

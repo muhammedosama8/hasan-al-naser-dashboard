@@ -10,7 +10,7 @@ import CardItem from "./CardItem";
 
 const ContactUs = () => {
   const [data, setData] = useState([]);
-  const [hasData, setHasData] = useState(0);
+  const [hasData, setHasData] = useState(null);
   const [status, setStatus] = useState('open');
   const [shouldUpdate, setShouldUpdate] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -79,14 +79,14 @@ const ContactUs = () => {
 
           {hasData === 0 && <NoData />}
 
-          {/* <Pagination
+          <Pagination
             setData={setData}
             service={contactusService}
             shouldUpdate={shouldUpdate}
             setHasData={setHasData}
             setLoading={setLoading}
             status={status}
-          /> */}
+          />
         </Card.Body>
       </Card>
     </>

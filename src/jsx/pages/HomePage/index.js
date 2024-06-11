@@ -8,13 +8,14 @@ import uploadImg from "../../../images/upload-img.png";
 import BaseService from "../../../services/BaseService";
 import { toast } from "react-toastify";
 import './style.scss'
-import BrandingService from "../../../services/BrandingService";
 import { Editor } from "react-draft-wysiwyg";
 import { EditorState, convertToRaw, ContentState } from "draft-js";
 import draftToHtml from 'draftjs-to-html';
 import htmlToDraft from 'html-to-draftjs';
 import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
 import 'draft-js/dist/Draft.css';
+import HomeService from "../../../services/HomeService";
+import BannerService from "../../../services/BannerService";
 
 const HomePage = () => {
   const [formData, setFormData] = useState({
@@ -37,74 +38,62 @@ const HomePage = () => {
   const [editBanners, setEditBanners] = useState(false)
   const [barcodeLoading, setBarcodeLoading] = useState(false)
   const lang = useSelector((state) => state.auth?.lang);
-  const brandingService = new BrandingService()
+  const homeService = new HomeService()
+  const bannerService = new BannerService()
   const Auth = useSelector(state=> state.auth?.auth)
   const isExist = (data)=> Auth?.admin?.admin_roles?.includes(data)
 
-  // useEffect(()=>{
-  //   let banners = brandingService?.getBanners()
-  //   let wwd = brandingService?.getWWD()
-  //   let services = brandingService?.getServices()
-  //   let images = brandingService?.getImages()
+  useEffect(()=>{
+    let banners = bannerService?.getList()
+    let collection = homeService?.getCollection()
+    let barcode = homeService?.getBarcode()
+    // let images = brandingService?.getImages()
 
-  //   Promise.all([banners, wwd, services, images]).then(res=>{
-  //     let data = {}
-  //     if(res[0]?.status === 200){
-  //       const banners = res[0]?.data?.data?.map(info=>{
-  //         return {
-  //           ...info,
-  //           src: info?.image
-  //         }
-  //       });
-  //       if(banners?.length > 0) setEditBanners(true)
-  //       if(banners?.length < 5){
-  //         let complete =[]
-  //         for(let i=banners?.length; i<5; i++){
-  //             complete.push({src: "", title: "", sub_title: "", loading: false})
-  //         }
-  //         data['banners']= [...banners, ...complete]
-  //     } else {
-  //       data['banners']= [...banners]
-  //     }
-  //     }
+    Promise.all([banners, collection, barcode]).then(res=>{
+      let data = {}
+      if(res[0]?.status === 200){
+        const banners = res[0]?.data?.data?.map(banner=>{
+          return {
+            ...banner,
+            src: banner?.image,
+            tags: banner?.tags?.map(tag=> tag?.name)
+          }
+        });
+        data['banners']= [...banners]
+      }
 
-  //     if(res[1]?.status === 200){
-  //       data['wwd_description'] = EditorState.createWithContent(ContentState.createFromBlockArray(htmlToDraft(res[1]?.data?.data?.description)))
-  //     }
+      if(res[1]?.status === 200){
+        data['collection'] = {
+          images: res[0]?.data.data?.Collection_images?.map(img=>{
+            return{
+              src: img.url,
+              loading: false
+            }
+          }),    
+          description: EditorState.createWithContent(ContentState.createFromBlockArray(htmlToDraft(res[1]?.data?.data?.description)))
+        }
+      }
 
-  //     if(res[2]?.status === 200){
-  //       data['services'] = Array.from({ length: 3 }, (_, index) => {
-  //         let arr = res[2]?.data?.data;
-  //         if(arr[index]){
-  //           return {
-  //             title: arr[index]?.title,
-  //             img: { src: arr[index]?.image, loading: false }
-  //           }
-  //         } else {
-  //           return {
-  //             title: "",
-  //             img: { src: "", loading: false }
-  //           }
-  //         }
-  //       })
-  //     }
+      if(res[2]?.status === 200){
+        data['barcode'] = {src: res[2]?.data?.data?.url, loading: false}
+      }
 
-  //     if(res[3]?.status === 200){
-  //       data['our_partners'] = Array.from({ length: 9 }, (_, index) => {
-  //         let arr = res[3]?.data?.data;
-  //         if(arr[index]){
-  //           return {id: arr[index]?.id, src: arr[index]?.image, loading: false }
-  //         } else {
-  //           return { src: "", loading: false }
-  //         }
-  //       })
-  //     }
+      // if(res[3]?.status === 200){
+      //   data['our_partners'] = Array.from({ length: 9 }, (_, index) => {
+      //     let arr = res[3]?.data?.data;
+      //     if(arr[index]){
+      //       return {id: arr[index]?.id, src: arr[index]?.image, loading: false }
+      //     } else {
+      //       return { src: "", loading: false }
+      //     }
+      //   })
+      // }
 
-  //     setFormData({...formData, ...data})
-  //   }).catch(error => {
-  //     console.log(error);
-  //   });
-  // }, [])
+      setFormData({...formData, ...data})
+    }).catch(error => {
+      console.log(error);
+    })
+  }, [])
 
   const fileHandler = (e, index, type) => {
     if(e.target.files?.length === 0){
@@ -121,6 +110,15 @@ const HomePage = () => {
         }
       })
       setFormData({ ...formData,  collection: {...formData.collection, images: update} });
+    } else if(type === "banners"){
+      let update = formData?.banners?.map((data, ind)=> {
+        if(ind === index){
+          return {...data, loading: true}
+        } else{
+           return data
+        }
+      })
+      setFormData({ ...formData,  banners: update });
     } else if(type === "barcode"){
       setFormData({  ...formData, barcode: {src: '', loading: true} });
     }
@@ -138,6 +136,15 @@ const HomePage = () => {
             ...formData, 
             collection: {...formData.collection, images: update}
           });
+        } else if(type === "banners"){
+          let update = formData?.banners?.map((data, ind)=> {
+            if(ind === index){
+              return {...data, src: res.data.url, loading: false}
+            } else{
+               return data
+            }
+          })
+          setFormData({ ...formData,  banners: update });
         } else if(type === "barcode"){
           setFormData({ 
             ...formData, 
@@ -184,12 +191,13 @@ const HomePage = () => {
 
     setCollectionLoading(true);
     let data = {
-      description: draftToHtml(convertToRaw(formData?.wwd_description.getCurrentContent()))
+      images: formData?.collection?.images?.filter(res=> !!res?.src)?.map(res=> res?.src),
+      description: draftToHtml(convertToRaw(formData?.collection?.description.getCurrentContent()))
     };
 
-    brandingService.createWWD(data)?.then((res) => {
+    homeService.createCollection(data)?.then((res) => {
       if (res?.status === 201) {
-        toast.success("What We Do Added Successfully");
+        toast.success("Collection Added Successfully");
       }
       setCollectionLoading(false);
     }).catch(()=> setCollectionLoading(false));
@@ -202,22 +210,24 @@ const HomePage = () => {
     let data = {
       banners: formData?.banners?.filter(res=> !!res.src)?.map(res=> {
         return {
-          sub_title: res.sub_title,
-          title: res?.title,
+          tags: res.tags?.filter(res => !!res),
+          catalog: res.catalog,
+          description: res.description,
+          title: res.title,
           image: res.src
         }
       })
     };
 
     if(editBanners){
-      brandingService.updateBanners(data)?.then((res) => {
+      homeService.update(data)?.then((res) => {
         if (res?.status === 200) {
           toast.success("Banners Updated Successfully");
         }
         setBannersLoading(false);
       }).catch(()=> setBannersLoading(false));
     } else {
-      brandingService.createBanners(data)?.then((res) => {
+      bannerService.create(data)?.then((res) => {
         if (res?.status === 201) {
           toast.success("Banners Added Successfully");
         }
@@ -226,17 +236,17 @@ const HomePage = () => {
     }
   }
 
-  const handleImages = (e) =>{
+  const handleBarcode = (e) =>{
     e.preventDefault();
 
     setBarcodeLoading(true);
     let data = {
-      images: formData?.our_partners?.filter(res=> !!res?.src)?.map(res=> res?.src)
+      url: formData?.barcode?.src
     };
 
-    brandingService.createImages(data)?.then((res) => {
+    homeService.createBarcode(data)?.then((res) => {
       if (res?.status === 201) {
-        toast.success("Images Added Successfully");
+        toast.success("Barcode Added Successfully");
       }
       setBarcodeLoading(false);
     }).catch(()=> setBarcodeLoading(false));
@@ -248,8 +258,6 @@ const HomePage = () => {
         return {
           ...info,
           src: "",
-          title: "",
-          sub_title: ""
         }
       } else{
         return { ...info }
@@ -283,7 +291,7 @@ const HomePage = () => {
     })
     setFormData({...formData, collection: {...formData.collection, images: update}})
   }
-console.log(formData)
+
   return <>
     <Card>
       <Card.Body>
@@ -442,7 +450,7 @@ console.log(formData)
                       </div>
                       <div className="col-lg-12 col-sm-12 mb-3">{Translate[lang]?.tags}:</div>
                       {banner?.tags?.map((tag, ind) =>{
-                        return <div className="col-lg-3 col-sm-6 mb-3">
+                        return <div className="col-lg-3 col-sm-6 mb-3" key={ind}>
                         <AvField
                           label={`${Translate[lang]?.tag} ${ind+1} :`}
                           name ={`tag${ind}`}
@@ -472,7 +480,24 @@ console.log(formData)
                         />
                       </div>
                       })}
-                      
+                      {banner.tags?.length < 6 && 
+                        <div className="col-lg-3 col-sm-6 " style={{display: 'contents'}}>
+                          <Button  style={{height: 'fit-content', margin: 'auto 12px'}} variant="secondary" onClick={()=>{
+                            let update = formData.banners?.map((res,ind)=>{
+                              if(ind === index){
+                                return {
+                                  ...res,
+                                  tags: [...res.tags, ""]
+                                }
+                              } else {
+                                return res
+                              }
+                            })
+                            setFormData({...formData, banners: update})
+                          }}>
+                            + {Translate[lang].add} {Translate[lang].tags}
+                          </Button>
+                        </div>}
                       <hr/>
                   </div>
                 })}
@@ -488,7 +513,7 @@ console.log(formData)
             </div>
          </div>
     
-         {isExist('branding') && <div className="d-flex justify-content-between mt-4">
+         {isExist('home') && <div className="d-flex justify-content-between mt-4">
             <Button variant="primary" type="submit" disabled={bannersLoading}>{Translate[lang]?.submit}</Button>
          </div>}
         </AvForm>
@@ -550,7 +575,7 @@ console.log(formData)
                         ) : (
                           <div>
                             {(!img.src && img.loading)  && <Loader></Loader>}
-                            {!img?.src && (
+                            {(!img?.src && !img.loading) && (
                               <img
                                 src={uploadImg}
                                 alt="icon"
@@ -576,7 +601,7 @@ console.log(formData)
 
     <Card>
       <Card.Body>
-        <AvForm onValidSubmit={handleImages}>
+        <AvForm onValidSubmit={handleBarcode}>
          <div className="our-clients mt-3">
             <h3>{Translate[lang]?.barcode}</h3>
             <div className="row mt-4">
@@ -614,7 +639,7 @@ console.log(formData)
                         ) : (
                           <div>
                             {(!formData.barcode?.src && formData.barcode?.loading)  && <Loader></Loader>}
-                            {!formData.barcode?.src && (
+                            {(!formData.barcode?.src && formData.barcode?.loading) && (
                               <img
                                 src={uploadImg}
                                 alt="icon"
