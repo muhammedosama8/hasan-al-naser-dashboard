@@ -510,7 +510,7 @@ const MasterHNAddProducts = () => {
           </Col>
         </Row>
 
-        <Row>
+        <Row style={{marginTop: '5rem'}}>
         <Col md={12} sm={12} className="mb-3 mt-5">
           {Translate[lang].images}
         </Col>
