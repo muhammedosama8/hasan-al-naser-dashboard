@@ -12,7 +12,8 @@ import { Translate } from "../../../../Enums/Tranlate";
 const AddCategoriesModal = ({addModal, setAddModal, item, setShouldUpdate})=>{
     const [files, setFiles] = useState([])
     const [formData, setFormData] = useState({
-        name: '',
+        name_en: '',
+        name_ar: '',
         img: ''
     })
     const [isAdd, setIsAdd] = useState(false)
@@ -106,11 +107,32 @@ const AddCategoriesModal = ({addModal, setAddModal, item, setShouldUpdate})=>{
             <Modal.Body>
                 
                     <Row>
-                        <Col md={12}>
+                        <Col md={6}>
                             <AvField
-                                label={Translate[lang]?.name}
+                                label={Translate[lang]?.english_title}
                                 type='text'
-                                placeholder={Translate[lang]?.name}
+                                placeholder={Translate[lang]?.english}
+                                bsSize="lg"
+                                name='name'
+                                validate={{
+                                    required: {
+                                        value: true,
+                                        errorMessage: Translate[lang].field_required
+                                    },
+                                    pattern: {
+                                        value: '/^[A-Za-z0-9 ]+$/',
+                                        errorMessage: `English format is invalid`
+                                    }
+                                }}
+                                value={formData.name}
+                                onChange={(e) => setFormData({...formData, name: e.target.value})}
+                            />
+                        </Col>
+                        <Col md={6}>
+                            <AvField
+                                label={Translate[lang]?.arabic_title}
+                                type='text'
+                                placeholder={Translate[lang]?.arabic}
                                 bsSize="lg"
                                 name='name'
                                 validate={{

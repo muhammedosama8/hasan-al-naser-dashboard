@@ -15,16 +15,18 @@ import { EditorState, convertToRaw, ContentState } from "draft-js";
 
 const MasterHNAddProducts = () => {
   const [product, setProduct] = useState({
-    name: "",
+    name_ar: "",
+    name_en: "",
     category: '',
     price: '',
     amount: '',
-    description: EditorState.createEmpty(),
+    description_ar: EditorState.createEmpty(),
+    description_en: EditorState.createEmpty(),
     images: [{ src: "" },{ src: "" }, { src: "" }, { src: "" }, { src: "" }],
   });
   const [errors, setErrors] = useState({
-    desc_ar: false,
-    desc_en: false,
+    description_en: false,
+    description_ar: false,
     images: 0,
   });
   const [id, setId] = useState(null);
@@ -392,18 +394,35 @@ const MasterHNAddProducts = () => {
         <Row>
           <Col md={6} className="mb-3">
             <AvField
-              label={`${Translate[lang]?.title}`}
+              label={`${Translate[lang]?.english_title}`}
               type="text"
               placeholder={Translate[lang]?.english}
               bsSize="lg"
-              name="name"
+              name="name_en"
               validate={{
                 required: {
                   value: true,
                   errorMessage: Translate[lang].field_required,
                 }
               }}
-              value={product.name}
+              value={product.name_en}
+              onChange={(e) => handlerText(e)}
+            />
+          </Col>
+          <Col md={6} className="mb-3">
+            <AvField
+              label={`${Translate[lang]?.arabic_title}`}
+              type="text"
+              placeholder={Translate[lang]?.english}
+              bsSize="lg"
+              name="name_ar"
+              validate={{
+                required: {
+                  value: true,
+                  errorMessage: Translate[lang].field_required,
+                }
+              }}
+              value={product.name_ar}
               onChange={(e) => handlerText(e)}
             />
           </Col>
@@ -450,20 +469,39 @@ const MasterHNAddProducts = () => {
               onChange={(e) => handlerText(e)}
             />
           </Col>
-          <Col md={12} className="mb-3">
+          <Col md={6} className="mb-3">
             <label className="text-label">
-              {Translate[lang]?.description}
+              {Translate[lang]?.english_description}
             </label>
             <Editor
-              editorState ={product?.description}
+              editorState ={product?.description_en}
               toolbarClassName="toolbarClassName"
               wrapperClassName="wrapperClassName"
               editorClassName="editorClassName"
               onEditorStateChange={(e) => {
-                setProduct({...product, description: e})
+                setProduct({...product, description_en: e})
               }}
             />
-            {errors["desc"] && (
+            {errors["description_en"] && (
+              <p className="text-danger m-0" style={{ fontSize: "12.8px" }}>
+                {Translate[lang].field_required}
+              </p>
+            )}
+          </Col>
+          <Col md={6} className="mb-3">
+            <label className="text-label">
+              {Translate[lang]?.arabic_description}
+            </label>
+            <Editor
+              editorState ={product?.description_ar}
+              toolbarClassName="toolbarClassName"
+              wrapperClassName="wrapperClassName"
+              editorClassName="editorClassName"
+              onEditorStateChange={(e) => {
+                setProduct({...product, description_ar: e})
+              }}
+            />
+            {errors["description_ar"] && (
               <p className="text-danger m-0" style={{ fontSize: "12.8px" }}>
                 {Translate[lang].field_required}
               </p>
