@@ -46,7 +46,7 @@ const Static = () =>{
     }
 
     useEffect(()=>{
-        let params = {type: 'about'}
+        let params = {type: window.location.pathname.split('/')[2] === 'privacy' ? 'Privacy' : window.location.pathname.split('/')[2]}
         setLoading(true)
         staticPagesServices.getList(params).then(res=>{
             if(res?.status === 200){
@@ -70,7 +70,7 @@ const Static = () =>{
     },[])
     const submit = () =>{
         let data ={
-            type: 'about',
+            type: window.location.pathname.split('/')[2],
             static_page: formData.map(res=>{
                 let en = draftToHtml(convertToRaw(res.description_en.getCurrentContent()))
                 let ar = draftToHtml(convertToRaw(res.description_ar.getCurrentContent()))
@@ -104,7 +104,7 @@ const Static = () =>{
         <Card.Body>
         <AvForm onValidSubmit={submit}>
             {formData?.map((item, index)=>{
-                return <Row className="position-relative" key={index} style={{borderBottom: '2px solid #dedede', paddingBottom: '5rem' ,marginBottom: '2rem'}}>
+                return <Row className="mb-5 position-relative" key={index}>
                     {index > 0 && <button className="delete border-0"  type="button" onClick={()=>{
                         let update = formData.filter((_,ind) => ind !== index)
                         setFormData(update)
@@ -145,7 +145,7 @@ const Static = () =>{
 						onChange={(e) => changeInput(e,'title_ar',index)}
 					/>
 				</Col>
-                <Col md={6} className="form-group" style={{marginBottom: '4rem'}}>
+                <Col md={6} className="form-group mb-2">
                     <label className="d-block">{Translate[lang].english_description}</label>
                     <div className="editorField">
                         <Editor
@@ -173,7 +173,7 @@ const Static = () =>{
                         />
                     </div>
 				</Col>
-                <Col md={6} className="form-group"  style={{marginBottom: '4rem'}}>
+                <Col md={6} className="form-group mb-2">
                     <label className="d-block">{Translate[lang].arabic_description}</label>
                     <div className="editorField">
                         <Editor
@@ -204,7 +204,7 @@ const Static = () =>{
             </Row>
             })}
             
-            {isExist('home') && <div className="d-flex mt-5 justify-content-between">
+            {isExist('static_pages') && <div className="d-flex justify-content-between">
                 <Button 
                     // disabled={isEdit}
                     variant="secondary" 

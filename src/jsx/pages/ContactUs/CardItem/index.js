@@ -20,12 +20,15 @@ const CardItem = ({ item, index, setShouldUpdate }) => {
   },[])
 
   const changeStatus = () => {
-    contactusService.update(item.id).then(res=>{
-      if(res?.status === 200){
-        toast.success('Status Changed Successfully.')
-        setStatus(status === 'open' ? 'closed' : 'open')
-      }
-    })
+    if(status === 'open'){
+      contactusService.update(item.id).then(res=>{
+        if(res?.status === 200){
+          toast.success('Closed Successfully.')
+          // setStatus(status === 'open' ? 'closed' : 'open')
+          setShouldUpdate(prev=> !prev)
+        }
+      })
+    }
   }
 
   return (

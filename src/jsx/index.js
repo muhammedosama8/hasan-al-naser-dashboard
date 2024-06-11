@@ -27,6 +27,7 @@ import AddProducts from "./pages/Products/AddProducts";
 import MasterHNProducts from "./pages/MasterHN/Products";
 import MasterHNAddProducts from "./pages/MasterHN/Products/AddProducts";
 import Categories from "./pages/MasterHN/Categories";
+import Static from "./pages/Setting/StaticPages/Static";
 
 const Markup = () => {
   const allroutes = [
@@ -45,6 +46,9 @@ const Markup = () => {
     { url: "home/social", component: <SocialMedia /> },
     { url: "home/page", component: <HomePage /> },
     { url: "home/contact-us", component: <ContactUs /> },
+
+    // Home About Us
+    { url: "home/about-us", component: <Static /> },
 
     // Products
     { url: "home/products", component: <Products /> },
