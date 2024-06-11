@@ -44,7 +44,7 @@ const AddProducts = () => {
 
   useEffect(() => {
     let item = location.state
-    console.log(item)
+
     if(item){
       setLoadning(true)
       setProduct({
