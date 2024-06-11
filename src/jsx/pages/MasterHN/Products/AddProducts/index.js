@@ -469,6 +469,7 @@ const MasterHNAddProducts = () => {
               onChange={(e) => handlerText(e)}
             />
           </Col>
+          <Col md={6} className="mb-3"></Col>
           <Col md={6} className="mb-3">
             <label className="text-label">
               {Translate[lang]?.english_description}
