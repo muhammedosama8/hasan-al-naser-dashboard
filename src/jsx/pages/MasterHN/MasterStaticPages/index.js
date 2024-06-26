@@ -8,7 +8,7 @@ const pages = [
     // { name: 'Privacy',type: 'Privacy', label: 'privacy', path:'/pages/privacy' },
     // { name: 'FAQs',type: 'faqs', label: 'faqs', path:'/pages/faqs' }
 ]
-const StaticPages = () =>{
+const MasterStaticPages = () =>{
     const navigate= useNavigate()
     const lang = useSelector(state=> state.auth.lang)
     return<>
@@ -27,4 +27,4 @@ const StaticPages = () =>{
     </Card>
     </>
 }
-export default StaticPages;
+export default MasterStaticPages;

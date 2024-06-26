@@ -2,24 +2,23 @@ import { useEffect, useState } from "react";
 import { Button, Col, Modal, Row } from "react-bootstrap"
 import {AvField, AvForm} from "availity-reactstrap-validation";
 import { toast } from "react-toastify";
-import NotificationService from "../../../../services/NotificationService";
 import { useSelector } from "react-redux";
-import { Translate } from "../../../Enums/Tranlate";
+import { Translate } from "../../../../Enums/Tranlate";
 
 const SendModal = ({modal, setModal, item})=>{
     const [loading, setLoading]= useState()
-    const notificationService = new NotificationService()
+    // const notificationService = new NotificationService()
     const lang = useSelector(state=> state.auth?.lang)
 
     const submit = () =>{
-        setLoading(true)
-        notificationService.send(item?.id)?.then(res=>{
-            if(res?.status === 200){
-                toast.success('Notification Send Successfully')
-                setLoading(false)
-                setModal()
-            }
-        })
+        // setLoading(true)
+        // notificationService.send(item?.id)?.then(res=>{
+        //     if(res?.status === 200){
+        //         toast.success('Notification Send Successfully')
+        //         setLoading(false)
+        //         setModal()
+        //     }
+        // })
     }
 
     return(

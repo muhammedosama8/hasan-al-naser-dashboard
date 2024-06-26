@@ -26,10 +26,8 @@ const Categories = () => {
     const [shouldUpdate, setShouldUpdate] = useState(false)
     const [loading, setLoading] = useState(false)
     const [isDeleted, setIsDeleted] =useState(false)
-    const Auth = useSelector(state=> state.auth?.auth)
     const lang = useSelector(state=> state.auth?.lang)
     const categoriesService = new CategoriesService()
-    const isExist = (data)=> Auth?.admin?.admin_roles?.includes(data)
 
   return (
     <Fragment>

@@ -20,20 +20,20 @@ const AddCurrencyModal = ({addModal, setAddModal, item, setShouldUpdate})=>{
     const currencyService = new CurrencyService()
     const lang = useSelector(state=> state.auth.lang)
 
-    useEffect(()=> {
-        countriesService?.getList().then(res=>{
-            if(res.data?.status === 200){
-                let countries =  res.data?.data?.filter(c=> c?.id !== 1)?.map(item=>{
-                   return{
-                      id: item?.id,
-                      value: item?.id,
-                      label: lang === 'en' ? item.name_en : item.name_ar
-                   }
-                })
-                setCountriesOptions(countries)
-             }
-        })
-    },[lang])
+    // useEffect(()=> {
+    //     countriesService?.getList().then(res=>{
+    //         if(res.data?.status === 200){
+    //             let countries =  res.data?.data?.filter(c=> c?.id !== 1)?.map(item=>{
+    //                return{
+    //                   id: item?.id,
+    //                   value: item?.id,
+    //                   label: lang === 'en' ? item.name_en : item.name_ar
+    //                }
+    //             })
+    //             setCountriesOptions(countries)
+    //          }
+    //     })
+    // },[lang])
 
     useEffect(() => {
         if(Object.keys(item).length === 0){

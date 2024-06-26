@@ -2,28 +2,27 @@ import { useEffect, useState } from "react";
 import { Button, Card, Table } from "react-bootstrap";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import NotificationService from "../../../services/NotificationService";
-import Loader from "../../common/Loader";
-import NoData from "../../common/NoData";
-import Pagination from "../../common/Pagination/Pagination";
-import { Translate } from "../../Enums/Tranlate";
 import CardItem from "./CardItem";
+import { Translate } from "../../../Enums/Tranlate";
+import Loader from "../../../common/Loader";
+import NoData from "../../../common/NoData";
+import Pagination from "../../../common/Pagination/Pagination";
 
 const Notification = ()=>{
     const [notification, setNotification] = useState([])
-    const [hasData, setHasData] = useState(null)
+    const [hasData, setHasData] = useState(0)
     const [shouldUpdate, setShouldUpdate] = useState(false)
     const Auth = useSelector(state=> state.auth?.auth)
     const [loading, setLoading] =useState(false)
     const lang = useSelector(state=> state.auth?.lang)
     const isExist = (data)=> Auth?.admin?.admin_roles?.includes(data)
     const navigate = useNavigate()
-    const notificationService = new NotificationService()
+    // const notificationService = new NotificationService()
 
     return(
         <>
         <div className="d-flex mb-3 justify-content-end">
-            {isExist('notification') && <Button 
+            {isExist('home') && <Button 
                 variant='primary'
                 onClick={()=>{
                     navigate('add-notification')
@@ -63,14 +62,14 @@ const Notification = ()=>{
                     })}
                 </tbody>
               </Table>}
-              {hasData === 0 && <NoData />}
-              <Pagination
+              {(hasData === 0 && !loading) && <NoData />}
+              {/* <Pagination
                   setData={setNotification}
-                  service={notificationService}
+                  // service={notificationService}
                   shouldUpdate={shouldUpdate}
                   setHasData={setHasData}
                   setLoading={setLoading}
-              />
+              /> */}
             </Card.Body>
         </Card>
         </>

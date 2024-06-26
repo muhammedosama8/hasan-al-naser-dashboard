@@ -7,7 +7,7 @@ import Loader from "../../../common/Loader";
 import { SocialMediaLinks } from "../../../Enums/SocialMedia";
 import { Translate } from "../../../Enums/Tranlate";
 
-const SocialMedia = ()=>{
+const MasterSocialMedia = ()=>{
     const [links, setLinks] = useState({})
     const [loading, setLoading] = useState(false)
     const [loadingData, setLoadingData] = useState(false)
@@ -21,7 +21,7 @@ const SocialMedia = ()=>{
     useEffect(()=>{
         setLoadingData(true)
         socialMediaService?.getList()?.then(res=>{
-            if(res.status === 200 && res.data?.data){
+            if(res?.status === 200 && res?.data?.data){
                 setLinks({...res.data?.data})
                 setIsAdd(false)
             } else{
@@ -128,7 +128,7 @@ const SocialMedia = ()=>{
                         }
                     })}
                 </Row>
-                {isExist('social_media') && <div className="d-flex justify-content-end">
+                {isExist('home') && <div className="d-flex justify-content-end">
                     {isAdd && <Button variant="primary" type="submit" disabled={loading}>
                         {Translate[lang].submit}
                     </Button>}
@@ -141,4 +141,4 @@ const SocialMedia = ()=>{
     </Card>
     </>)
 }
-export default SocialMedia;
+export default MasterSocialMedia;

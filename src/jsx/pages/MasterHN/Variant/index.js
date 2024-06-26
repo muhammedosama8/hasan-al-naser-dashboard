@@ -7,22 +7,25 @@ import NoData from "../../../common/NoData";
 import Pagination from "../../../common/Pagination/Pagination";
 import { Translate } from "../../../Enums/Tranlate";
 import CardItem from "./CardItem";
+import './style.scss'
 
-const MasterHNProducts = () =>{
-    const [products, setProducts] =useState([])
+const Variant = () =>{
+    const [variant, setVariant] = useState([])
+    const [search, setSearch] = useState(null)
     const [hasData, setHasData] =useState(0)
-    const [search, setSearch] =useState(null)
+    const [shouldUpdate, setShouldUpdate] =useState(false)
     const [loading, setLoading] =useState(false)
-    const [indexEdit, setIndexEdit] = useState(null)
-    const [ shouldUpdate, setShouldUpdate] = useState(false)
     const navigate = useNavigate()
+    const Auth = useSelector(state=> state.auth?.auth)
     const lang = useSelector(state=> state.auth?.lang)
-    // const productsService = new ProductsService()
+    const isExist = (data)=> Auth?.admin?.admin_roles?.includes(data)
+    // const variantService = new VariantService()
+
 
     return(
         <>
-        <div className="d-flex justify-content-between align-items-center mb-3 ">
-          <div className="input-group w-50">
+          <div className="d-flex justify-content-between align-items-center mb-3 ">
+            <div className="input-group w-50">
             <input 
                 type="text" 
                 style={{borderRadius: '8px',
@@ -34,17 +37,16 @@ const MasterHNProducts = () =>{
                 onChange={e=> setSearch(e.target.value)} 
             />
             <div className="flaticon-381-search-2"
-              style={{position: 'absolute',zIndex:'1', right: lang === 'en' && '16px', left: lang === 'ar' && '16px', top: '50%', transform: 'translate(0, -50%)'}}
+              style={{position: 'absolute',zIndex:'99', right: lang === 'en' && '16px', left: lang === 'ar' && '16px', top: '50%', transform: 'translate(0, -50%)'}}
             ></div>
           </div>
-          {<Button variant="primary" className='me-2 h-75' onClick={()=> navigate('/masterHN/products/add-products')}>
-              {Translate[lang]?.add} {Translate[lang]?.products}
+            {isExist('home') && <Button variant="primary" className='me-2 h-75' onClick={()=> navigate('/variant/add-variant')}>
+             {Translate[lang].add} {Translate[lang].variant}
           </Button>}
-        </div>
-
+          </div>
         <Card>
             <Card.Body className={`${hasData === 0 && 'text-center'} `}>
-            {loading && <div style={{height: '300px'}}>
+              {loading && <div style={{height: '300px'}}>
                 <Loader />
               </div>}
               {(hasData === 1 && !loading) && <Table responsive>
@@ -54,39 +56,38 @@ const MasterHNProducts = () =>{
                       <strong>I.D</strong>
                     </th>
                     <th>
-                      <strong>{Translate[lang]?.image}</strong>
+                      <strong>{Translate[lang].name}</strong>
                     </th>
                     <th>
-                      <strong>{Translate[lang]?.name}</strong>
+                      <strong>{Translate[lang].variant}</strong>
                     </th>
-                    <th>
-                      <strong>{Translate[lang]?.type}</strong>
-                    </th>
+                    {/* <th>
+                      <strong>STATUS</strong>
+                    </th> */}
                     <th></th>
                   </tr>
                 </thead>
                 <tbody>
-                  {products?.map((item, index)=>{
+                  {variant?.map((item, index)=>{
                     return <CardItem 
                     key= {index}
                     index= {index}
                     item={item}
                     setShouldUpdate={setShouldUpdate}
-                    setIndexEdit={setIndexEdit}
-                    indexEdit={indexEdit}
+                    shouldUpdate={shouldUpdate}
                     />
                   })}
                 </tbody>
               </Table>}
-              {hasData === 0 && <NoData />}
+
+              {(hasData === 0 && !loading) && <NoData />}
+
               {/* <Pagination
-                  setData={setProducts}
-                  service={productsService}
+                  setData={setVariant}
+                  service={variantService}
                   shouldUpdate={shouldUpdate}
                   setHasData={setHasData}
-                  // isDeleted={isDeleted}
                   setLoading={setLoading}
-                  type={'normal'}
                   search={search}
                 /> */}
             </Card.Body>
@@ -94,4 +95,4 @@ const MasterHNProducts = () =>{
         </>
     )
 }
-export default MasterHNProducts;
+export default Variant;

@@ -40,7 +40,7 @@ const CardItem = ({item, setItem, index, setAddModal, setShouldUpdate}) =>{
                     </td>
             <td>{item.name}</td>
             <td>
-                {isExist('categories') && <Dropdown>
+                {isExist('home') && <Dropdown>
                     <Dropdown.Toggle
                         // variant="success"
                         className="light sharp i-false"

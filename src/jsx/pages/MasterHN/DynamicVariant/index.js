@@ -2,26 +2,29 @@ import { useState } from "react";
 import { Button, Card, Table } from "react-bootstrap";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import CardItem from "./CardItem";
+import './style.scss'
+import { Translate } from "../../../Enums/Tranlate";
 import Loader from "../../../common/Loader";
 import NoData from "../../../common/NoData";
 import Pagination from "../../../common/Pagination/Pagination";
-import { Translate } from "../../../Enums/Tranlate";
-import CardItem from "./CardItem";
 
-const MasterHNProducts = () =>{
-    const [products, setProducts] =useState([])
+const DynamicVariant = () =>{
+    const [dynamicVariant, setDynamicVariant] = useState([])
+    const [search, setSearch] = useState(null)
     const [hasData, setHasData] =useState(0)
-    const [search, setSearch] =useState(null)
-    const [loading, setLoading] =useState(false)
-    const [indexEdit, setIndexEdit] = useState(null)
-    const [ shouldUpdate, setShouldUpdate] = useState(false)
+    const [shouldUpdate, setShouldUpdate] =useState(false)
     const navigate = useNavigate()
+    const [loading, setLoading] =useState(false)
+    const Auth = useSelector(state=> state.auth?.auth)
     const lang = useSelector(state=> state.auth?.lang)
-    // const productsService = new ProductsService()
+    const isExist = (data)=> Auth?.admin?.admin_roles?.includes(data)
+    // const dynamicVariantService = new DynamicVariantService()
+
 
     return(
         <>
-        <div className="d-flex justify-content-between align-items-center mb-3 ">
+          <div className="d-flex justify-content-between align-items-center mb-3 ">
           <div className="input-group w-50">
             <input 
                 type="text" 
@@ -34,14 +37,13 @@ const MasterHNProducts = () =>{
                 onChange={e=> setSearch(e.target.value)} 
             />
             <div className="flaticon-381-search-2"
-              style={{position: 'absolute',zIndex:'1', right: lang === 'en' && '16px', left: lang === 'ar' && '16px', top: '50%', transform: 'translate(0, -50%)'}}
+              style={{position: 'absolute',zIndex:'99', right: lang === 'en' && '16px', left: lang === 'ar' && '16px', top: '50%', transform: 'translate(0, -50%)'}}
             ></div>
           </div>
-          {<Button variant="primary" className='me-2 h-75' onClick={()=> navigate('/masterHN/products/add-products')}>
-              {Translate[lang]?.add} {Translate[lang]?.products}
+            {isExist('home') && <Button variant="primary" className='me-2 h-75' onClick={()=> navigate('/dynamic-variant/add-dynamic-variant')}>
+            {Translate[lang]?.add} {Translate[lang]?.dynamic_variant}
           </Button>}
-        </div>
-
+          </div>
         <Card>
             <Card.Body className={`${hasData === 0 && 'text-center'} `}>
             {loading && <div style={{height: '300px'}}>
@@ -49,44 +51,39 @@ const MasterHNProducts = () =>{
               </div>}
               {(hasData === 1 && !loading) && <Table responsive>
                 <thead>
-                  <tr className='text-center'>
+                  <tr>
                     <th>
                       <strong>I.D</strong>
                     </th>
                     <th>
-                      <strong>{Translate[lang]?.image}</strong>
+                      <strong>{Translate[lang]?.category}</strong>
                     </th>
                     <th>
-                      <strong>{Translate[lang]?.name}</strong>
-                    </th>
-                    <th>
-                      <strong>{Translate[lang]?.type}</strong>
+                      <strong>{Translate[lang]?.dynamic_variant}</strong>
                     </th>
                     <th></th>
                   </tr>
                 </thead>
                 <tbody>
-                  {products?.map((item, index)=>{
+                  {dynamicVariant?.map((item, index)=>{
                     return <CardItem 
                     key= {index}
                     index= {index}
                     item={item}
                     setShouldUpdate={setShouldUpdate}
-                    setIndexEdit={setIndexEdit}
-                    indexEdit={indexEdit}
                     />
                   })}
                 </tbody>
               </Table>}
-              {hasData === 0 && <NoData />}
+
+              {(hasData === 0 && !loading) && <NoData />}
+
               {/* <Pagination
-                  setData={setProducts}
-                  service={productsService}
+                  setData={setDynamicVariant}
+                  service={dynamicVariantService}
                   shouldUpdate={shouldUpdate}
                   setHasData={setHasData}
-                  // isDeleted={isDeleted}
                   setLoading={setLoading}
-                  type={'normal'}
                   search={search}
                 /> */}
             </Card.Body>
@@ -94,4 +91,4 @@ const MasterHNProducts = () =>{
         </>
     )
 }
-export default MasterHNProducts;
+export default DynamicVariant;

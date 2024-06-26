@@ -1,0 +1,36 @@
+.add-variant{
+    .input-group{
+        .form-control{
+            gap: 8px;
+            min-height: 44px !important;   
+        }
+    }
+    .badge{
+        font-size: 14px;
+        font-weight: 600;
+        height: fit-content;
+        background-color: #dedede !important;
+        border-radius: 6px;
+
+        button{
+            margin-left: 8px;
+            color: red;
+        }
+    }
+    .create{
+        padding: 8px 16px;
+        background-color: #5bc0de !important;
+        color: #fff !important;
+    }
+    
+}
+.ar .add-variant .tags .form-control {
+    border-radius: 0!important;
+    border-top-right-radius: 8px!important;
+    border-bottom-right-radius: 8px!important;
+}
+.en .add-variant .tags .form-control {
+    border-radius: 0!important;
+    border-top-left-radius: 8px!important;
+    border-bottom-left-radius: 8px!important;
+}

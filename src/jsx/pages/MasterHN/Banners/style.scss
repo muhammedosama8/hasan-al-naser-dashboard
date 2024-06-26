@@ -1,0 +1,80 @@
+.image-placeholder{
+    max-width: 100% !important;
+    position: relative;
+
+    .avatar-preview{
+        width: 100% !important;
+        height: 25rem !important;
+        background-color: hsl(0, 0%, 90%) !important;
+
+        img{
+            position: absolute !important;
+            left: 50% !important;
+            top: 50% !important;
+            transform: translate(-50%, -50%) !important;
+        }
+
+    }
+    .imagePreview{
+        border: 2px dashed rgb(202, 223, 247);
+        background: rgb(243, 243, 249);
+        border-radius: 10px;
+    }
+    .avatar-edit{
+        opacity: 0!important;
+        left: 0!important;
+        width: 100%!important;
+        height: 100%!important;
+
+        input + label:after{
+            height: 100%!important;
+        }
+    }
+    .delete{
+        position: absolute;
+        background-color: #fff;
+        border: none;
+        width: 39px;
+        padding: 1px 8px;
+        border-radius: 50%;
+        top: 18px;
+        right: 18px;
+        z-index: 2;
+        font-size: 24px;
+    }
+    @media only screen and (max-width: 500px){
+        .avatar-preview{
+            height: 10rem !important;
+        }
+        .delete{
+            left: 18px !important;
+            right: auto !important;
+        }
+    }
+}
+.delete2{
+    // position: absolute;
+    background-color: #fff;
+    border: none;
+    padding: 1px 8px;
+    margin-left: .75rem;
+    border-radius: 50%;
+    // top: 18px;
+    // right: 18px;
+    z-index: 2;
+    font-size: 24px;
+}
+img{
+    border-radius: 30px;
+}
+@media (max-width: 768px){
+    .image-placeholder .avatar-preview {
+        height: 16rem !important;}
+}
+@media only screen and (max-width: 500px){
+    .select-banner{
+        width: 90%!important;  
+    }
+    .image-placeholder .avatar-preview {
+        height: 12rem !important;}
+}

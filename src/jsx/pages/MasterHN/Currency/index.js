@@ -20,7 +20,7 @@ const Currency = () => {
     const [currency, setCurrency] = useState([])
     const [addModal, setAddModal] = useState(false)
     const [item, setItem] = useState({})
-    const [hasData, setHasData] = useState(null)
+    const [hasData, setHasData] = useState(0)
     const [loading, setLoading] =useState(false)
     const [shouldUpdate, setShouldUpdate] = useState(false)
     const Auth = useSelector(state=> state.auth?.auth)
@@ -47,7 +47,7 @@ const Currency = () => {
     <Fragment>
         <div className="d-flex justify-content-between align-items-center mb-3 ">
           <div className="input-group w-50"></div>
-          {isExist('currency') && <Button variant="primary" className='me-2 h-75' onClick={()=> { 
+          {isExist('home') && <Button variant="primary" className='me-2 h-75' onClick={()=> { 
               setItem({})
               setAddModal(true) }}>
               {Translate[lang]?.add} {Translate[lang]?.currency}

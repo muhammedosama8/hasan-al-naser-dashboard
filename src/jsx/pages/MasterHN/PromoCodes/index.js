@@ -2,26 +2,28 @@ import { useState } from "react";
 import { Button, Card, Table } from "react-bootstrap";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
+// import PromoCodeService from "../../../services/PromoCodeService";
+import CardItem from "./CardItem";
+import { Translate } from "../../../Enums/Tranlate";
 import Loader from "../../../common/Loader";
 import NoData from "../../../common/NoData";
 import Pagination from "../../../common/Pagination/Pagination";
-import { Translate } from "../../../Enums/Tranlate";
-import CardItem from "./CardItem";
 
-const MasterHNProducts = () =>{
-    const [products, setProducts] =useState([])
-    const [hasData, setHasData] =useState(0)
+const PromCodes = () =>{
+    const [promCodes, setPromCodes] =useState([])
     const [search, setSearch] =useState(null)
+    const [hasData, setHasData] = useState(0)
     const [loading, setLoading] =useState(false)
-    const [indexEdit, setIndexEdit] = useState(null)
-    const [ shouldUpdate, setShouldUpdate] = useState(false)
+    const [shouldUpdate, setShouldUpdate] = useState(false)
     const navigate = useNavigate()
+    const Auth = useSelector(state=> state.auth?.auth)
     const lang = useSelector(state=> state.auth?.lang)
-    // const productsService = new ProductsService()
+    const isExist = (data)=> Auth?.admin?.admin_roles?.includes(data)
+    // const promoCodeService = new PromoCodeService()
 
     return(
         <>
-        <div className="d-flex justify-content-between align-items-center mb-3 ">
+          <div className="d-flex justify-content-between mb-3 align-items-center">
           <div className="input-group w-50">
             <input 
                 type="text" 
@@ -34,16 +36,15 @@ const MasterHNProducts = () =>{
                 onChange={e=> setSearch(e.target.value)} 
             />
             <div className="flaticon-381-search-2"
-              style={{position: 'absolute',zIndex:'1', right: lang === 'en' && '16px', left: lang === 'ar' && '16px', top: '50%', transform: 'translate(0, -50%)'}}
+              style={{position: 'absolute',zIndex:'99', right: lang === 'en' && '16px', left: lang === 'ar' && '16px', top: '50%', transform: 'translate(0, -50%)'}}
             ></div>
           </div>
-          {<Button variant="primary" className='me-2 h-75' onClick={()=> navigate('/masterHN/products/add-products')}>
-              {Translate[lang]?.add} {Translate[lang]?.products}
+            {isExist('home') && <Button variant="primary" className='me-2 h-75' onClick={()=> navigate('/promo-codes/add-promo-codes')}>
+            {Translate[lang]?.add} {Translate[lang]?.prom_codes}
           </Button>}
-        </div>
-
+          </div>
         <Card>
-            <Card.Body className={`${hasData === 0 && 'text-center'} `}>
+            <Card.Body className={`${hasData === 0 ? 'text-center' :''}`}>
             {loading && <div style={{height: '300px'}}>
                 <Loader />
               </div>}
@@ -54,44 +55,56 @@ const MasterHNProducts = () =>{
                       <strong>I.D</strong>
                     </th>
                     <th>
-                      <strong>{Translate[lang]?.image}</strong>
-                    </th>
-                    <th>
                       <strong>{Translate[lang]?.name}</strong>
                     </th>
                     <th>
+                      <strong>{Translate[lang]?.amount}</strong>
+                    </th>
+                    <th>
                       <strong>{Translate[lang]?.type}</strong>
+                    </th>
+                    <th>
+                      <strong>{Translate[lang]?.start_date}</strong>
+                    </th>
+                    <th>
+                      <strong>{Translate[lang]?.end_date}</strong>
+                    </th>
+                    <th>
+                      <strong>{Translate[lang]?.max_usage}</strong>
+                    </th>
+                    <th>
+                      <strong>{Translate[lang]?.count_usage}</strong>
+                    </th>
+                    <th>
+                      <strong>{Translate[lang]?.status}</strong>
                     </th>
                     <th></th>
                   </tr>
                 </thead>
                 <tbody>
-                  {products?.map((item, index)=>{
+                  {promCodes?.map((item, index)=>{
                     return <CardItem 
                     key= {index}
                     index= {index}
                     item={item}
                     setShouldUpdate={setShouldUpdate}
-                    setIndexEdit={setIndexEdit}
-                    indexEdit={indexEdit}
                     />
                   })}
                 </tbody>
               </Table>}
+
               {hasData === 0 && <NoData />}
               {/* <Pagination
-                  setData={setProducts}
-                  service={productsService}
+                  setData={setPromCodes}
+                  // service={promoCodeService}
                   shouldUpdate={shouldUpdate}
                   setHasData={setHasData}
-                  // isDeleted={isDeleted}
                   setLoading={setLoading}
-                  type={'normal'}
                   search={search}
-                /> */}
+              /> */}
             </Card.Body>
           </Card>
         </>
     )
 }
-export default MasterHNProducts;
+export default PromCodes;

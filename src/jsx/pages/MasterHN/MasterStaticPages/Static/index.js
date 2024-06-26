@@ -14,7 +14,7 @@ import { useSelector } from "react-redux";
 import { Translate } from "../../../../Enums/Tranlate";
 import Loader from "../../../../common/Loader";
 
-const Static = () =>{
+const MasterStatic = () =>{
     const [formData, setFormData] =useState([
         {
             title_en:'',
@@ -204,7 +204,7 @@ const Static = () =>{
             </Row>
             })}
             
-            {isExist('static_pages') && <div className="d-flex justify-content-between">
+            {isExist('home') && <div className="d-flex justify-content-between">
                 <Button 
                     // disabled={isEdit}
                     variant="secondary" 
@@ -230,4 +230,4 @@ const Static = () =>{
     </Card>
     </>
 }
-export default Static;
+export default MasterStatic;

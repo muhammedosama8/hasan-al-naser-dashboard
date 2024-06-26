@@ -73,7 +73,78 @@ export const MenuList = [
               text:'products',
               to: 'masterHN/products',
               rule: 'home',
-          }
+          },
+          {
+              title:'Style Up',
+              text:'style_up',
+              to: 'masterHN/style-up',
+              rule: 'home',
+          },
+          {
+              title:'Variant',
+              text:'variant',
+              to: 'variant',
+              rule: 'home',
+          },
+          {
+              title:'Dynamic Variant',
+              text:'dynamic_variant',
+              to: 'dynamic-variant',
+              rule: 'home',
+          },
+          {
+            title:'Orders',
+            text:'orders',
+            to: 'orders',
+            rule: 'home',
+          },
+          {
+            title:'Notification',
+            text:'notification',
+            to: 'notification',
+            rule: 'home',
+          },
+          {
+            title:"Promo Codes",
+            text:'promo_codes',
+            to: 'promo-codes',
+            rule: 'home',
+          },
+          {
+            title:'Banners',
+            text:'banners',
+            to: 'banners',
+            rule: 'home',
+          },{
+            title: "Delivery",
+            text: "delivery",
+            to: "delivery",
+            rule: "home",
+          },
+          {
+            title: "Social Media",
+            text: "social_media",
+            to: "social",
+            rule: "home",
+          },
+          {
+            title: "Currency",
+            text: "currency",
+            to: "currency",
+            rule: "home",
+          },
+          {
+            title: "Payment",
+            text: "payment",
+            to: "payment",
+            rule: "home",
+          },
+          {
+            title: "Pages",
+            text: "pages",
+            to: "pages",
+            rule: "home",
+          },
       ]
   },
   // Social Media

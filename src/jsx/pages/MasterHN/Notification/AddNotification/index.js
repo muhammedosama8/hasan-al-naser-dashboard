@@ -3,9 +3,8 @@ import { Button, Card, Col, Modal, Row } from "react-bootstrap"
 import {AvField, AvForm} from "availity-reactstrap-validation";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
-import NotificationService from "../../../../services/NotificationService";
 import { useSelector } from "react-redux";
-import { Translate } from "../../../Enums/Tranlate";
+import { Translate } from "../../../../Enums/Tranlate";
 
 const AddNotification = ()=>{
     const [formData, setFormData] = useState({
@@ -16,7 +15,7 @@ const AddNotification = ()=>{
     })
     const [loading, setLoading] = useState(false)
     const navigate = useNavigate()
-    const notificationService = new NotificationService()
+    // const notificationService = new NotificationService()
     const lang = useSelector(state=> state.auth.lang)
 
 
@@ -32,13 +31,13 @@ const AddNotification = ()=>{
             description_ar: formData?.description_ar,
         }
         setLoading(true)
-        notificationService.create(data)?.then(res=>{
-            if(res?.status === 201){
-                toast.success('Notification Added Successfully')
-                setLoading(false)
-                navigate('/notification')
-            }
-        })
+        // notificationService.create(data)?.then(res=>{
+        //     if(res?.status === 201){
+        //         toast.success('Notification Added Successfully')
+        //         setLoading(false)
+        //         navigate('/notification')
+        //     }
+        // })
     }
 
     return(

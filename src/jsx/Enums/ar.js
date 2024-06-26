@@ -18,6 +18,8 @@ export const Arabic = {
   youtube: "يوتيوب",
   carrers: "Carrers",
   our_clients: "عملائنا",
+  main_image: "الصورة الرئيسية",
+  style_up: 'صمم',
   our_partners: "شركائنا",
   blogs: "المدونات",
   blog: "المدونة",

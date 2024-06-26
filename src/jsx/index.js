@@ -28,6 +28,26 @@ import MasterHNProducts from "./pages/MasterHN/Products";
 import MasterHNAddProducts from "./pages/MasterHN/Products/AddProducts";
 import Categories from "./pages/MasterHN/Categories";
 import Static from "./pages/Setting/StaticPages/Static";
+import DynamicVariant from "./pages/MasterHN/DynamicVariant";
+import AddDynamicVariant from "./pages/MasterHN/DynamicVariant/AddVariant";
+import Variant from "./pages/MasterHN/Variant";
+import AddVariant from "./pages/MasterHN/Variant/AddVariant";
+import Notification from "./pages/MasterHN/Notification";
+import AddNotification from "./pages/MasterHN/Notification/AddNotification";
+import Orders from "./pages/MasterHN/Orders";
+import AddOrders from "./pages/MasterHN/Orders/AddOrders";
+import OrderDetails from "./pages/MasterHN/Orders/Details";
+import Invoice from "./pages/MasterHN/Orders/Invoice";
+import PromCodes from "./pages/MasterHN/PromoCodes";
+import AddPromoCodes from "./pages/MasterHN/PromoCodes/AddPromoCodes";
+import Banners from "./pages/MasterHN/Banners";
+import Delivery from "./pages/MasterHN/Delivery";
+import Payment from "./pages/MasterHN/Payment";
+import MasterSocialMedia from "./pages/MasterHN/SocialMedia";
+import Currency from "./pages/MasterHN/Currency";
+import MasterStaticPages from "./pages/MasterHN/MasterStaticPages";
+import MasterStatic from "./pages/MasterHN/MasterStaticPages/Static";
+import StyleUp from "./pages/MasterHN/StyleUp";
 
 const Markup = () => {
   const allroutes = [
@@ -61,6 +81,51 @@ const Markup = () => {
     { url: "masterHN/products/add-products/:id", component: <MasterHNAddProducts /> },
   
     { url: "masterHN/categories", component: <Categories /> },
+
+    //  => DynamicVariant
+    { url: "dynamic-variant", component: <DynamicVariant /> },
+    {
+      url: "dynamic-variant/add-dynamic-variant",
+      component: <AddDynamicVariant />,
+    },
+    {
+      url: "dynamic-variant/edit-dynamic-variant/:id",
+      component: <AddDynamicVariant />,
+    },
+
+    //  => Variant
+    { url: "variant", component: <Variant /> },
+    { url: "variant/add-variant", component: <AddVariant /> },
+    { url: "variant/add-variant/:id", component: <AddVariant /> },
+
+    //  => Notification
+    { url: "notification", component: <Notification /> },
+    { url: "notification/add-notification", component: <AddNotification /> },
+
+    //  => Orders
+    { url: "orders", component: <Orders /> },
+    { url: "orders/add-orders", component: <AddOrders /> },
+    { url: "orders/details", component: <OrderDetails /> },
+    { url: "orders/invoice", component: <Invoice /> },
+
+    //  => Promo Codes
+    { url: "promo-codes", component: <PromCodes /> },
+    { url: "promo-codes/add-promo-codes", component: <AddPromoCodes /> },
+    { url: "promo-codes/edit-promo-codes", component: <AddPromoCodes /> },
+
+    //  => Banners
+    { url: "banners", component: <Banners /> },
+
+    //  => Style Up
+    { url: "masterHN/style-up", component: <StyleUp /> },
+
+    //  => Setting
+    { url: "social", component: <MasterSocialMedia /> },
+    { url: "currency", component: <Currency /> },
+    { url: "pages", component: <MasterStaticPages /> },
+    { url: "pages/about", component: <MasterStatic /> },
+    { url: "delivery", component: <Delivery /> },
+    { url: "payment", component: <Payment /> },
 
     //Profile
     { url: "profile", component: <Profile /> },

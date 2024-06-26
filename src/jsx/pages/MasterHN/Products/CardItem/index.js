@@ -100,12 +100,12 @@ const CardItem = ({item, index, setShouldUpdate,setIndexEdit, indexEdit}) =>{
                         type="switch"
                         id={`custom-switch${index}`}
                         checked={!item.isDeleted}
-                        disabled={!isExist('products')}
+                        disabled={!isExist('home')}
                         onChange={(e)=> changeStatusToggle(e)}
                       />
                     </td> */}
                     <td>
-                      {/* {isExist('products') && <Dropdown>
+                      {/* {isExist('home') && <Dropdown>
                         <Dropdown.Toggle
                           className="light sharp i-false"
                         >
