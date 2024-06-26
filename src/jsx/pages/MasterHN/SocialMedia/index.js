@@ -18,21 +18,21 @@ const MasterSocialMedia = ()=>{
     const socialMediaService = new SocialMediaService()
     const isExist = (data)=> Auth?.admin?.admin_roles?.includes(data)
 
-    useEffect(()=>{
-        setLoadingData(true)
-        socialMediaService?.getList()?.then(res=>{
-            if(res?.status === 200 && res?.data?.data){
-                setLinks({...res.data?.data})
-                setIsAdd(false)
-            } else{
-                let values={}
-                SocialMediaLinks?.map(link=> values[link.value]= '')
-                setLinks({...values})
-                setIsAdd(true)
-            }
-            setLoadingData(false)
-        })
-    },[])
+    // useEffect(()=>{
+    //     setLoadingData(true)
+    //     socialMediaService?.getList()?.then(res=>{
+    //         if(res?.status === 200 && res?.data?.data){
+    //             setLinks({...res.data?.data})
+    //             setIsAdd(false)
+    //         } else{
+    //             let values={}
+    //             SocialMediaLinks?.map(link=> values[link.value]= '')
+    //             setLinks({...values})
+    //             setIsAdd(true)
+    //         }
+    //         setLoadingData(false)
+    //     })
+    // },[])
 
     const inputHandler =(e)=>{
         setLinks({...links,[e.target.name]: e.target.value})
