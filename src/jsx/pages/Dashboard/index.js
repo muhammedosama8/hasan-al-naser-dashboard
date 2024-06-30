@@ -41,9 +41,9 @@ const Home = () => {
             <Col className="col-md-3 col-sm-4">
               <Card style={{ height: "128.75px" }}>
                 <Card.Body>
-                  <div class="skeleton-loader">
-                    <div class="loader-header"></div>
-                    <div class="loader-content"></div>
+                  <div className="skeleton-loader">
+                    <div className="loader-header"></div>
+                    <div className="loader-content"></div>
                   </div>
                 </Card.Body>
               </Card>

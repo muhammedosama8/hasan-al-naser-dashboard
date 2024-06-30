@@ -1,5 +1,5 @@
-import React from "react";
-import { Routes, Route, Outlet } from "react-router-dom";
+import React, { useEffect } from "react";
+import { Routes, Route, Outlet, useLocation, useNavigate } from "react-router-dom";
 /// Css
 import "./index.css";
 import "./chart.css";
@@ -53,6 +53,15 @@ import Users from "./pages/MasterHN/Users";
 import UserProfile from "./pages/MasterHN/Users/Profile";
 
 const Markup = () => {
+  const location = useLocation()
+  const navigate = useNavigate()
+
+  useEffect(()=>{
+    if(location?.pathname === "/login"){
+      navigate('/')
+    }
+  },[location])
+
   const allroutes = [
     /// Dashboard
     { url: "", component: <Admins /> },

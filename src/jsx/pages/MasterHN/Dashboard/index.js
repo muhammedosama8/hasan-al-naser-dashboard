@@ -40,9 +40,9 @@ const Home = () => {
         return <Col className="col-md-4 col-sm-6">
           <Card style={{height: '130px'}}>
             <Card.Body>
-              <div class="skeleton-loader">
-                  <div class="loader-header"></div>
-                  <div class="loader-content"></div>
+              <div className="skeleton-loader">
+                  <div className="loader-header"></div>
+                  <div className="loader-content"></div>
               </div>
             </Card.Body>
           </Card>
