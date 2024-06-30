@@ -1,7 +1,7 @@
 export const Arabic = {
   about_us: "من نحن",
   masterHN: 'ماستر اتش ان',
-  dashboard: "الرئيسيه",
+  dashboard: "الاحصائات",
   home: "الصفحه الرئيسيه",
   admins: "المدراء",
   admin: "المشرف",
