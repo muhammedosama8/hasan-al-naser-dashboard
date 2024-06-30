@@ -31,7 +31,7 @@ const Header = ({ onNote }) => {
                 style={{ textTransform: "capitalize", alignItems: "center" }}
               >
                 {finalName[0] === ""
-                  ? Translate[lang].dashboard
+                  ? Translate[lang].admins
                   : Translate[lang][finalName.join("_")]}
               </div>
             </div>
