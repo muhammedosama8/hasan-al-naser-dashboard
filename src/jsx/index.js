@@ -48,15 +48,24 @@ import Currency from "./pages/MasterHN/Currency";
 import MasterStaticPages from "./pages/MasterHN/MasterStaticPages";
 import MasterStatic from "./pages/MasterHN/MasterStaticPages/Static";
 import StyleUp from "./pages/MasterHN/StyleUp";
+import Home from "./pages/MasterHN/Dashboard";
+import Users from "./pages/MasterHN/Users";
+import UserProfile from "./pages/MasterHN/Users/Profile";
 
 const Markup = () => {
   const allroutes = [
+    /// Dashboard
     { url: "", component: <Admins /> },
+    { url: "masterHN/dashboard", component: <Home /> },
 
     // Admins
     { url: "admins", component: <Admins /> },
     { url: "admins/add-admins", component: <AddAdmin /> },
     { url: "admins/edit-admin/:id/:name", component: <AddAdmin /> },
+
+    // Users
+    { url: "masterHN/users", component: <Users /> },
+    { url: "masterHN/users/profile", component: <UserProfile /> },
 
     // Rules
     { url: "rules", component: <Permission /> },
