@@ -1,13 +1,13 @@
 import { useEffect, useState } from "react";
 import { Button, Card, Col, Row } from "react-bootstrap";
 import uploadImg from '../../../../images/upload-img.png';
-import Select from 'react-select';
 import './style.scss'
 import { useSelector } from "react-redux";
 import { toast } from "react-toastify";
 import BaseService from "../../../../services/BaseService";
 import Loader from "../../../common/Loader";
 import { Translate } from "../../../Enums/Tranlate";
+import MHBannerService from "../../../../services/MHBannerService";
 
 const Banners = () =>{
     const [isAdd, setIsAdd] = useState(true)
@@ -16,7 +16,7 @@ const Banners = () =>{
     const Auth = useSelector(state=> state.auth?.auth)
     const lang = useSelector(state=> state.auth?.lang)
     const isExist = (data)=> Auth?.admin?.admin_roles?.includes(data)
-    // const bannerService = new BannerService()
+    const bannerService = new MHBannerService()
 
     const [formData, setFormData] = useState([
         {src:'', loading: false},
@@ -26,35 +26,35 @@ const Banners = () =>{
         {src:'', loading: false},
     ])
 
-    // useEffect(()=>{
-    //     bannerService?.getList()?.then(res=>{
-    //         if(res && res?.status === 200){
-    //             if(res.data?.meta?.data?.length === 0){
-    //                 return
-    //             }
-    //             if(res.data?.meta?.data?.length > 0){
-    //                 setIsAdd(false)
-    //             }
-    //             let data = res.data?.meta?.data?.map(item=>{
-    //                 return {
-    //                     src: item?.image,
-    //                     loading: false
-    //                 }
-    //             })
+    useEffect(()=>{
+        bannerService?.getList()?.then(res=>{
+            if(res && res?.status === 200){
+                if(res.data?.data?.length === 0){
+                    return
+                }
+                if(res.data?.data?.length > 0){
+                    setIsAdd(false)
+                }
+                let data = res.data?.data?.map(item=>{
+                    return {
+                        src: item?.image,
+                        loading: false
+                    }
+                })
 
-    //             if(data?.length < 5){
-    //                 let complete =[]
-    //                 for(let i=data?.length; i<5; i++){
-    //                     complete.push({src: '', product: ''})
-    //                 }
-    //                 setFormData([...data, ...complete])
-    //             } else {
-    //                 setFormData([...data])
-    //             }
-    //         }
-    //         setLoading(false)
-    //     })
-    // },[])
+                if(data?.length < 5){
+                    let complete =[]
+                    for(let i=data?.length; i<5; i++){
+                        complete.push({src: '', product: ''})
+                    }
+                    setFormData([...data, ...complete])
+                } else {
+                    setFormData([...data])
+                }
+            }
+            setLoading(false)
+        })
+    },[])
 
     const fileHandler = (e, index) => {
         if(e?.target.files?.length === 0){
@@ -92,7 +92,7 @@ const Banners = () =>{
             }
         })
     }
-
+    console.log(isAdd,formData)
     const onSubmit = () => {
         let data = {
             banners: formData?.filter(res=> !!res.src)?.map((item,index)=>{
@@ -109,22 +109,22 @@ const Banners = () =>{
                 return
             }
             setSumbitLoading(true)
-            // bannerService.create(data)?.then(res=>{
-            //     if(res && res?.status === 201){
-            //         toast.success('Banners Added Successfully')
-            //         setIsAdd(false)
-            //     }
-            //     setSumbitLoading(false)
-            // })
+            bannerService.create(data)?.then(res=>{
+                if(res && res?.status === 201){
+                    toast.success('Banners Added Successfully')
+                    setIsAdd(false)
+                }
+                setSumbitLoading(false)
+            }).catch(()=> setSumbitLoading(false))
         } else {
             setSumbitLoading(true)
-            // bannerService.update(data)?.then(res=>{
-            //     if(res && res?.status === 200){
-            //         toast.success('Banners Updated Successfully')
-            //         setIsAdd(false)
-            //     }
-            //     setSumbitLoading(false)
-            // })
+            bannerService.update(data)?.then(res=>{
+                if(res && res?.status === 200){
+                    toast.success('Banners Updated Successfully')
+                    setIsAdd(false)
+                }
+                setSumbitLoading(false)
+            }).catch(()=> setSumbitLoading(false))
         }
         
     }
@@ -147,7 +147,7 @@ const Banners = () =>{
                         <div className="avatar-edit">
                             <input type="file" 
                                     onChange={(e) => {
-                                        if(!isExist('home')){
+                                        if(!isExist('masterHN')){
                                             toast.error('Not Allowed, Don`t have Permission')
                                             return
                                         }
@@ -192,7 +192,7 @@ const Banners = () =>{
                     </Row>
             </Card>
         })}
-        {isExist('home') && <div className="d-flex justify-content-end mb-4">
+        {isExist('masterHN') && <div className="d-flex justify-content-end mb-4">
             <Button 
                 variant="primary" 
                 className="px-5"
