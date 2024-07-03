@@ -7,6 +7,7 @@ import NoData from "../../../common/NoData";
 import Pagination from "../../../common/Pagination/Pagination";
 import { Translate } from "../../../Enums/Tranlate";
 import CardItem from "./CardItem";
+import MHProductsService from "../../../../services/MHProductsService";
 
 const MasterHNProducts = () =>{
     const [products, setProducts] =useState([])
@@ -14,10 +15,11 @@ const MasterHNProducts = () =>{
     const [search, setSearch] =useState(null)
     const [loading, setLoading] =useState(false)
     const [indexEdit, setIndexEdit] = useState(null)
+    const [isDeleted, setIsDeleted] =useState(false)
     const [ shouldUpdate, setShouldUpdate] = useState(false)
     const navigate = useNavigate()
     const lang = useSelector(state=> state.auth?.lang)
-    // const productsService = new ProductsService()
+    const productsService = new MHProductsService()
 
     return(
         <>
@@ -42,6 +44,17 @@ const MasterHNProducts = () =>{
           </Button>}
         </div>
 
+        <Card className="py-3">
+          <div>
+            <Button variant={isDeleted ? 'secondary' : 'primary'} className='mx-2' onClick={()=> setIsDeleted(false)}>
+              {Translate[lang]?.active}
+            </Button>
+            <Button variant={!isDeleted ? 'secondary' : 'primary'} onClick={()=> setIsDeleted(true)}>
+              {Translate[lang]?.not_active}
+            </Button>
+          </div>
+        </Card>
+
         <Card>
             <Card.Body className={`${hasData === 0 && 'text-center'} `}>
             {loading && <div style={{height: '300px'}}>
@@ -60,7 +73,13 @@ const MasterHNProducts = () =>{
                       <strong>{Translate[lang]?.name}</strong>
                     </th>
                     <th>
-                      <strong>{Translate[lang]?.type}</strong>
+                      <strong>{Translate[lang]?.category}</strong>
+                    </th>
+                    <th>
+                      <strong>{Translate[lang]?.price}</strong>
+                    </th>
+                    <th>
+                      <strong>{Translate[lang]?.amount}</strong>
                     </th>
                     <th></th>
                   </tr>
@@ -79,16 +98,15 @@ const MasterHNProducts = () =>{
                 </tbody>
               </Table>}
               {hasData === 0 && <NoData />}
-              {/* <Pagination
+              <Pagination
                   setData={setProducts}
                   service={productsService}
                   shouldUpdate={shouldUpdate}
                   setHasData={setHasData}
-                  // isDeleted={isDeleted}
+                  isDeleted={isDeleted}
                   setLoading={setLoading}
-                  type={'normal'}
                   search={search}
-                /> */}
+                />
             </Card.Body>
           </Card>
         </>

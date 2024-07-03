@@ -117,6 +117,8 @@ export const English = {
   english_name: "English Name",
   arabic_title: "Arabic Title",
   style_up: "Style Up",
+  view: "View",
+  images_for_all_products: "Images For All Products",
   arabic_name: "Arabic Name",
   description: "Description",
   english_description: "English Description",

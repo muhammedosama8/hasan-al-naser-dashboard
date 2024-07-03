@@ -23,7 +23,7 @@ const CardItem = ({item, index, setShouldUpdate}) =>{
                 {lang==='en' ? item.description_en : item.description_ar}
             </td>
             <td>
-                {isExist('home') && <Dropdown>
+                {isExist('masterHN') && <Dropdown>
                     <Dropdown.Toggle
                         // variant="success"
                         className="light sharp i-false"

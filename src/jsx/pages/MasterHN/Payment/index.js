@@ -88,12 +88,13 @@ const Payment = () =>{
                             style={{
                                 position: 'absolute',
                                 top: '50%',
-                                right: '0',
+                                left: lang==='en' ? '0' : 'auto',
+                                right: lang==='ar' ? '0' : 'auto',
                                 background: 'var(--danger)',
                                 color: '#fff',
                                 padding: '5px',
                                 borderRadius: '50%',
-                                transform: 'translate(0, -15%)'
+                                transform: 'translate(0, -20%)'
                             }}
                             type='button'
                             onClick={deleteIban}

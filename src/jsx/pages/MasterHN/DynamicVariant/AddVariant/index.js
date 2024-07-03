@@ -6,6 +6,8 @@ import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { Translate } from "../../../../Enums/Tranlate";
+import CategoriesService from "../../../../../services/CategoriesService";
+import DynamicVariantService from "../../../../../services/MHDynamicVariantService";
 
 const AddDynamicVariant = ()=>{
    const [formData, setFormData] =useState({category: ''})
@@ -22,8 +24,8 @@ const AddDynamicVariant = ()=>{
    const [ categoriesOptions, setCategoriesOptions] = useState()
    const [ isAdd, setIsAdd] = useState(true)
    const [ id, setId] = useState(null)
-   // const categoriesService = new CategoriesService()
-   // const dynamicVariantService = new DynamicVariantService()
+   const categoriesService = new CategoriesService()
+   const dynamicVariantService = new DynamicVariantService()
    const navigate = useNavigate()
    const lang = useSelector(state => state.auth.lang)
 
@@ -37,18 +39,18 @@ const AddDynamicVariant = ()=>{
    }, [])
 
    useEffect(()=>{
-      // categoriesService.getList().then(res=>{
-      //    if(res.data?.status === 200){
-      //       let categories =  res.data?.meta?.data?.map(item=>{
-      //          return{
-      //             id: item?.id,
-      //             value: item?.id,
-      //             label: lang === 'en' ? item.name_en : item.name_ar
-      //          }
-      //       })
-      //       setCategoriesOptions(categories)
-      //    }
-      // })
+      categoriesService.getList().then(res=>{
+         if(res?.status === 200){
+            let categories =  res.data?.data?.data?.map(item=>{
+               return{
+                  id: item?.id,
+                  value: item?.id,
+                  label: lang === 'en' ? item.name_en : item.name_ar
+               }
+            })
+            setCategoriesOptions(categories)
+         }
+      })
    },[lang])
 
    const onSubmit = (e) =>{
@@ -66,19 +68,19 @@ const AddDynamicVariant = ()=>{
          price: parseFloat(dynamicVariant[0].price)
       }
       if(isAdd){
-         // dynamicVariantService.create(data).then(res=> {
-         //    if(res?.status === 201){
-         //       toast.success('Dynamic Variant Added Successfully')
-         //       navigate('/dynamic-variant')
-         //    }
-         // })
+         dynamicVariantService.create(data).then(res=> {
+            if(res?.status === 201){
+               toast.success('Dynamic Variant Added Successfully')
+               navigate('/dynamic-variant')
+            }
+         })
       } else {
-         // dynamicVariantService.update(id, editedData)?.then(res => {
-         //    if(res?.status === 200){
-         //       toast.success('Dynamic Variant Updated Successfully')
-         //       navigate('/dynamic-variant')
-         //    }
-         // })
+         dynamicVariantService.update(id, editedData)?.then(res => {
+            if(res?.status === 200){
+               toast.success('Dynamic Variant Updated Successfully')
+               navigate('/dynamic-variant')
+            }
+         })
       }
       
    }

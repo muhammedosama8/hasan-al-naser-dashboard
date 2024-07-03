@@ -8,6 +8,7 @@ import { Translate } from "../../../Enums/Tranlate";
 import Loader from "../../../common/Loader";
 import NoData from "../../../common/NoData";
 import Pagination from "../../../common/Pagination/Pagination";
+import DynamicVariantService from "../../../../services/MHDynamicVariantService";
 
 const DynamicVariant = () =>{
     const [dynamicVariant, setDynamicVariant] = useState([])
@@ -19,7 +20,7 @@ const DynamicVariant = () =>{
     const Auth = useSelector(state=> state.auth?.auth)
     const lang = useSelector(state=> state.auth?.lang)
     const isExist = (data)=> Auth?.admin?.admin_roles?.includes(data)
-    // const dynamicVariantService = new DynamicVariantService()
+    const dynamicVariantService = new DynamicVariantService()
 
 
     return(
@@ -40,7 +41,7 @@ const DynamicVariant = () =>{
               style={{position: 'absolute',zIndex:'99', right: lang === 'en' && '16px', left: lang === 'ar' && '16px', top: '50%', transform: 'translate(0, -50%)'}}
             ></div>
           </div>
-            {isExist('home') && <Button variant="primary" className='me-2 h-75' onClick={()=> navigate('/dynamic-variant/add-dynamic-variant')}>
+            {isExist('masterHN') && <Button variant="primary" className='me-2 h-75' onClick={()=> navigate('/dynamic-variant/add-dynamic-variant')}>
             {Translate[lang]?.add} {Translate[lang]?.dynamic_variant}
           </Button>}
           </div>
@@ -78,14 +79,14 @@ const DynamicVariant = () =>{
 
               {(hasData === 0 && !loading) && <NoData />}
 
-              {/* <Pagination
+              <Pagination
                   setData={setDynamicVariant}
                   service={dynamicVariantService}
                   shouldUpdate={shouldUpdate}
                   setHasData={setHasData}
                   setLoading={setLoading}
                   search={search}
-                /> */}
+                />
             </Card.Body>
           </Card>
         </>

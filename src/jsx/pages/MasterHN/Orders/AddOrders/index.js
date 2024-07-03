@@ -366,7 +366,6 @@ const AddOrders = () => {
     //   });
     // } else {
     //   new OrdersService().create(data).then((res) => {
-    //     console.log(res.data.data);
     //     if (res && res?.status === 201) {
     //       window.location.href = res.data.data;
     //     } else {

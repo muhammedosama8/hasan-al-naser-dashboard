@@ -20,7 +20,7 @@ const AddCategoriesModal = ({addModal, setAddModal, item, setShouldUpdate})=>{
     const [loading, setLoading] = useState(false)
     const lang = useSelector(state=> state.auth?.lang)
     const categoriesService = new CategoriesService()
-console.log(formData)
+
     useEffect(() => {
         if(Object.keys(item)?.length === 0){
             setIsAdd(true)

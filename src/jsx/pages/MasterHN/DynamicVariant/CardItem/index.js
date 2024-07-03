@@ -19,13 +19,13 @@ const CardItem = ({item, index, setShouldUpdate}) =>{
                     <td>{lang==='en' ? item.name_en : item.name_ar}</td>
                     <td style={{display: 'grid', gap:'10px',gridTemplateColumns: 'auto auto auto'}}>
                       {item.dynamic_variants?.map((variant, index)=>{
-                        return <Badge variant="primary light" className="mr-2">
+                        return <Badge variant="outline-primary light" className="mr-2">
                           {lang ==='en' ? variant?.name_en : variant?.name_ar}
                         </Badge>
                       })}
                     </td>
                     <td>
-                      {isExist('home') && <Dropdown>
+                      {isExist('masterHN') && <Dropdown>
                         <Dropdown.Toggle
                           // variant="success"
                           className="light sharp i-false"

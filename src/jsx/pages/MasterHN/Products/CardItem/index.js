@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import DeleteModal from "../../../../common/DeleteModal";
 import { Translate } from "../../../../Enums/Tranlate";
+import MHProductsService from "../../../../../services/MHProductsService";
 
 const CardItem = ({item, index, setShouldUpdate,setIndexEdit, indexEdit}) =>{
     const [deleteModal, setDeleteModal] = useState(false)
@@ -15,16 +16,16 @@ const CardItem = ({item, index, setShouldUpdate,setIndexEdit, indexEdit}) =>{
     const lang = useSelector(state=> state.auth?.lang)
     const isExist = (data)=> Auth?.admin?.admin_roles?.includes(data)
     const navigate = useNavigate()
-    // const productsService = new ProductsService()
+    const productsService = new MHProductsService()
 
-    // const changeIsDeleted = ()=>{
-    //   productsService.remove(item.id, { isDeleted: false }).then(res=>{
-    //       if(res?.status === 200){
-    //           setShouldUpdate(prev=> !prev)
-    //           toast.success('Status Updated Successfully')
-    //       }
-    //   })
-    // }
+    const changeIsDeleted = ()=>{
+      productsService.remove(item.id, { isDeleted: false }).then(res=>{
+          if(res?.status === 200){
+              setShouldUpdate(prev=> !prev)
+              toast.success('Status Updated Successfully')
+          }
+      })
+    }
 
     useEffect(()=>{
       setIsDeleted(item.isDeleted)
@@ -58,7 +59,7 @@ const CardItem = ({item, index, setShouldUpdate,setIndexEdit, indexEdit}) =>{
                     </td>
                     <td>
                         <img
-                          src={item?.images[0]?.url}
+                          src={item?.product_images[0]?.url}
                           className="rounded-lg"
                           width="40"
                           height="40"
@@ -70,6 +71,10 @@ const CardItem = ({item, index, setShouldUpdate,setIndexEdit, indexEdit}) =>{
                       <Badge variant="success light">{lang === 'en' ? item.category?.name_en : item.category?.name_ar}</Badge>
                     </td>
                     <td>{item.price}</td>
+                    <td>{item.amount}</td>
+                    {/* <td>
+                      <i className="la la-eye cursor-pointer" onClick={()=>navigate(`/masterHN/products/${item.id}`, {state: item.code})}></i>
+                    </td> */}
                     {/* <td>
                       <input
                         type='number'
@@ -105,7 +110,7 @@ const CardItem = ({item, index, setShouldUpdate,setIndexEdit, indexEdit}) =>{
                       />
                     </td> */}
                     <td>
-                      {/* {isExist('masterHN') && <Dropdown>
+                      {isExist('masterHN') && <Dropdown>
                         <Dropdown.Toggle
                           className="light sharp i-false"
                         >
@@ -113,15 +118,17 @@ const CardItem = ({item, index, setShouldUpdate,setIndexEdit, indexEdit}) =>{
                         </Dropdown.Toggle>
                         <Dropdown.Menu>
                           <Dropdown.Item onClick={()=>{
-                            navigate(`/products/add-products/${item.id}`)
+                            navigate(`/masterHN/products/add-products/${item.id}`, {state: {view: true}})
+                          }}>{Translate[lang]?.view}</Dropdown.Item>
+                          <Dropdown.Item onClick={()=>{
+                            navigate(`/masterHN/products/add-products/${item.id}`, {state: {view: false}})
                           }}>{Translate[lang]?.edit}</Dropdown.Item>
                           {!isDeleted && <Dropdown.Item onClick={()=> setDeleteModal(true)}>{Translate[lang]?.deactive}</Dropdown.Item>}
                         {isDeleted && <Dropdown.Item onClick={()=> changeIsDeleted()}>{Translate[lang]?.active}</Dropdown.Item>}
                         </Dropdown.Menu>
-                      </Dropdown>} */}
-                      <i className="la la-eye cursor-pointer" onClick={()=>navigate(`/products/${item.id}`, {state: item.code})}></i>
+                      </Dropdown>}
                     </td>
-                    {/* {deleteModal && <DeleteModal
+                    {deleteModal && <DeleteModal
                       open={deleteModal}
                       titleMsg={lang==='en' ? item.name_en : item.name_ar}
                       deletedItem={item}
@@ -129,7 +136,7 @@ const CardItem = ({item, index, setShouldUpdate,setIndexEdit, indexEdit}) =>{
                       onCloseModal={setDeleteModal}
                       setShouldUpdate={setShouldUpdate}
                       isDeleted={true}
-                    />} */}
+                    />}
                   </tr>
     )
 }

@@ -92,7 +92,7 @@ const Banners = () =>{
             }
         })
     }
-    console.log(isAdd,formData)
+
     const onSubmit = () => {
         let data = {
             banners: formData?.filter(res=> !!res.src)?.map((item,index)=>{

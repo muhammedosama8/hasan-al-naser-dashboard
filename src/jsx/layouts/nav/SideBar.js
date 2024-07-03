@@ -84,7 +84,6 @@ const SideBar = (props) => {
                                   <Collapse in={state.active === data.title ? true :false}>
                                     <ul className={`${menuClass === "mm-collapse" ? "mm-show" : ""}`}>
                                       {data.content?.map((data,index) => {		 //.filter(res=> isExist(res.rule))
-                                      console.log(data.content)
                                         return(	
                                             <li key={index}
                                               className={`${ state.activeSubmenu === data.title ? "mm-active" : ""}`}                                    

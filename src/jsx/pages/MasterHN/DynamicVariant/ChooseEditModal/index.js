@@ -6,12 +6,13 @@ import { toast } from "react-toastify";
 import { Translate } from "../../../../Enums/Tranlate";
 import { useSelector } from "react-redux";
 import DeleteModal from "../../../../common/DeleteModal";
+import DynamicVariantService from "../../../../../services/MHDynamicVariantService";
 
 const ChooseEditModal = ({modal, setModal, dynamicVariants,isEdit, setShouldUpdate})=>{
     const [choose, setChoose] = useState(null)
     const [deleteModal, setDeleteModal] = useState(false)
     const navigate = useNavigate()
-    // const dynamicVariantService= new DynamicVariantService()
+    const dynamicVariantService= new DynamicVariantService()
     const lang = useSelector(state=> state.auth.lang)
 
     const submit = () =>{
@@ -70,7 +71,7 @@ const ChooseEditModal = ({modal, setModal, dynamicVariants,isEdit, setShouldUpda
                       open={deleteModal}
                       titleMsg={lang==='en' ? choose.name_en : choose.name_ar}
                       deletedItem={choose}
-                    //   modelService={dynamicVariantService}
+                      modelService={dynamicVariantService}
                       setShouldUpdate={setShouldUpdate}
                       onCloseModal={setDeleteModal}
                       setModal={setModal}

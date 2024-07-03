@@ -22,7 +22,7 @@ const Notification = ()=>{
     return(
         <>
         <div className="d-flex mb-3 justify-content-end">
-            {isExist('home') && <Button 
+            {isExist('masterHN') && <Button 
                 variant='primary'
                 onClick={()=>{
                     navigate('add-notification')

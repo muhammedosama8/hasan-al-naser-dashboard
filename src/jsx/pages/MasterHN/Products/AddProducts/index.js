@@ -13,6 +13,10 @@ import { Translate } from "../../../../Enums/Tranlate";
 import { Editor } from "react-draft-wysiwyg";
 import { EditorState, convertToRaw, ContentState } from "draft-js";
 import CategoriesService from "../../../../../services/CategoriesService";
+import MHProductsService from "../../../../../services/MHProductsService";
+import VariantService from "../../../../../services/VariantService";
+import { loadingToggleAction } from "../../../../../store/actions/AuthActions";
+import DynamicVariantService from "../../../../../services/MHDynamicVariantService";
 
 const MasterHNAddProducts = () => {
   const [product, setProduct] = useState({
@@ -27,7 +31,6 @@ const MasterHNAddProducts = () => {
     offerPrice: "",
     price: "",
     category: "",
-    weight: "",
     code: "",
     variant: [],
     cost: "",
@@ -45,150 +48,148 @@ const MasterHNAddProducts = () => {
   const [loading, setLoadning] = useState(false);
   const [imagesForAll, setImagesForAll] = useState(false);
   const [hasVariant, setHasVariant] = useState(false);
+  const [view, setView] = useState(false);
   const [categoriesOptions, setCategoriesOptions] = useState([]);
   const [staticVariantValue, setStaticVariantValue] = useState({});
   const [variant, setVariant] = useState([]);
   const [customVariant, setCustomVariant] = useState([]);
   const [dynamicVariant, setDynamicVariant] = useState([]);
-  // const [productDynamicVariant, setProductDynamicVariant] = useState([])
+  const [productDynamicVariant, setProductDynamicVariant] = useState([])
   const [files, setFiles] = useState([{}, {}, {}, {}, {}]);
   const navigate = useNavigate();
   const location = useLocation();
   const categoriesService = new CategoriesService();
-  // const productsService = new ProductsService();
+  const productsService = new MHProductsService();
   const Auth = useSelector((state) => state.auth);
   const lang = useSelector((state) => state.auth.lang);
 
   useEffect(() => {
-    // categoriesService.getList().then((res) => {
-    //   if (res?.data?.status === 200) {
-    //     let categories = res.data?.meta?.data?.map((item) => {
-    //       return {
-    //         id: item?.id,
-    //         value: item?.id,
-    //         label: lang === "en" ? item.name_en : item.name_ar,
-    //       };
-    //     });
-    //     setCategoriesOptions(categories);
-    //   }
-    // });
-  }, []);
+    categoriesService.getList().then((res) => {
+      if (res?.status === 200) {
+        let categories = res.data?.data?.data?.map((item) => {
+          return {
+            id: item?.id,
+            value: item?.id,
+            label: lang === "en" ? item.name_en : item.name_ar,
+          };
+        });
+        setCategoriesOptions(categories);
+      }
+    });
+  }, [lang]);
 
   useEffect(() => {
     if (!!product?.category) {
-      // adminService.getVariant(product?.category?.id)?.then((res) => {
-      //   if (res?.data?.status === 200) {
-      //     if(res?.data?.meta.data?.length > 0){
-      //       setHasVariant(true)
-      //       setImagesForAll(false)
-      //     } else {
-      //       setHasVariant(false)
-      //       setImagesForAll(true)
-      //     }
-      //     let custom = res.data?.meta.data?.reduce((result, item) => {
-      //       result[item.name_en] = '';
-      //       return result;
-      //     }, {})
-      //     if(!id) setCustomVariant([{...custom, quantity: '', images: [{}, {}, {}, {}, {}]}])
-      //     setStaticVariantValue(custom)
-      //     setVariant(res.data?.meta.data);
-      //   }
-      // });
+      new VariantService().getVariant(product?.category?.id)?.then((res) => {
+        if (res?.data?.status === 200) {
+          if(res?.data?.data.data?.length > 0){
+            setHasVariant(true)
+            setImagesForAll(false)
+          } else {
+            setHasVariant(false)
+            setImagesForAll(true)
+          }
+          let custom = res.data?.data.data?.reduce((result, item) => {
+            result[item.name_en] = '';
+            return result;
+          }, {})
+          if(!id) setCustomVariant([{...custom, quantity: '', images: [{}, {}, {}, {}, {}]}])
+          setStaticVariantValue(custom)
+          setVariant(res.data?.data.data);
+        }
+      });
 
-      // productsService
-      //   ?.getDynamicVariant(product?.category?.value)
-      //   .then((res) => {
-      //     if (res?.status === 200) {
-      //       let data = res.data?.data?.map((item) => {
-      //         return {
-      //           ...item,
-      //           label: lang === "en" ? item.name_en : item.name_ar,
-      //           value: item.id,
-      //         };
-      //       });
-      //       setDynamicVariant(data);
-      //     }
-      //   });
+      new DynamicVariantService()?.getDynamicVariant(product?.category?.value)
+        .then((res) => {
+          if (res?.status === 200) {
+            let data = res.data?.data?.map((item) => {
+              return {
+                ...item,
+                label: lang === "en" ? item.name_en : item.name_ar,
+                value: item.id,
+              };
+            });
+            setDynamicVariant(data);
+          }
+        });
     }
   }, [product?.category]);
 
   useEffect(() => {
+    setView(location?.state?.view)
+
     let prod_id = window.location.pathname.split("/products/add-products/")[1];
     setId(Number(prod_id));
 
     if (!!prod_id) {
       let obj = {}
-      // dispatch(loadingToggleAction(true));
-      // productsService.getProduct(prod_id)?.then((res) => {
-      //   let response = res.data?.data;
-      //   if (res?.data?.status === 200) {
-      //     let data = {
-      //       ...response?.product,
-      //       weight: response?.product.weight || '',
-      //       offerPrice: !!Number(response.product.offerPrice)
-      //         ? response.product.offerPrice
-      //         : "",
-      //       category: {
-      //         ...response?.product.category,
-      //         id: response?.product.category_id,
-      //         value: response.product?.category_id,
-      //         label:
-      //           lang === "en"
-      //             ? response.product?.category?.name_en
-      //             : response.product?.category?.name_ar,
-      //       },
-      //       images: product?.images?.map((_, index) => {
-      //         if (!!response.product.images[index]?.url) {
-      //           return {
-      //             src: response.product.images[index]?.url,
-      //           };
-      //         } else {
-      //           return {
-      //             src: "",
-      //           };
-      //         }
-      //       }),
-      //       variant: response.product?.variant?.map((item) => {
-      //         obj[`${item.variant?.name_en}`] = {
-      //           // ...obj,
-      //           id: item?.variant_value?.id,
-      //           variant_id: item.variant?.id,
-      //           label: item.variant_value?.value_en,
-      //           value: item.variant_value?.value_en,
-      //           value_ar: item.variant?.name_ar,
-      //           value_en: item.variant?.name_en,
-      //         }
-      //         return {
-      //           name_ar: item.variant?.name_ar,
-      //           name_en: item.variant?.name_en,
-      //           variant_id: item.variant?.id,
-      //           variant_value_id: item?.variant_value?.id,
-      //           variant_values: { ...item.variant_value },
-      //         };
-      //       }),
-      //     };
-      //     productsService.getDynamicVariantOfProducts(prod_id).then((res2) => {
-      //       if (res2?.status === 200) {
-      //         data["dynamic_variant"] = res2.data.data?.map((item) => {
-      //           return {
-      //             ...item,
-      //             label: lang === "en" ? item.name_en : item.name_ar,
-      //           };
-      //         });
-      //         setProduct({ ...data });
-      //         dispatch(loadingToggleAction(false));
-      //       }
-      //     });
-      //     setCustomVariant([{
-      //       ...obj,
-      //       quantity: response?.product?.amount,
-      //     }])
-      //   }
-      // });
+      let prod = productsService.getProduct(prod_id)
+      let dynamic = productsService.getDynamicVariantOfProducts(prod_id)
+      dispatch(loadingToggleAction(true));
+      Promise.all([prod, dynamic]).then(res=>{
+        let data = {}
+        if (res[0]?.status === 200) {
+          let response = res[0].data?.data;
+          data = {
+            ...response?.product,
+            offerPrice: !!Number(response.product.offerPrice)
+              ? response.product.offerPrice
+              : "",
+            category: {
+              ...response?.product.category,
+              id: response?.product.category_id,
+              value: response.product?.category_id,
+              label:
+                lang === "en"
+                  ? response.product?.category?.name_en
+                  : response.product?.category?.name_ar,
+            },
+            images: product?.images?.map((_, index) => {
+              if (!!response.product.product_images[index]?.url) {
+                return {
+                  src: response.product.product_images[index]?.url,
+                };
+              } else {
+                return {
+                  src: "",
+                };
+              }
+            }),
+            variant: response.product?.variant?.map((item) => {
+              obj[`${item.variant?.name_en}`] = {
+                id: item?.variant_value?.id,
+                variant_id: item.variant?.id,
+                label: item.variant_value?.value_en,
+                value: item.variant_value?.value_en,
+                value_ar: item.variant?.name_ar,
+                value_en: item.variant?.name_en,
+              }
+              return {
+                name_ar: item.variant?.name_ar,
+                name_en: item.variant?.name_en,
+                variant_id: item.variant?.id,
+                variant_value_id: item?.variant_value?.id,
+                variant_values: { ...item.variant_value },
+              };
+            }),
+          };
+        }
+        if (res[1]?.status === 200) {
+          data["dynamic_variant"] = res[1].data.data?.map((item) => {
+            return {
+              ...item,
+              label: lang === "en" ? item.name_en : item.name_ar,
+            };
+          });
+        }
+        setProduct({ ...data });
+        dispatch(loadingToggleAction(false));
+        setCustomVariant([{ ...obj, quantity: res[0].data?.data?.product?.amount }])
+      })
     }
   }, []);
 
-  const fileHandler = (e, index, ) => {
+  const fileHandler = (e, index) => {
     let filesAll = e.target.files;
     const filesData = Object.values(filesAll);
     let update = files?.map((file, updateIndex) => {
@@ -276,6 +277,7 @@ const MasterHNAddProducts = () => {
       name_ar: product.name_ar,
       price: parseFloat(product.price),
       code: product.code,
+      cost: product?.cost,
       category_id: product.category?.value,
       images: product?.images
         ?.filter((res) => !!res?.src)
@@ -290,11 +292,8 @@ const MasterHNAddProducts = () => {
       bestSeller: product.bestSeller,
       newIn: product.newIn,
       offer: product.offer,
-      type: "normal",
       offerPrice: parseFloat(product.offerPrice),
-      cost: product?.cost,
     };
-    if (!!product.weight) data["weight"] = product?.weight;
     if(!id) data['all_image']= imagesForAll
     if(!id && hasVariant) data['variant_data'] = customVariant?.map(({ quantity, images }) => ({ quantity,images }))?.map((res) => {
       return {
@@ -323,32 +322,21 @@ const MasterHNAddProducts = () => {
     if(!hasVariant) data['amount']= product.amount
 
     if (!!id) {
-      // productsService.update(id, data)?.then((res) => {
-      //   if (res.data?.status === 200) {
-      //     toast.success("Product Updated Successfully");
-      //     navigate(`/products/${product?.id}`, {state: product?.code})
-      //     // setConfirm(true);
-      //     // setProduct({
-      //     //   ...product,
-      //     //   images: [
-      //     //     { src: "" },
-      //     //     { src: "" },
-      //     //     { src: "" },
-      //     //     { src: "" },
-      //     //     { src: "" },
-      //     //   ],
-      //     // });
-      //   }
-      //   setLoadning(false);
-      // });
+      productsService.update(id, data)?.then((res) => {
+        if (res.data?.status === 200) {
+          toast.success("Product Updated Successfully");
+          navigate(`/masterHN/products`)
+        }
+        setLoadning(false);
+      });
     } else {
-      // productsService.create(data)?.then((res) => {
-      //   if (res.data?.status === 201) {
-      //     setConfirm(true);
-      //     toast.success("Product Added Successfully");
-      //   }
-      //   setLoadning(false);
-      // });
+      productsService.create(data)?.then((res) => {
+        if (res.data?.status === 201) {
+          setConfirm(true);
+          toast.success("Product Added Successfully");
+        }
+        setLoadning(false);
+      });
     }
   };
 
@@ -392,6 +380,7 @@ const MasterHNAddProducts = () => {
               placeholder={Translate[lang]?.english}
               bsSize="lg"
               name="name_en"
+              disabled={view}
               validate={{
                 required: {
                   value: true,
@@ -413,6 +402,7 @@ const MasterHNAddProducts = () => {
               placeholder={Translate[lang]?.arabic}
               value={product.name_ar}
               name="name_ar"
+              disabled={view}
               validate={{
                 required: {
                   value: true,
@@ -432,6 +422,7 @@ const MasterHNAddProducts = () => {
             </label>
             <textarea
               name="description_en"
+              disabled={view}
               style={{
                 minHeight: "80px",
                 maxHeight: "150px",
@@ -462,6 +453,7 @@ const MasterHNAddProducts = () => {
             </label>
             <textarea
               name="description_ar"
+              disabled={view}
               style={{
                 minHeight: "80px",
                 maxHeight: "150px",
@@ -491,7 +483,7 @@ const MasterHNAddProducts = () => {
               value={product.category}
               name="category"
               placeholder={Translate[lang]?.select}
-              options={categoriesOptions}
+              options={!view ? categoriesOptions : []}
               onChange={(e) =>
                 setProduct({
                   ...product,
@@ -509,6 +501,7 @@ const MasterHNAddProducts = () => {
               placeholder={Translate[lang]?.code}
               bsSize="lg"
               name="code"
+              disabled={view}
               validate={{
                 required: {
                   value: true,
@@ -531,6 +524,7 @@ const MasterHNAddProducts = () => {
               bsSize="lg"
               name="price"
               min="0.0000000000001"
+              disabled={view}
               validate={{
                 required: {
                   value: true,
@@ -547,6 +541,7 @@ const MasterHNAddProducts = () => {
               type="number"
               placeholder={Translate[lang]?.cost}
               bsSize="lg"
+              disabled={view}
               name="cost"
               validate={{
                 required: {
@@ -565,6 +560,7 @@ const MasterHNAddProducts = () => {
               type="number"
               placeholder={Translate[lang]?.quantity}
               bsSize="lg"
+              disabled={view}
               name="amount"
               validate={{
                 required: {
@@ -579,65 +575,47 @@ const MasterHNAddProducts = () => {
           </Col>}
           <Col md={6} sm={6} className="mb-3">
             <AvField
-              label={Translate[lang]?.weight}
-              type="number"
-              placeholder={Translate[lang]?.weight}
-              bsSize="lg"
-              name="weight"
-              min="0.0000000000001"
-              // validate={{
-              //     required: {
-              //         value: true,
-              //         errorMessage: Translate[lang].field_required
-              //     }
-              // }}
-              value={product.weight}
-              onChange={(e) => handlerText(e)}
-            />
-          </Col>
-          <Col md={6} sm={6} className="mb-3">
-            <AvField
               label={Translate[lang]?.offer_price}
               type="number"
               placeholder={Translate[lang]?.offer_price}
               min="0.0000000000001"
               bsSize="lg"
+              disabled={view}
               name="offerPrice"
               value={product.offerPrice}
               onChange={(e) => handlerText(e)}
             />
           </Col>
           <Col md={2} sm={3} className="mb-3">
-            {/* <div className="form-group mb-3 d-flex" style={{gap: '24px'}}> */}
             <label className="text-label">{Translate[lang]?.best_seller}</label>
             <Form.Check
               type="switch"
               id={`bestSeller`}
+              disabled={view}
               checked={product.bestSeller}
               onChange={(e) =>
                 setProduct({ ...product, bestSeller: e.target.checked })
               }
             />
-            {/* </div> */}
           </Col>
           <Col md={2} sm={3} className="mb-3">
-            {/* <div className="form-group mb-3 d-flex" style={{gap: '24px'}}> */}
             <label className="text-label">{Translate[lang]?.new_in}</label>
             <Form.Check
               type="switch"
               id={`newIn`}
+              disabled={view}
               checked={product.newIn}
               onChange={(e) =>
                 setProduct({ ...product, newIn: e.target.checked })
               }
             />
-            {/* </div> */}
           </Col>
           <Col md={2} sm={3} className="mb-3">
             <label className="text-label">{Translate[lang]?.offer}</label>
             <Form.Check
               type="switch"
               id={`offer`}
+              disabled={view}
               checked={product.offer}
               onChange={(e) =>
                 setProduct({ ...product, offer: e.target.checked })
@@ -658,13 +636,13 @@ const MasterHNAddProducts = () => {
                   </label>
                   <Select
                     placeholder={Translate[lang]?.select}
-                    options={res.variant_values?.map((res1) => {
+                    options={!view ? res.variant_values?.map((res1) => {
                         return {
                           ...res1,
                           label: res1.value_en,
                           value: res1.value_en,
                         };
-                    })}
+                    }) : []}
                     styles={{
                       option: (provided, state) => {
                         return {
@@ -716,13 +694,13 @@ const MasterHNAddProducts = () => {
                   </label>
                   <Select
                     placeholder={Translate[lang]?.select}
-                    options={res.variant_values?.map((res1) => {
+                    options={!view ? res.variant_values?.map((res1) => {
                         return {
                           ...res1,
                           label: lang === "en" ? res1.value_en : res1.value_ar,
                           value: res1.value_en,
                         };
-                    })}
+                    }) : []}
                     value={cVariant[res?.name_en]}
                     onChange={(e) => {
                       let update = customVariant?.map((res1, ind) => {
@@ -748,6 +726,7 @@ const MasterHNAddProducts = () => {
                   placeholder={Translate[lang]?.quantity}
                   min="0"
                   bsSize="lg"
+                  disabled={view}
                   name={`quantity${index}`}
                   value={cVariant?.quantity}
                   validate={{
@@ -788,6 +767,7 @@ const MasterHNAddProducts = () => {
                   <div className="avatar-edit">
                     <input
                       type="file"
+                      disabled={view}
                       onChange={(e) => variantFileHandler(e, i, index)}
                       id={`imageUpload${index}${i}`}
                     />
@@ -796,6 +776,7 @@ const MasterHNAddProducts = () => {
                   <button
                     className="delete-img"
                     type="button"
+                    disabled={view}
                     onClick={() => {
                       let update = customVariant.map((item, ind) => {
                         if (ind === index) {
@@ -969,6 +950,7 @@ const MasterHNAddProducts = () => {
                   <div className="avatar-edit">
                     <input
                       type="file"
+                      disabled={view}
                       onChange={(e) => fileHandler(e, index)}
                       id={`imageUpload${index}`}
                     />
@@ -977,6 +959,7 @@ const MasterHNAddProducts = () => {
                   <button
                     className="delete-img"
                     type="button"
+                    disabled={view}
                     onClick={() => deleteImg(index)}
                   >
                     <i className="la la-trash"></i>
@@ -1023,13 +1006,13 @@ const MasterHNAddProducts = () => {
           <Button
             variant="secondary"
             type="button"
-            onClick={() => navigate("/products")}
+            onClick={() => navigate("/masterHN/products")}
           >
             {Translate[lang]?.cancel}
           </Button>
-          <Button variant="primary" loading={loading} type="submit">
+          {!view && <Button variant="primary" loading={loading} type="submit">
             {Translate[lang]?.submit}
-          </Button>
+          </Button>}
         </div>
       </AvForm>
     </Card>

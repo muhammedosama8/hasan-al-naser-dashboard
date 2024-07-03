@@ -115,8 +115,7 @@ const AddVariant = ()=>{
       let filterFound = tags.filter(item => filterFormDataVariant.includes(item));
       let filterNotFound = tags.filter(item => !filterFormDataVariant.includes(item));
 
-      let filter = formData?.variant?.filter(res=> filterFound?.includes(res.name_en))
-      
+      let filter = formData?.variant?.filter((res, ind)=> filterFound?.includes(res.name_en) && filterFound[ind])
       let update = filterNotFound?.map((tag)=>{
          if(lang === 'ar'){
             return {
@@ -220,7 +219,6 @@ const AddVariant = ()=>{
                         <InputTags
                            style={{fontSize: '16px', borderRadius: lang==='ar' ? '0 8px 8px 0' : '8px 0 0 8px'}}
                            values={tags}
-                           disabled={!isAdd}
                            placeholder={Translate[lang].variant}
                            onTags={(value) => setTags(value.values)}
                         />
@@ -229,7 +227,7 @@ const AddVariant = ()=>{
                            type="button"
                            style={{borderRadius: lang==='en' ? '0 8px 8px 0' : '8px 0 0 8px' }}
                            data-testid="button-clearAll"
-                           disabled={!tags.length || !isAdd}
+                           disabled={!tags.length}
                            onClick={() => generateVariant()}
                         >
                            {Translate[lang].create}
@@ -257,7 +255,6 @@ const AddVariant = ()=>{
                               placeholder={lang==='en' ? Translate[lang].arabic_name : Translate[lang].english_name}
                               required
                               // pattern="[\u0600-\u06FF\s]+"
-                              disabled={!isAdd}
                               value={lang==='en' ? item?.name_ar : item?.name_en}
                               onChange={(e)=> {
                                  let update = formData.variant?.map((res, index)=>{
@@ -299,7 +296,6 @@ const AddVariant = ()=>{
                                           className="form-control"
                                           placeholder={Translate[lang]?.english_name}
                                           required
-                                          disabled={!isAdd}
                                           // pattern='/^[A-Za-z0-9 ]+$/'
                                           value={val?.value_en}
                                           onChange={(e)=> {
@@ -344,7 +340,6 @@ const AddVariant = ()=>{
                                           className="form-control"
                                           placeholder={Translate[lang]?.arabic_name}
                                           required
-                                          disabled={!isAdd}
                                           // pattern="[\u0600-\u06FF\s]+"
                                           value={val?.value_ar}
                                           onChange={(e)=> {
@@ -380,7 +375,6 @@ const AddVariant = ()=>{
                                        padding: '8px 12px', backgroundColor: 'var(--danger)',
                                        color: '#fff', border: 'none', borderRadius: '8px'
                                     }}
-                                    disabled={!isAdd}
                                     onClick={()=>{
                                        let update = formData.variant?.map((res, index)=>{
                                           if(index === itemIndex){
@@ -397,7 +391,7 @@ const AddVariant = ()=>{
                                     }}
                                  >X</button>
                               </Col>}
-                              {(ind === item?.variant_values?.length-1 && isAdd) && <Col md={12} sm={6} className='justify-content-end d-flex'>
+                              {(ind === item?.variant_values?.length-1) && <Col md={12} sm={6} className='justify-content-end d-flex'>
                                  <button 
                                     className="border-0"
                                     style={{
@@ -436,9 +430,9 @@ const AddVariant = ()=>{
             </div>
             <div className="d-flex justify-content-between">
                <div></div>
-               {isAdd && <div>
+               <div>
                   <Button variant="primary" type="submit">{Translate[lang]?.submit}</Button>
-               </div>}
+               </div>
             </div>
             </form>
          </Card.Body>

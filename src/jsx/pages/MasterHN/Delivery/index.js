@@ -40,7 +40,6 @@ const Delivery = () => {
         setLoadingData(true)
         settingService.getList().then(res=>{
             let response = res?.data?.data
-            console.log(response)
             if(!!response){
                 let data = {
                     delivery_possibility: response.delivery_possibility,
@@ -224,7 +223,6 @@ const Delivery = () => {
                             onChange={(e)=> formDataHandler(e)}
                         />
                     </Col>
-                    {console.log(formData)}
                     {!formData.delivery_all_area && <Row className="my-3 px-3">
                         {formData.areas?.map((area,index)=>{
                         return <Col md={3}>

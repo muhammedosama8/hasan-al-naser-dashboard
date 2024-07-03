@@ -8,11 +8,11 @@ import htmlToDraft from 'html-to-draftjs';
 import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
 import 'draft-js/dist/Draft.css';
 import '../style.scss'
-import StaticPagesServices from "../../../../../services/StaticPagesService";
 import { toast } from "react-toastify";
 import { useSelector } from "react-redux";
 import { Translate } from "../../../../Enums/Tranlate";
 import Loader from "../../../../common/Loader";
+import MHStaticPagesService from "../../../../../services/MHStaticPagesService";
 
 const MasterStatic = () =>{
     const [formData, setFormData] =useState([
@@ -29,7 +29,7 @@ const MasterStatic = () =>{
     // const [isEdit, setIsEdit] = useState()
     const [loading, setLoading] = useState()
     const [submitLoading, setSubmitLoading] = useState(false)
-    const staticPagesServices = new StaticPagesServices()
+    const staticPagesServices = new MHStaticPagesService()
 
     const changeInput = (e,name,index) =>{
         let update = formData.map((item,ind)=>{
@@ -46,7 +46,7 @@ const MasterStatic = () =>{
     }
 
     useEffect(()=>{
-        let params = {type: window.location.pathname.split('/')[2] === 'privacy' ? 'Privacy' : window.location.pathname.split('/')[2]}
+        let params = {type: 'about'}
         setLoading(true)
         staticPagesServices.getList(params).then(res=>{
             if(res?.status === 200){
@@ -70,7 +70,7 @@ const MasterStatic = () =>{
     },[])
     const submit = () =>{
         let data ={
-            type: window.location.pathname.split('/')[2],
+            type: 'about',
             static_page: formData.map(res=>{
                 let en = draftToHtml(convertToRaw(res.description_en.getCurrentContent()))
                 let ar = draftToHtml(convertToRaw(res.description_ar.getCurrentContent()))
@@ -85,7 +85,6 @@ const MasterStatic = () =>{
         staticPagesServices.create(data).then(res=>{
             if(res?.status === 201){
                 toast.success("Update Data Successfullly")
-                // setIsEdit(true)
             }
             setSubmitLoading(false)
         })
@@ -117,7 +116,6 @@ const MasterStatic = () =>{
 						name ={`title_en${index}`}
 						type="text" 
 						value={item.title_en}
-                        // disabled={isEdit}
 						validate={{
 							required: {
 								value:true,
@@ -133,7 +131,6 @@ const MasterStatic = () =>{
 						label ={Translate[lang].arabic_title}
 					    name ={`title_ar${index}`}
 						type="text" 
-                        // disabled={isEdit}
 						value={item.title_ar}
 						validate={{
 							required: {
@@ -152,7 +149,7 @@ const MasterStatic = () =>{
                             // editorState ={editorState}
                             editorState ={item.description_en}
                             toolbarClassName="toolbarClassName"
-                            wrapperClassName="wrapperClassName"
+                            wrapperClassName="wrapperClassName h-100"
                             editorClassName="editorClassName"
                             onEditorStateChange={(e) => {
                                 // if(isEdit){
@@ -177,10 +174,9 @@ const MasterStatic = () =>{
                     <label className="d-block">{Translate[lang].arabic_description}</label>
                     <div className="editorField">
                         <Editor
-                            // editorState ={editorState}
                             editorState ={item.description_ar}
                             toolbarClassName="toolbarClassName"
-                            wrapperClassName="wrapperClassName"
+                            wrapperClassName="wrapperClassName h-100"
                             editorClassName="editorClassName"
                             onEditorStateChange={(e) => {
                                 // if(isEdit){
