@@ -21,7 +21,7 @@ const Categories = () => {
     const [categories, setCategories] = useState([])
     const [addModal, setAddModal] = useState(false)
     const [item, setItem] = useState({})
-    const [hasData, setHasData] = useState(0)
+    const [hasData, setHasData] = useState(null)
     const [search, setSearch] = useState(null)
     const [shouldUpdate, setShouldUpdate] = useState(false)
     const [loading, setLoading] = useState(false)
@@ -101,7 +101,7 @@ const Categories = () => {
                 </tbody>
               </Table>}
               {hasData === 0 && <NoData />}
-              {/* <Pagination
+              <Pagination
                   setData={setCategories}
                   service={categoriesService}
                   shouldUpdate={shouldUpdate}
@@ -109,7 +109,7 @@ const Categories = () => {
                   isDeleted={isDeleted}
                   setLoading={setLoading}
                   search={search}
-              /> */}
+              />
             </Card.Body>
           </Card>
         </Col>

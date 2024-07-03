@@ -39,7 +39,7 @@ const PromCodes = () =>{
               style={{position: 'absolute',zIndex:'99', right: lang === 'en' && '16px', left: lang === 'ar' && '16px', top: '50%', transform: 'translate(0, -50%)'}}
             ></div>
           </div>
-            {isExist('home') && <Button variant="primary" className='me-2 h-75' onClick={()=> navigate('/promo-codes/add-promo-codes')}>
+            {isExist('masterHN') && <Button variant="primary" className='me-2 h-75' onClick={()=> navigate('/promo-codes/add-promo-codes')}>
             {Translate[lang]?.add} {Translate[lang]?.prom_codes}
           </Button>}
           </div>

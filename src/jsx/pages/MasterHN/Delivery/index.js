@@ -7,6 +7,8 @@ import { toast } from "react-toastify";
 import { useSelector } from "react-redux";
 import { Translate } from "../../../Enums/Tranlate";
 import Loader from "../../../common/Loader";
+import CountryiesService from "../../../../services/CountriesService";
+import Select from "react-select";
 
 const inital = {
     delivery_possibility: true,
@@ -14,13 +16,16 @@ const inital = {
     cash_in_delivery: '',
     delivery_all_area: true,
     shipping_fee: '',
-    areas: []
+    areas: [],
+    country: ''
 }
 const Delivery = () => {
     const [formData, setFormData] = useState(inital)
     const [loading, setLoading] = useState(false)
     const [isAdd, setIsAdd] = useState(false)
     const [loadingData, setLoadingData] = useState(false)
+    const [countryiesOptions, setCountryiesOptions] = useState([])
+    const countryiesService = new CountryiesService()
     const areasService = new AreasService()
     const settingService = new SettingService()
     const Auth = useSelector(state=> state.auth?.auth)
@@ -35,7 +40,8 @@ const Delivery = () => {
         setLoadingData(true)
         settingService.getList().then(res=>{
             let response = res?.data?.data
-            if(response){
+            console.log(response)
+            if(!!response){
                 let data = {
                     delivery_possibility: response.delivery_possibility,
                     delivery_fee: response.delivery_fee,
@@ -53,18 +59,32 @@ const Delivery = () => {
     },[])
 
     useEffect(()=>{
-        if(!formData.delivery_all_area){
-            areasService.getList(1).then(res=>{
+        countryiesService?.getList()?.then(res=>{
+            if(res?.status === 200){
+                let data = res?.data?.data?.map(country=> {
+                    return{
+                        label: lang === 'en' ? country?.name_en : country?.name_ar,
+                        value: country?.id
+                    }
+                })
+                setCountryiesOptions(data)
+            }
+        })
+    },[lang])
+
+    useEffect(()=>{
+        if(!formData.delivery_all_area && !!formData?.country){
+            areasService.getList(formData?.country?.value).then(res=>{
                 let data = res?.data?.data?.map(are=>{
                     return{
                         ...are,
                         delivery_fee: are?.delivery_fee
                     }
                 })
-                setFormData({...formData, areas: [...data]})
+                setFormData({...formData, areas: data})
             })
         }
-    }, [formData.delivery_all_area])
+    }, [formData?.country])
 
     const submit = () =>{
         let data = {
@@ -76,8 +96,8 @@ const Delivery = () => {
         }
         data['area_fees'] = formData.areas?.map(area=>{
             return{
-                delivery_fee: area.delivery_fee,
-                id: area.id
+                delivery_fee: area?.delivery_fee,
+                id: area?.id
             }
         })
         setLoading(true)
@@ -100,7 +120,7 @@ const Delivery = () => {
     return <Card>
         <Card.Body>
             <AvForm>
-                {(!isAdd && isExist('delivery')) && <button 
+                {(!isAdd && isExist('masterHN')) && <button 
                     style={{
                         background: 'none',
                         border: 'none',
@@ -142,6 +162,14 @@ const Delivery = () => {
                     </Col>}
                 </Row>
                 {formData.delivery_possibility && <Row>
+                    {!formData.delivery_all_area && <Col md={6}>
+                        <label>{Translate[lang].country}</label>
+                        <Select
+                            options={countryiesOptions}
+                            value={formData?.country}
+                            onChange={e=> setFormData({...formData, country: e})}
+                        />
+                    </Col>}
                     <Col md={6}>
                         <AvField
                             label={Translate[lang].cash_in_delivery_fees}
@@ -196,6 +224,7 @@ const Delivery = () => {
                             onChange={(e)=> formDataHandler(e)}
                         />
                     </Col>
+                    {console.log(formData)}
                     {!formData.delivery_all_area && <Row className="my-3 px-3">
                         {formData.areas?.map((area,index)=>{
                         return <Col md={3}>
@@ -231,25 +260,8 @@ const Delivery = () => {
                         </Col>
                     })}
                     </Row>}
-                    {/* <Col md={6}>
-                        <AvField
-                            label='Amount'
-                            placeholder='Amount'
-                            type='text'
-                            name='amount'
-                            errorMessage="Please Enter a Valid Value"
-                            validate={{
-                                required: {
-                                    value: true,
-                                    errorMessage: Translate[lang].field_required
-                                },
-                            }}
-                            value={formData.amount}
-                            onChange={(e)=> formDataHandler(e)}
-                        />
-                    </Col> */}
                 </Row>}
-                {isExist('delivery') && <div className="d-flex justify-content-between mt-4">
+                {isExist('masterHN') && <div className="d-flex justify-content-between mt-4">
                     {/* <Button variant="secondary" type="button" onClick={()=> setFormData(inital)}>Cancel</Button> */}
                     <div></div>
                     {isAdd && <Button variant="primary" type="submit" onClick={submit} disabled={loading}>{Translate[lang].submit}</Button>}

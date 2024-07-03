@@ -21,7 +21,7 @@ const CardItem = ({item, setItem, index, setAddModal, setShouldUpdate}) =>{
             <td>{lang==='en' ? item.country?.name_en : item.country?.name_ar}</td>
             <td>{item.rate}</td>
             <td>
-                {isExist('currency') && <Dropdown>
+                {isExist('masterHN') && <Dropdown>
                     <Dropdown.Toggle
                         // variant="success"
                         className="light sharp i-false"

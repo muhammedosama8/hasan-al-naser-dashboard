@@ -47,7 +47,7 @@ const Currency = () => {
     <Fragment>
         <div className="d-flex justify-content-between align-items-center mb-3 ">
           <div className="input-group w-50"></div>
-          {isExist('home') && <Button variant="primary" className='me-2 h-75' onClick={()=> { 
+          {isExist('masterHN') && <Button variant="primary" className='me-2 h-75' onClick={()=> { 
               setItem({})
               setAddModal(true) }}>
               {Translate[lang]?.add} {Translate[lang]?.currency}

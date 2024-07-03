@@ -38,13 +38,10 @@ const CardItem = ({item, setItem, index, setAddModal, setShouldUpdate}) =>{
                           alt={item.id}
                         />
                     </td>
-            <td>{item.name}</td>
+            <td>{lang === 'en' ? item?.name_en : item?.name_ar}</td>
             <td>
-                {isExist('home') && <Dropdown>
-                    <Dropdown.Toggle
-                        // variant="success"
-                        className="light sharp i-false"
-                    >
+                {isExist('masterHN') && <Dropdown>
+                    <Dropdown.Toggle className="light sharp i-false">
                         <i className="la la-ellipsis-v" style={{fontSize: '27px'}}></i>
                     </Dropdown.Toggle>
                     <Dropdown.Menu>

@@ -8,6 +8,7 @@ import Pagination from "../../../common/Pagination/Pagination";
 import { Translate } from "../../../Enums/Tranlate";
 import CardItem from "./CardItem";
 import './style.scss'
+import VariantService from "../../../../services/VariantService";
 
 const Variant = () =>{
     const [variant, setVariant] = useState([])
@@ -19,7 +20,7 @@ const Variant = () =>{
     const Auth = useSelector(state=> state.auth?.auth)
     const lang = useSelector(state=> state.auth?.lang)
     const isExist = (data)=> Auth?.admin?.admin_roles?.includes(data)
-    // const variantService = new VariantService()
+    const variantService = new VariantService()
 
 
     return(
@@ -40,7 +41,7 @@ const Variant = () =>{
               style={{position: 'absolute',zIndex:'99', right: lang === 'en' && '16px', left: lang === 'ar' && '16px', top: '50%', transform: 'translate(0, -50%)'}}
             ></div>
           </div>
-            {isExist('home') && <Button variant="primary" className='me-2 h-75' onClick={()=> navigate('/variant/add-variant')}>
+            {isExist('masterHN') && <Button variant="primary" className='me-2 h-75' onClick={()=> navigate('/variant/add-variant')}>
              {Translate[lang].add} {Translate[lang].variant}
           </Button>}
           </div>
@@ -82,14 +83,14 @@ const Variant = () =>{
 
               {(hasData === 0 && !loading) && <NoData />}
 
-              {/* <Pagination
+              <Pagination
                   setData={setVariant}
                   service={variantService}
                   shouldUpdate={shouldUpdate}
                   setHasData={setHasData}
                   setLoading={setLoading}
                   search={search}
-                /> */}
+                />
             </Card.Body>
           </Card>
         </>

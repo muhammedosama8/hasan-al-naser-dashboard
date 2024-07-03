@@ -204,7 +204,7 @@ const MasterStatic = () =>{
             </Row>
             })}
             
-            {isExist('home') && <div className="d-flex justify-content-between">
+            {isExist('masterHN') && <div className="d-flex justify-content-between">
                 <Button 
                     // disabled={isEdit}
                     variant="secondary" 

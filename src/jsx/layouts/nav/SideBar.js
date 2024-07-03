@@ -3,7 +3,7 @@ import React, { useEffect, useReducer, useState } from "react";
 // import PerfectScrollbar from "react-perfect-scrollbar";
 import Collapse from 'react-bootstrap/Collapse';
 /// Link
-import { Link } from "react-router-dom";
+import { Link, NavLink } from "react-router-dom";
 
 
 import {MenuList} from '../../Enums/Menu';
@@ -70,16 +70,8 @@ const SideBar = (props) => {
           <ul className="metismenu" id="menu">
                 {MenuList.map((data, index)=>{
                   let menuClass = data.classsChange;
-                    if(menuClass === "menu-title"){
-                      return(
-                          <li className={menuClass}  key={index} >{data.title}</li>
-                      )
-                    }else{
-                      return(				
-                        <li className={` ${ state.active === data.title ? 'mm-active' : ''}`}
-                          key={index} 
-                        >
-                          
+                  return(				
+                        <li className={`${ state.active === data.title ? 'mm-active' : ''}`} key={index}>
                           {data.content && data.content.length > 0 ?
                             <>
                                 <Link to={"#"} 
@@ -91,47 +83,21 @@ const SideBar = (props) => {
                                 </Link>
                                   <Collapse in={state.active === data.title ? true :false}>
                                     <ul className={`${menuClass === "mm-collapse" ? "mm-show" : ""}`}>
-                                      {data.content && data.content?.map((data,index) => {		 //.filter(res=> isExist(res.rule))
+                                      {data.content?.map((data,index) => {		 //.filter(res=> isExist(res.rule))
+                                      console.log(data.content)
                                         return(	
                                             <li key={index}
                                               className={`${ state.activeSubmenu === data.title ? "mm-active" : ""}`}                                    
                                             >
-                                              {data.content && data.content.length > 0 ?
-                                                  <>
-                                                    <Link to={data.to} className={data.hasMenu ? 'has-arrow' : ''}
-                                                      onClick={() => { handleSubmenuActive(data.title)}}
-                                                    >
-                                                      {Translate[lang][data.text]}
-                                                    </Link>
-                                                    <Collapse in={state.activeSubmenu === data.title ? true :false}>
-                                                      
-                                                        <ul className={`${menuClass === "mm-collapse" ? "mm-show" : ""}`}>
-                                                          {data.content && data.content.map((data,index) => {
-                                                            return(	
-                                                                <li key={index}>
-                                                                  <Link className={`${path === data.to ? "mm-active" : ""}`} to={data.to}>{Translate[lang][data.text]}</Link>
-                                                                </li>
-                                                            )
-                                                          })}
-                                                        </ul>
-                                                    </Collapse>
-                                                  </>
-                                                :
-                                                <Link to={data.to}>
+                                              <NavLink to={data.to} className={({ isActive }) => isActive ? "active" : ""} aria-current="page">
                                                   {Translate[lang][data.text]}
-                                                </Link>
-                                              }
-                                              
+                                                </NavLink>
                                             </li>
-                                          
                                         )
                                       })}
                                     </ul>
                                   </Collapse>
-                            </>
-                              
-                          :
-                            <Link to={data.to} className='d-flex' onClick={() => handleMenuActive(data.title)}>
+                            </> : <Link to={data.to} className='d-flex' onClick={() => handleMenuActive(data.title)}>
                                 {data.iconStyle}
                                 <span className="nav-text">
                                  {Translate[lang][data.text]}
@@ -140,7 +106,6 @@ const SideBar = (props) => {
                           }
                         </li>	
                       )
-                  }
                 })}          
           </ul>
 		    </div>

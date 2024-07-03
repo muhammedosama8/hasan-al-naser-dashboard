@@ -8,19 +8,21 @@ import { useNavigate } from "react-router-dom";
 import Loader from '../../../../common/Loader'
 import { useSelector } from "react-redux";
 import { Translate } from "../../../../Enums/Tranlate";
+import VariantService from "../../../../../services/VariantService";
+import CategoriesService from "../../../../../services/CategoriesService";
 
 const AddVariant = ()=>{
    const [formData, setFormData] = useState({
       category: '', variant: []
    })
    let variant_id = window?.location?.pathname?.split('/variant/add-variant/')[1]
-   const [ categoriesOptions, setCategoriesOptions] = useState()
+   const [ categoriesOptions, setCategoriesOptions] = useState([])
    const [ tags, setTags] = useState([])
    const [ isAdd, setIsAdd] = useState(true)
    const [ loading, setLoading] = useState(false)
    const [ id, setId] = useState(null)
-   // const categoriesService = new CategoriesService()
-   // const variantService = new VariantService()
+   const categoriesService = new CategoriesService()
+   const variantService = new VariantService()
    const navigate = useNavigate()
    const lang = useSelector(state=> state.auth.lang)
 
@@ -29,74 +31,73 @@ const AddVariant = ()=>{
          category: '', variant: []
       })
       setTags([])
-      setCategoriesOptions([])
    },[lang])
 
    useEffect(()=>{
-      // categoriesService.getList().then(res=>{
-      //    if(res.data?.status === 200){
-      //       let categories =  res.data?.meta?.data?.map(item=>{
-      //          return{
-      //             id: item?.id,
-      //             value: item?.id,
-      //             label: lang === 'en' ? item.name_en : item.name_ar
-      //          }
-      //       })
-      //       setCategoriesOptions(categories)
-      //    }
-      // })
+      categoriesService.getList().then(res=>{
+         if(res.data?.status === 200){
+            let categories =  res.data?.data?.data?.map(item=>{
+               return{
+                  id: item?.id,
+                  value: item?.id,
+                  label: lang === 'en' ? item.name_en : item.name_ar
+               }
+            })
+            setCategoriesOptions(categories)
+         }
+      })
    }, [lang])
 
    useEffect(()=>{
       if(!!formData?.category && !id){
-         // variantService.getVariant(formData?.category?.id)?.then(res=>{
-         //    if(res?.status === 200){
-         //       if(res.data?.meta.data?.length > 0){
-         //          let tags = res.data?.meta.data?.map(tag=> tag.name_en.toLowerCase())
-         //          setIsAdd(false)
-         //          setTags([...tags])
-         //          setFormData({
-         //             ...formData, 
-         //             variant: res.data?.meta?.data.map(item=> {
-         //                return{
-         //                   ...item,
-         //                   name_en: item.name_en.toLowerCase()
-         //                }
-         //             })
-         //          })
-         //       } else{
-         //          setIsAdd(true)
-         //       }
-         //    }
-         // })
+         variantService.getVariant(formData?.category?.id)?.then(res=>{
+            if(res?.status === 200){
+               if(res.data?.data.data?.length > 0){
+                  let tags = res.data?.data.data?.map(tag=> tag.name_en.toLowerCase())
+                  setIsAdd(false)
+                  setTags([...tags])
+                  setFormData({
+                     ...formData, 
+                     variant: res.data?.data?.data.map(item=> {
+                        return{
+                           ...item,
+                           name_en: item.name_en.toLowerCase()
+                        }
+                     })
+                  })
+               } else{
+                  setIsAdd(true)
+               }
+            }
+         })
       }
    },[formData?.category])
 
    useEffect(()=>{
       if(!!formData?.category || !!variant_id){
          setLoading(true)
-         // variantService.getVariant(Number(variant_id))?.then(res=>{
-         //    setId(Number(variant_id))
-         //    if(res?.status === 200){
-         //       if(res.data?.meta.data?.length > 0){
-         //          let tags = res.data?.meta.data?.map(tag=> tag.name_en.toLowerCase()) // lang === 'en' ?  : tag.name_ar
-         //          setIsAdd(false)
-         //          setTags([...tags])
-         //          setFormData({
-         //             category: categoriesOptions?.filter(opt=> opt.id === Number(variant_id))[0], 
-         //             variant: res.data?.meta?.data.map(item=> {
-         //                return{
-         //                   ...item,
-         //                   name_en: item.name_en.toLowerCase()
-         //                }
-         //             })
-         //          })
-         //       } else{
-         //          setIsAdd(true)
-         //       }
-         //    }
-         //    setLoading(false)
-         // })
+         variantService.getVariant(Number(variant_id))?.then(res=>{
+            setId(Number(variant_id))
+            if(res?.status === 200){
+               if(res.data?.data.data?.length > 0){
+                  let tags = res.data?.data.data?.map(tag=> tag.name_en.toLowerCase()) // lang === 'en' ?  : tag.name_ar
+                  setIsAdd(false)
+                  setTags([...tags])
+                  setFormData({
+                     category: categoriesOptions?.filter(opt=> opt.id === Number(variant_id))[0], 
+                     variant: res.data?.data?.data.map(item=> {
+                        return{
+                           ...item,
+                           name_en: item.name_en.toLowerCase()
+                        }
+                     })
+                  })
+               } else{
+                  setIsAdd(true)
+               }
+            }
+            setLoading(false)
+         })
       }
    },[window.location.pathname])
 
@@ -168,21 +169,21 @@ const AddVariant = ()=>{
       if(isAdd) data['category_id']= formData?.category?.value
 
       if(isAdd){
-         // variantService.addVariant(data).then(res=> {
-         //    if(res?.status === 201){
-         //       toast.success('Variant Added Successfully')
-         //       // setFormData({category: '', variant: []})
-         //       navigate('/variant')
-         //    }
-         // })
+         variantService.addVariant(data).then(res=> {
+            if(res?.status === 201){
+               toast.success('Variant Added Successfully')
+               // setFormData({category: '', variant: []})
+               navigate('/variant')
+            }
+         })
       } else {
-         // variantService.updateVariant(Number(variant_id), data)?.then(res => {
-         //    if(res?.status === 200){
-         //       toast.success('Variant Updated Successfully')
-         //       // setFormData({category: '', variant: []})
-         //       navigate('/variant')
-         //    }
-         // })
+         variantService.updateVariant(Number(variant_id), data)?.then(res => {
+            if(res?.status === 200){
+               toast.success('Variant Updated Successfully')
+               // setFormData({category: '', variant: []})
+               navigate('/variant')
+            }
+         })
       }
       
    }
@@ -219,6 +220,7 @@ const AddVariant = ()=>{
                         <InputTags
                            style={{fontSize: '16px', borderRadius: lang==='ar' ? '0 8px 8px 0' : '8px 0 0 8px'}}
                            values={tags}
+                           disabled={!isAdd}
                            placeholder={Translate[lang].variant}
                            onTags={(value) => setTags(value.values)}
                         />
@@ -227,7 +229,7 @@ const AddVariant = ()=>{
                            type="button"
                            style={{borderRadius: lang==='en' ? '0 8px 8px 0' : '8px 0 0 8px' }}
                            data-testid="button-clearAll"
-                           disabled={!tags.length}
+                           disabled={!tags.length || !isAdd}
                            onClick={() => generateVariant()}
                         >
                            {Translate[lang].create}
@@ -255,6 +257,7 @@ const AddVariant = ()=>{
                               placeholder={lang==='en' ? Translate[lang].arabic_name : Translate[lang].english_name}
                               required
                               // pattern="[\u0600-\u06FF\s]+"
+                              disabled={!isAdd}
                               value={lang==='en' ? item?.name_ar : item?.name_en}
                               onChange={(e)=> {
                                  let update = formData.variant?.map((res, index)=>{
@@ -296,6 +299,7 @@ const AddVariant = ()=>{
                                           className="form-control"
                                           placeholder={Translate[lang]?.english_name}
                                           required
+                                          disabled={!isAdd}
                                           // pattern='/^[A-Za-z0-9 ]+$/'
                                           value={val?.value_en}
                                           onChange={(e)=> {
@@ -340,6 +344,7 @@ const AddVariant = ()=>{
                                           className="form-control"
                                           placeholder={Translate[lang]?.arabic_name}
                                           required
+                                          disabled={!isAdd}
                                           // pattern="[\u0600-\u06FF\s]+"
                                           value={val?.value_ar}
                                           onChange={(e)=> {
@@ -368,13 +373,14 @@ const AddVariant = ()=>{
                                     </div>
                                  </div>
                               </Col>}
-                              {ind > 0 && <Col md={1} sm={1}>
+                              {(ind > 0 && isAdd) && <Col md={1} sm={1}>
                                  <button type='button' 
                                     style={{
                                        height: 'fit-content',
                                        padding: '8px 12px', backgroundColor: 'var(--danger)',
                                        color: '#fff', border: 'none', borderRadius: '8px'
                                     }}
+                                    disabled={!isAdd}
                                     onClick={()=>{
                                        let update = formData.variant?.map((res, index)=>{
                                           if(index === itemIndex){
@@ -391,7 +397,7 @@ const AddVariant = ()=>{
                                     }}
                                  >X</button>
                               </Col>}
-                              {ind === item?.variant_values?.length-1 && <Col md={12} sm={6} className='justify-content-end d-flex'>
+                              {(ind === item?.variant_values?.length-1 && isAdd) && <Col md={12} sm={6} className='justify-content-end d-flex'>
                                  <button 
                                     className="border-0"
                                     style={{
@@ -430,9 +436,9 @@ const AddVariant = ()=>{
             </div>
             <div className="d-flex justify-content-between">
                <div></div>
-               <div>
+               {isAdd && <div>
                   <Button variant="primary" type="submit">{Translate[lang]?.submit}</Button>
-               </div>
+               </div>}
             </div>
             </form>
          </Card.Body>

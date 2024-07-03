@@ -182,7 +182,7 @@ const Orders = () => {
           ></div>
         </div>
         <div className="d-flex">
-        {isExist("home") && (
+        {isExist("masterHN") && (
             <Button
               variant="outline-secondary"
               className={`mx-2 h-75 `}
@@ -195,7 +195,7 @@ const Orders = () => {
               {Translate[lang].print} <i className="la la-print" />
             </Button>
           )}
-          {isExist("home") && (
+          {isExist("masterHN") && (
             <Button
               variant="primary"
               className="mx-2 h-75"

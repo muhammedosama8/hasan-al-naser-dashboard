@@ -47,12 +47,12 @@ const CardItem = ({item, index, setShouldUpdate}) =>{
                         type="switch"
                         id={`custom-switch${index}`}
                         checked={status}
-                        disabled={!isExist('home')}
+                        disabled={!isExist('masterHN')}
                         onChange={(e)=> changeStatusToggle(e)}
                       />
                     </td>
                     <td>
-                      {isExist('home') && <Dropdown>
+                      {isExist('masterHN') && <Dropdown>
                         <Dropdown.Toggle
                           // variant="success"
                           className="light sharp i-false"

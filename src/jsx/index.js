@@ -141,7 +141,7 @@ const Markup = () => {
     { url: "social", component: <MasterSocialMedia /> },
     { url: "currency", component: <Currency /> },
     { url: "pages", component: <MasterStaticPages /> },
-    { url: "pages/about", component: <MasterStatic /> },
+    { url: "pages/about-us", component: <MasterStatic /> },
     { url: "delivery", component: <Delivery /> },
     { url: "payment", component: <Payment /> },
 

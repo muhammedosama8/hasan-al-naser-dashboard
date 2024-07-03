@@ -15,7 +15,7 @@ const CardItem = ({ item, index, setModal, setItem, selectedOrders, setSelectedO
   const navigate = useNavigate()
 
   const changeStatusToggle = () => {
-    if (!isExist("home")) {
+    if (!isExist("masterHN")) {
       return;
     }
     setModal(true);
@@ -104,7 +104,7 @@ const CardItem = ({ item, index, setModal, setItem, selectedOrders, setSelectedO
           className="la la-eye"
           onClick={()=> navigate('/orders/invoice', {state: item})}
         ></i>
-        {isExist("home") && (
+        {isExist("masterHN") && (
           <Dropdown>
             <Dropdown.Toggle
               // variant="success"

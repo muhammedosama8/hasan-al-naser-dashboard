@@ -2,7 +2,7 @@ export const MenuList = [
   // Admins
   {
     title: "Admins Management",
-    classsChange: "mm-collapse",
+    classsChange: "mm-title",
     iconStyle: <i className="la la-user-shield"></i>,
     to: "admins",
     text: "admins",
@@ -10,7 +10,7 @@ export const MenuList = [
   // Rules
   {
     title: "Rules",
-    classsChange: "mm-collapse",
+    classsChange: "mm-title",
     iconStyle: <i className="la la-shield"></i>,
     to: "rules",
     text: "rules",
@@ -111,12 +111,6 @@ export const MenuList = [
             rule: 'masterHN',
           },
           {
-            title:'Notification',
-            text:'notification',
-            to: 'notification',
-            rule: 'masterHN',
-          },
-          {
             title:"Promo Codes",
             text:'promo_codes',
             to: 'promo-codes',
@@ -152,9 +146,9 @@ export const MenuList = [
             rule: "masterHN",
           },
           {
-            title: "Pages",
-            text: "pages",
-            to: "pages",
+            title: "About Us",
+            text: "about_us",
+            to: "pages/about-us",
             rule: "masterHN",
           },
       ]

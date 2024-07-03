@@ -165,7 +165,7 @@ const StyleUp = () =>{
                         <div className="avatar-edit">
                             <input type="file" 
                                     onChange={(e) => {
-                                        if(!isExist('home')){
+                                        if(!isExist('masterHN')){
                                             toast.error('Not Allowed, Don`t have Permission')
                                             return
                                         }
@@ -242,7 +242,7 @@ const StyleUp = () =>{
                         <div className="avatar-edit">
                             <input type="file" 
                                 onChange={(e) => {
-                                    if(!isExist('home')){
+                                    if(!isExist('masterHN')){
                                         toast.error('Not Allowed, Don`t have Permission')
                                         return
                                     }
@@ -274,7 +274,7 @@ const StyleUp = () =>{
                             <div className="avatar-edit">
                                 <input type="file" 
                                         onChange={(e) => {
-                                            if(!isExist('home')){
+                                            if(!isExist('masterHN')){
                                                 toast.error('Not Allowed, Don`t have Permission')
                                                 return
                                             }
@@ -339,7 +339,7 @@ const StyleUp = () =>{
             })}
         </Card>
 
-        {isExist('home') && <div className="d-flex justify-content-between mb-4">
+        {isExist('masterHN') && <div className="d-flex justify-content-between mb-4">
             <Button 
                 variant='secondary'
                 onClick={()=> setFormData({...formData, sheets: [...formData?.sheets, { title: '', items: [{src: '', logo: ''}]

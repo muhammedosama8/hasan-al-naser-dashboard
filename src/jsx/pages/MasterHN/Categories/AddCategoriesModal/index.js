@@ -14,13 +14,13 @@ const AddCategoriesModal = ({addModal, setAddModal, item, setShouldUpdate})=>{
     const [formData, setFormData] = useState({
         name_en: '',
         name_ar: '',
-        img: ''
+        image: ''
     })
     const [isAdd, setIsAdd] = useState(false)
     const [loading, setLoading] = useState(false)
     const lang = useSelector(state=> state.auth?.lang)
     const categoriesService = new CategoriesService()
-
+console.log(formData)
     useEffect(() => {
         if(Object.keys(item)?.length === 0){
             setIsAdd(true)
@@ -28,19 +28,17 @@ const AddCategoriesModal = ({addModal, setAddModal, item, setShouldUpdate})=>{
             setIsAdd(false)
             setFormData({
                 id: item?.id,
-                name: item?.name,
-                img: item?.image,
+                name_en: item?.name_en,
+                name_ar: item?.name_ar,
+                image: item?.image,
             })
         }
     },[item])
 
     const fileHandler = (e) => {
-        // setFiles([e.target.files[0]])
-		// setTimeout(function(){
-		// 	var src = document.getElementById(`saveImageFile`)?.getAttribute("src");
-		// 	setFormData({...formData, img: {id: '', path: src}})
-		// }, 200);
-
+        if(e.target.files?.length === 0){
+            return
+        }
         setLoading(true)
         let files = e.target.files
         const filesData = Object.values(files)
@@ -48,8 +46,7 @@ const AddCategoriesModal = ({addModal, setAddModal, item, setShouldUpdate})=>{
         if (filesData.length) {
             new BaseService().postUpload(filesData[0]).then(res=>{
                 if(res.data.status){
-                    setFormData({...formData, img: res.data.url})
-                    setFiles(filesData[0])
+                    setFormData({...formData, image: res.data.url})
                 }
                 setLoading(false)
             })
@@ -57,13 +54,13 @@ const AddCategoriesModal = ({addModal, setAddModal, item, setShouldUpdate})=>{
     }
 
     const submit = () =>{
-        if(!formData?.img){
+        if(!formData?.image){
             return
         }
         let data ={
-            name_en: formData?.en,
-            name_ar: formData?.ar,
-            image: formData?.img
+            name_en: formData?.name_en,
+            name_ar: formData?.name_ar,
+            image: formData?.image
         }
         if(isAdd){
             categoriesService.create(data)?.then(res=>{
@@ -113,7 +110,7 @@ const AddCategoriesModal = ({addModal, setAddModal, item, setShouldUpdate})=>{
                                 type='text'
                                 placeholder={Translate[lang]?.english}
                                 bsSize="lg"
-                                name='name'
+                                name='name_en'
                                 validate={{
                                     required: {
                                         value: true,
@@ -124,8 +121,8 @@ const AddCategoriesModal = ({addModal, setAddModal, item, setShouldUpdate})=>{
                                         errorMessage: `English format is invalid`
                                     }
                                 }}
-                                value={formData.name}
-                                onChange={(e) => setFormData({...formData, name: e.target.value})}
+                                value={formData.name_en}
+                                onChange={(e) => setFormData({...formData, name_en: e.target.value})}
                             />
                         </Col>
                         <Col md={6}>
@@ -134,19 +131,15 @@ const AddCategoriesModal = ({addModal, setAddModal, item, setShouldUpdate})=>{
                                 type='text'
                                 placeholder={Translate[lang]?.arabic}
                                 bsSize="lg"
-                                name='name'
+                                name='name_ar'
                                 validate={{
                                     required: {
                                         value: true,
                                         errorMessage: Translate[lang].field_required
                                     },
-                                    // pattern: {
-                                    //     value: '/^[A-Za-z0-9 ]+$/',
-                                    //     errorMessage: `English format is invalid`
-                                    // }
                                 }}
-                                value={formData.name}
-                                onChange={(e) => setFormData({...formData, name: e.target.value})}
+                                value={formData.name_ar}
+                                onChange={(e) => setFormData({...formData, name_ar: e.target.value})}
                             />
                         </Col>
                         <Col md={12}>
@@ -158,31 +151,23 @@ const AddCategoriesModal = ({addModal, setAddModal, item, setShouldUpdate})=>{
                                                 type="file" 
                                                 className="d-block w-100 h-100 cursor-pointer" 
                                                 style={{opacity: '0'}}
-                                                onChange={(e) => fileHandler(e)} 
-                                                id={`imageUpload`} 
+                                                onChange={(e) => fileHandler(e)}
                                             /> 					
-                                            {/* <label htmlFor={`imageUpload`}  name=''></label> */}
                                         </div>
                                         <div className="avatar-preview2 m-auto">
-                                            <div id={`imagePreview`}>
-                                            {!!formData?.img && 
-                                                <img alt='icon'
-                                                    id={`saveImageFile`} 
-                                                    className='w-100 h-100' 
-                                                    style={{borderRadius: '30px'}} 
-                                                    src={formData?.img|| URL.createObjectURL(files)}
+                                            <div>
+                                            {!!formData?.image && <img src={formData.image} alt='icon'
+                                                    className='w-100 h-100' style={{borderRadius: '30px'}} 
                                                 />}
-                                            {/* {files[0]?.name && <img id={`saveImageFile`} className='w-100 h-100' style={{borderRadius: '30px'}} src={URL.createObjectURL(files[0])} alt='icon' />} */}
-                                            {(!formData?.img && !loading) && 
-                                                <img 
-                                                    id={`saveImageFile`} 
+                                            {(!formData?.image && !loading) && 
+                                                <img
                                                     src={uploadImg} alt='icon'
                                                     style={{
                                                         width: '80px',
                                                         height: '80px',
                                                     }}
                                                 />}
-                                            {(!formData?.img && loading) && <Loader />}
+                                            {(!formData?.image && loading) && <Loader />}
                                             </div>
                                         </div>
                                     </div>

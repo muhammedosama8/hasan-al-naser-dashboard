@@ -2,11 +2,12 @@ import { Button, Col, Modal, Row } from "react-bootstrap"
 import {AvForm} from "availity-reactstrap-validation";
 import { useState } from "react";
 import { toast } from "react-toastify";
+import VariantService from "../../../../../services/VariantService";
 
-const ChooseEditModal = ({modal, setModal, variants, setShouldUpdate})=>{
+const DeleteVariantModal = ({modal, setModal, variants, setShouldUpdate})=>{
     const [choose, setChoose] = useState([])
     const [loading, setLoading] = useState(false)
-    // const variantService= new VariantService()
+    const variantService= new VariantService()
 
     const submit = () =>{
         if(choose.length === 0){
@@ -15,13 +16,13 @@ const ChooseEditModal = ({modal, setModal, variants, setShouldUpdate})=>{
         }
         setLoading(true)
         choose.map(async (item,index) => {
-            // const response = await variantService.remove(item.id);
-            // if (response?.status === 200) {
-            //     if(index === choose.length-1) {
-            //         toast.success('Deleted Successfully')
-            //         setShouldUpdate(prev => !prev);
-            //     }
-            // }
+            const response = await variantService.remove(item.id);
+            if (response?.status === 200) {
+                if(index === choose.length-1) {
+                    toast.success('Deleted Successfully')
+                    setShouldUpdate(prev => !prev);
+                }
+            }
             if(index === choose.length-1) setLoading(false)
         })
     }
@@ -77,4 +78,4 @@ const ChooseEditModal = ({modal, setModal, variants, setShouldUpdate})=>{
         </Modal>)
 }
 
-export default ChooseEditModal;
+export default DeleteVariantModal;

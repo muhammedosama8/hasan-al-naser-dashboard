@@ -15591,7 +15591,7 @@ html[dir="rtl"]
 .deznav {
   width: 290px;
   padding: 24px;
-  padding-bottom: 0;
+  /* padding-bottom: 0; */
   height: calc(100vh - 62px);
   position: absolute;
   top: 62px;
@@ -15636,6 +15636,13 @@ html[dir="rtl"]
 }
 .deznav .metismenu > li a {
   color: var(--bg-primary);
+}
+.deznav .mm-active li a{
+  color: #000;
+}
+.deznav .metismenu > li a.active {
+  color: var(--bg-primary);
+  background: #d2d2d2
 }
 .deznav .metismenu > li:hover a {
   color: #000;
@@ -15720,11 +15727,17 @@ html[dir="rtl"]
   border-radius: 16px;
   margin-bottom: 14px;
 }
+.deznav .metismenu li:last-of-type {
+  margin-bottom: 0;
+}
+.deznav .metismenu ul.show {
+  background-color: #dedede;
+}
 .deznav .metismenu ul {
   transition: all 0.2s ease-in-out;
   position: relative;
   z-index: 1;
-  padding: 5px 0;
+  /* padding: 5px 0; */
 }
 .deznav .metismenu ul a {
   padding-top: 0.5rem;
@@ -16447,6 +16460,9 @@ Fixing Order => Base + Typography >> General Layout + Grid >> Page Layout + Comp
   -ms-transition: all 0.5s;
   transition: all 0.5s;
   position: relative;
+}
+.deznav .metismenu > li > a.has-arrow {
+  border-radius: 16px 16px 0 0!important;
 }
 @media only screen and (max-width: 1400px) {
   [data-sidebar-style="full"][data-layout="vertical"]
