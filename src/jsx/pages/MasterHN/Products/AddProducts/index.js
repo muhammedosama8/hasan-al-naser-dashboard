@@ -132,8 +132,8 @@ const MasterHNAddProducts = () => {
           let response = res[0].data?.data;
           data = {
             ...response?.product,
-            offerPrice: !!Number(response.product.offerPrice)
-              ? response.product.offerPrice
+            offerPrice: !!response.product.offerPrice
+              ? Number(response.product.offerPrice)
               : "",
             category: {
               ...response?.product.category,
@@ -291,9 +291,9 @@ const MasterHNAddProducts = () => {
       description_ar: product.description_ar,
       bestSeller: product.bestSeller,
       newIn: product.newIn,
-      offer: product.offer,
-      offerPrice: parseFloat(product.offerPrice),
+      offer: product.offer
     };
+    if(!!product.offerPrice) data['offerPrice'] = product.offerPrice
     if(!id) data['all_image']= imagesForAll
     if(!id && hasVariant) data['variant_data'] = customVariant?.map(({ quantity, images }) => ({ quantity,images }))?.map((res) => {
       return {

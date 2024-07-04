@@ -36,6 +36,7 @@ const Pagination = ({
         setData([...res.data?.data?.data]);
         let total = Math.ceil(res.data?.data?.totalItems / 15);
         setTotalPages(total);
+        console.log(total, res.data?.data);
         if (res.data?.data?.totalItems > 0) {
           setHasData(1);
         } else {
@@ -71,8 +72,7 @@ const Pagination = ({
               )}{" "}
               {Translate[lang]?.previous}
             </button>
-            {8 <= 6 ? (
-              <div className="d-flex" style={{ gap: "5px" }}>
+            <div className="d-flex" style={{ gap: "5px" }}>
                 {Array.from(
                   { length: totalPages },
                   (_, index) => index + 1
@@ -81,7 +81,6 @@ const Pagination = ({
                     <p
                       onClick={() => {
                         setPage(num);
-                        setPageShow(num);
                       }}
                       style={{
                         padding: "5px 10px",
@@ -97,37 +96,7 @@ const Pagination = ({
                     </p>
                   );
                 })}
-              </div>
-            ) : (
-              <div className="d-flex" style={{ gap: "5px" }}>
-                {Array.from({ length: 8 }, (_, index) => index + 1)
-                  ?.slice(page - 1, page + 6)
-                  ?.map((num, index) => {
-                    // if (index < 3 || index >= 8 - 3) {
-                    return (
-                      <p
-                        onClick={() => {
-                          setPage(num);
-                          setPageShow(num);
-                        }}
-                        style={{
-                          padding: "5px 10px",
-                          margin: "0",
-                          cursor: "pointer",
-                          color:
-                            parseInt(page) === parseInt(num)
-                              ? "var(--primary)"
-                              : "",
-                        }}
-                      >
-                        {num}
-                      </p>
-                    );
-                    // }
-                    // return <span>...</span>;
-                  })}
-              </div>
-            )}
+            </div>
             <button
               className="next-button"
               onClick={() => {

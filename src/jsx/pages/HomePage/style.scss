@@ -1,6 +1,11 @@
+.home{
 .banners{
     .image-placeholder{
         max-width: 100%;
+        margin: 0;
+    }
+    .avatar-preview.banner{
+        height: 200px !important;
     }
     .avatar-preview{
         height: 25rem;
@@ -12,15 +17,15 @@
     .rdw-editor-main{
         height: 200px;
     }
+    .avatar-preview{
+        height: 14rem !important;
+    }
 }
 .our-clients{
     .image-placeholder{
+        margin: 0;
         .avatar-preview{
             height: 9rem !important;
-        }
-        
-        img{
-            border-radius: 30px;
         }
     }
 }
@@ -51,11 +56,13 @@
 .h-25rem{
     height: 25rem !important;
 }
-.h-10rem{
-    height: 10rem !important;
-}
+
 .editorClassName{
     padding: 12px !important;
     border: 1px solid #dedede;
     border-radius: 8px;
+}
+.wrapperClassName {
+    height: auto;
+}
 }

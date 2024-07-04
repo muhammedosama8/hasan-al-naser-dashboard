@@ -59,12 +59,13 @@ const HomePage = () => {
             tags: banner?.tags?.map(tag=> tag?.name)
           }
         });
-        data['banners']= [...banners]
+
+        if(banners?.length > 0) data['banners']= [...banners]
       }
 
       if(res[1]?.status === 200){
-        data['collection'] = {
-          images: res[0]?.data.data?.Collection_images?.map(img=>{
+        if(res[1]?.data?.data?.Collection_images?.length > 0 || res[1]?.data?.data?.description) data['collection'] = {
+          images: res[1]?.data.data?.Collection_images?.map(img=>{
             return{
               src: img.url,
               loading: false
@@ -202,7 +203,7 @@ const HomePage = () => {
       setCollectionLoading(false);
     }).catch(()=> setCollectionLoading(false));
   }
-
+console.log(formData?.banners)
   const handleBanners = (e) =>{
     e.preventDefault();
 
@@ -210,10 +211,10 @@ const HomePage = () => {
     let data = {
       banners: formData?.banners?.filter(res=> !!res.src)?.map(res=> {
         return {
-          tags: res.tags?.filter(res => !!res),
-          catalog: res.catalog,
-          description: res.description,
-          title: res.title,
+          // tags: res.tags?.filter(res => !!res),
+          // catalog: res.catalog,
+          // description: res.description,
+          // title: res.title,
           image: res.src
         }
       })
@@ -292,7 +293,7 @@ const HomePage = () => {
     setFormData({...formData, collection: {...formData.collection, images: update}})
   }
 
-  return <>
+  return <div className="home">
     <Card>
       <Card.Body>
         <AvForm onValidSubmit={handleBanners}>
@@ -335,7 +336,7 @@ const HomePage = () => {
                             ) : (
                               <div id={`imagePreview-${index}`}>
                                 {(!banner.src && banner.loading)  && <Loader></Loader>}
-                                {!banner?.src && (
+                                {(!banner?.src && !banner.loading) && (
                                   <img
                                     id={`saveImageFile-${index}`}
                                     src={uploadImg}
@@ -375,7 +376,7 @@ const HomePage = () => {
                           }}
                         />
                       </div>
-                      <div className="col-lg-12 col-sm-12 mb-3">
+                      {/*<div className="col-lg-12 col-sm-12 mb-3">
                         <AvField
                           label ={Translate[lang]?.description}
                           name ='description'
@@ -424,7 +425,7 @@ const HomePage = () => {
                       >
                         <i className="la la-trash text-danger"></i>
                       </button>
-                          <div className="avatar-preview h-10rem">
+                          <div className="avatar-preview banner h-10rem">
                             {!!banner.catalog ? (
                               <div id={`imagePreview-${index}`}>
                                 <i className="la la-file-pdf" style={{fontSize: '8rem'}}></i>
@@ -447,9 +448,9 @@ const HomePage = () => {
                             )}
                           </div>
                         </div>
-                      </div>
-                      <div className="col-lg-12 col-sm-12 mb-3">{Translate[lang]?.tags}:</div>
-                      {banner?.tags?.map((tag, ind) =>{
+                      </div> */}
+                      {/* <div className="col-lg-12 col-sm-12 mb-3">{Translate[lang]?.tags}:</div> */}
+                      {/* {banner?.tags?.map((tag, ind) =>{
                         return <div className="col-lg-3 col-sm-6 mb-3" key={ind}>
                         <AvField
                           label={`${Translate[lang]?.tag} ${ind+1} :`}
@@ -479,8 +480,8 @@ const HomePage = () => {
                           }}
                         />
                       </div>
-                      })}
-                      {banner.tags?.length < 6 && 
+                      })} */}
+                      {/* {banner.tags?.length < 6 && 
                         <div className="col-lg-3 col-sm-6 " style={{display: 'contents'}}>
                           <Button  style={{height: 'fit-content', margin: 'auto 12px'}} variant="secondary" onClick={()=>{
                             let update = formData.banners?.map((res,ind)=>{
@@ -497,7 +498,7 @@ const HomePage = () => {
                           }}>
                             + {Translate[lang].add} {Translate[lang].tags}
                           </Button>
-                        </div>}
+                        </div>} */}
                       <hr/>
                   </div>
                 })}
@@ -506,7 +507,8 @@ const HomePage = () => {
                 }}>
                     <div className="add-client">
                         <i className="la la-plus cursor-pointer" onClick={()=>{
-                            setFormData({...formData, banners: [...formData.banners, { src: "", title: "",catalog: '', description: "", tags: ["", "", "", "", "", ""], loading: false }]})
+                            setFormData({...formData, banners: [...formData.banners, { src: "", loading: false }]})
+                            // setFormData({...formData, banners: [...formData.banners, { src: "", title: "",catalog: '', description: "", tags: ["", "", "", "", "", ""], loading: false }]})
                         }}></i>
                     </div>
                 </div>
@@ -602,10 +604,10 @@ const HomePage = () => {
     <Card>
       <Card.Body>
         <AvForm onValidSubmit={handleBarcode}>
-         <div className="our-clients mt-3">
+         <div className="our-clients">
             <h3>{Translate[lang]?.barcode}</h3>
-            <div className="row mt-4">
-              <div className="col-lg-2 col-sm-4 mb-3">
+            <div className="row">
+              <div className="col-lg-2 col-sm-4">
                     <div className="image-placeholder">
                       <div className="avatar-edit w-100 h-100">
                         <input
@@ -639,7 +641,7 @@ const HomePage = () => {
                         ) : (
                           <div>
                             {(!formData.barcode?.src && formData.barcode?.loading)  && <Loader></Loader>}
-                            {(!formData.barcode?.src && formData.barcode?.loading) && (
+                            {(!formData.barcode?.src && !formData.barcode?.loading) && (
                               <img
                                 src={uploadImg}
                                 alt="icon"
@@ -657,12 +659,12 @@ const HomePage = () => {
             </div>
          </div>
     
-         {isExist('branding') &&<div className="d-flex justify-content-between mt-4">
+         {isExist('home') &&<div className="d-flex justify-content-between mt-4">
             <Button variant="primary" type="submit" disabled={barcodeLoading}>{Translate[lang]?.submit}</Button>
          </div>}
         </AvForm>
       </Card.Body>
     </Card>
-    </>
+    </div>
 }
 export default HomePage;
