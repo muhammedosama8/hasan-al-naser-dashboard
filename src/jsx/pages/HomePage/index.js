@@ -211,10 +211,10 @@ console.log(formData?.banners)
     let data = {
       banners: formData?.banners?.filter(res=> !!res.src)?.map(res=> {
         return {
-          // tags: res.tags?.filter(res => !!res),
-          // catalog: res.catalog,
-          // description: res.description,
-          // title: res.title,
+          tags: res.tags?.filter(res => !!res),
+          catalog: res.catalog,
+          description: res.description,
+          title: res.title,
           image: res.src
         }
       })
@@ -376,7 +376,7 @@ console.log(formData?.banners)
                           }}
                         />
                       </div>
-                      {/*<div className="col-lg-12 col-sm-12 mb-3">
+                      <div className="col-lg-12 col-sm-12 mb-3">
                         <AvField
                           label ={Translate[lang]?.description}
                           name ='description'
@@ -448,9 +448,9 @@ console.log(formData?.banners)
                             )}
                           </div>
                         </div>
-                      </div> */}
-                      {/* <div className="col-lg-12 col-sm-12 mb-3">{Translate[lang]?.tags}:</div> */}
-                      {/* {banner?.tags?.map((tag, ind) =>{
+                      </div>
+                      <div className="col-lg-12 col-sm-12 mb-3">{Translate[lang]?.tags}:</div>
+                      {banner?.tags?.map((tag, ind) =>{
                         return <div className="col-lg-3 col-sm-6 mb-3" key={ind}>
                         <AvField
                           label={`${Translate[lang]?.tag} ${ind+1} :`}
@@ -480,8 +480,8 @@ console.log(formData?.banners)
                           }}
                         />
                       </div>
-                      })} */}
-                      {/* {banner.tags?.length < 6 && 
+                      })}
+                      {banner.tags?.length < 6 && 
                         <div className="col-lg-3 col-sm-6 " style={{display: 'contents'}}>
                           <Button  style={{height: 'fit-content', margin: 'auto 12px'}} variant="secondary" onClick={()=>{
                             let update = formData.banners?.map((res,ind)=>{
@@ -498,7 +498,7 @@ console.log(formData?.banners)
                           }}>
                             + {Translate[lang].add} {Translate[lang].tags}
                           </Button>
-                        </div>} */}
+                        </div>}
                       <hr/>
                   </div>
                 })}
@@ -507,8 +507,7 @@ console.log(formData?.banners)
                 }}>
                     <div className="add-client">
                         <i className="la la-plus cursor-pointer" onClick={()=>{
-                            setFormData({...formData, banners: [...formData.banners, { src: "", loading: false }]})
-                            // setFormData({...formData, banners: [...formData.banners, { src: "", title: "",catalog: '', description: "", tags: ["", "", "", "", "", ""], loading: false }]})
+                            setFormData({...formData, banners: [...formData.banners, { src: "", title: "",catalog: '', description: "", tags: ["", "", "", "", "", ""], loading: false }]})
                         }}></i>
                     </div>
                 </div>
