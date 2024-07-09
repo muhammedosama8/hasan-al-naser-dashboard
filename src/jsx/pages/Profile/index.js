@@ -155,10 +155,6 @@ const Profile = () =>{
                                     required: {
                                         value: true,
                                         errorMessage: Translate[lang].field_required
-                                    },
-                                    pattern: {
-                                        value: '/^[A-Za-z0-9 ]+$/',
-                                        errorMessage: `Name format is invalid`
                                     }
                                 }}
                                 value={admin.f_name}
@@ -176,10 +172,6 @@ const Profile = () =>{
                                     required: {
                                         value: true,
                                         errorMessage: Translate[lang].field_required
-                                    },
-                                    pattern: {
-                                        value: '/^[A-Za-z0-9 ]+$/',
-                                        errorMessage: `Name format is invalid`
                                     }
                                 }}
                                 value={admin.l_name}
@@ -235,10 +227,6 @@ const Profile = () =>{
                                     required: {
                                         value: true,
                                         errorMessage: Translate[lang].field_required
-                                    },
-                                    pattern: {
-                                        value: '/^[0-9 ]+$/',
-                                        errorMessage: `Phone format is invalid`
                                     }
                                 }}
                                 value={admin.phone}

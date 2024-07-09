@@ -115,10 +115,6 @@ const AddCategoriesModal = ({addModal, setAddModal, item, setShouldUpdate})=>{
                                     required: {
                                         value: true,
                                         errorMessage: Translate[lang].field_required
-                                    },
-                                    pattern: {
-                                        value: '/^[A-Za-z0-9 ]+$/',
-                                        errorMessage: `English format is invalid`
                                     }
                                 }}
                                 value={formData.name_en}

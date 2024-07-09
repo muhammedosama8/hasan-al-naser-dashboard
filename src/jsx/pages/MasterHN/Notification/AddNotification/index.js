@@ -58,10 +58,6 @@ const AddNotification = ()=>{
                                     required: {
                                         value: true,
                                         errorMessage: Translate[lang].field_required
-                                    },
-                                    pattern: {
-                                        value: '/^[A-Za-z0-9 ]+$/',
-                                        errorMessage: `English format is invalid`
                                     }
                                 }}
                                 value={formData.title_en}
@@ -81,10 +77,6 @@ const AddNotification = ()=>{
                                         value:true,
                                         errorMessage: Translate[lang].field_required
                                     },
-                                    pattern: {
-                                        value: '/^[\u0621-\u064A0-9 ]+$/',
-                                        errorMessage: `Arabic format is invalid`
-                                    }
                                 }}
                                 onChange={(e) => setFormData({...formData, title_ar: e.target.value})}
                             />

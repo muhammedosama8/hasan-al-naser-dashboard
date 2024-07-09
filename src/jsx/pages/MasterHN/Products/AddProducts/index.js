@@ -386,10 +386,6 @@ const MasterHNAddProducts = () => {
                   value: true,
                   errorMessage: Translate[lang].field_required,
                 },
-                pattern: {
-                  value: "/^[A-Za-z0-9 ]+$/",
-                  errorMessage: `English format is invalid`,
-                },
               }}
               value={product.name_en}
               onChange={(e) => handlerText(e)}
@@ -407,11 +403,7 @@ const MasterHNAddProducts = () => {
                 required: {
                   value: true,
                   errorMessage: Translate[lang].field_required,
-                },
-                pattern: {
-                  value: "/^[\u0621-\u064A0-9١-٩ ]+$/",
-                  errorMessage: `Arabic format is invalid`,
-                },
+                }
               }}
               onChange={(e) => handlerText(e)}
             />
@@ -506,11 +498,7 @@ const MasterHNAddProducts = () => {
                 required: {
                   value: true,
                   errorMessage: Translate[lang].field_required,
-                },
-                pattern: {
-                  value: "/^[A-Za-z0-9 ]+$/",
-                  errorMessage: `Code format is invalid`,
-                },
+                }
               }}
               value={product.code}
               onChange={(e) => handlerText(e)}
@@ -733,10 +721,6 @@ const MasterHNAddProducts = () => {
                     required: {
                       value: true,
                       errorMessage: Translate[lang].field_required,
-                    },
-                    pattern: {
-                      value: "/^[0-9 ]+$/",
-                      errorMessage: `Format is invalid`,
                     },
                   }}
                   onChange={(e) => {
