@@ -3,13 +3,18 @@ import { Button, Card, Col, Row } from "react-bootstrap";
 import { useSelector } from "react-redux";
 import { toast } from "react-toastify";
 import Loader from "../../../common/Loader";
+import uploadImg from "../../../../images/upload-img.png";
 import { SocialMediaLinks } from "../../../Enums/SocialMedia";
 import { Translate } from "../../../Enums/Tranlate";
 import MHSocialMediaService from "../../../../services/MHSocialMediaService";
+import BaseService from "../../../../services/BaseService";
 
-const MasterSocialMedia = ()=>{
+const MasterSocialMedia = () => {
     const [links, setLinks] = useState({})
     const [loading, setLoading] = useState(false)
+    const [qrCode, setQrCode] = useState({
+        src: '', loading: false
+    })
     const [loadingData, setLoadingData] = useState(false)
     const [isAdd, setIsAdd] = useState(false)
     const Auth = useSelector(state=> state.auth?.auth)
@@ -17,10 +22,11 @@ const MasterSocialMedia = ()=>{
     const socialMediaService = new MHSocialMediaService()
     const isExist = (data)=> Auth?.admin?.admin_roles?.includes(data)
 
-    useEffect(()=>{
+    useEffect(() => {
         setLoadingData(true)
         socialMediaService?.getList()?.then(res=>{
             if(res?.status === 200 && res?.data?.data){
+                if(!!res?.data?.data?.qr_code) setQrCode({src: res?.data?.data?.qr_code, loading: false})
                 setLinks({...res.data?.data})
                 setIsAdd(false)
             } else{
@@ -33,19 +39,25 @@ const MasterSocialMedia = ()=>{
         })
     },[])
 
-    const inputHandler =(e)=>{
+    const inputHandler = (e) => {
         setLinks({...links,[e.target.name]: e.target.value})
     }
 
-    const onSubmit = (e)=> {
+    const fileHandler = (e) => {
+        let filesAll = e.target.files;
+        const filesData = Object.values(filesAll);
+        setQrCode({ src: '' , loading: true });
+
+        new BaseService().postUpload(filesData[0]).then((res) => {
+          if (res?.data?.status) {
+            setQrCode({ src: res.data.url , loading: false });
+          }
+        });
+    };
+
+    const onSubmit = (e) => {
         e.preventDefault()
-        // const result = areAllValuesFilled(links);
-        // if(result) return
-        // if(!links.facebook && !links.instagram && !links.snapchat && !links.tiktok
-        //     && !links.twitter && !links.whatsapp){
-        //         toast.error('Enter Value')
-        //         return
-        // }
+
         let data = {}
         if(!!links.snapchat) data['snapchat'] = links.snapchat
         if(!!links.facebook) data['facebook'] = links.facebook
@@ -54,12 +66,11 @@ const MasterSocialMedia = ()=>{
         if(!!links.twitter) data['twitter'] = links.twitter
         if(!!links.gmail) data['gmail'] = links.gmail
         if(!!links.address) data['address'] = links.address
-        // if(!!links.play_store) data['play_store'] = links.play_store
-        // if(!!links.app_store) data['app_store'] = links.app_store
         if(!!links.call_us) data['call_us'] = links.call_us
         if(!!links.time_to) data['time_to'] = links.time_to
         if(!!links.time_from) data['time_from'] = links.time_from
         if(!!links.tiktok) data['tiktok'] = links.tiktok
+        if(!!qrCode?.src) data['qr_code'] = qrCode?.src
 
         setLoading(true)
         socialMediaService?.create(data)?.then(res=>{
@@ -126,6 +137,28 @@ const MasterSocialMedia = ()=>{
                             </Col>
                         }
                     })}
+                    <Col md={3} sm={6}>
+                        <label className="m-0">{Translate[lang]?.barcode}</label>
+                        <div className="image-placeholder">
+                        <div className="avatar-edit">
+                            <input
+                            type="file"
+                            disabled={!isAdd}
+                            onChange={(e) => fileHandler(e)}
+                            id={`imageUpload`}
+                            />
+                            <label htmlFor={`imageUpload`} name=""></label>
+                        </div>
+                        <div className="avatar-preview4" style={{width: '9rem'}}>
+                            {!!qrCode.src ? <div>
+                                <img src={qrCode?.src} alt="icon" className="w-100 h-100" />
+                            </div> : <div>
+                                {!loading && <img src={uploadImg} alt="icon" style={{width: "60px", height: "60px"}} />}
+                                {loading && <Loader />}
+                            </div>}
+                        </div>
+                        </div>
+                    </Col>
                 </Row>
                 {isExist('masterHN') && <div className="d-flex justify-content-end">
                     {isAdd && <Button variant="primary" type="submit" disabled={loading}>

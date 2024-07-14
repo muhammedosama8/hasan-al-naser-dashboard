@@ -134,6 +134,12 @@ export const MenuList = [
             rule: "masterHN",
           },
           {
+            title: "Contact Us",
+            text: "contact_us",
+            to: "masterHN/contact-us",
+            rule: "home",
+          },
+          {
             title: "Currency",
             text: "currency",
             to: "currency",

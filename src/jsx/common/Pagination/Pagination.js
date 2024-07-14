@@ -36,7 +36,6 @@ const Pagination = ({
         setData([...res.data?.data?.data]);
         let total = Math.ceil(res.data?.data?.totalItems / 15);
         setTotalPages(total);
-        console.log(total, res.data?.data);
         if (res.data?.data?.totalItems > 0) {
           setHasData(1);
         } else {

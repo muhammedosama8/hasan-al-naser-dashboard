@@ -51,6 +51,7 @@ import StyleUp from "./pages/MasterHN/StyleUp";
 import Home from "./pages/MasterHN/Dashboard";
 import Users from "./pages/MasterHN/Users";
 import UserProfile from "./pages/MasterHN/Users/Profile";
+import MHNContactUs from "./pages/MasterHN/ContactUs";
 
 const Markup = () => {
   const location = useLocation()
@@ -99,6 +100,8 @@ const Markup = () => {
     { url: "masterHN/products/add-products/:id", component: <MasterHNAddProducts /> },
   
     { url: "masterHN/categories", component: <Categories /> },
+
+    { url: "masterHN/contact-us", component: <MHNContactUs /> },
 
     //  => DynamicVariant
     { url: "dynamic-variant", component: <DynamicVariant /> },

@@ -203,7 +203,7 @@ const HomePage = () => {
       setCollectionLoading(false);
     }).catch(()=> setCollectionLoading(false));
   }
-console.log(formData?.banners)
+
   const handleBanners = (e) =>{
     e.preventDefault();
 
