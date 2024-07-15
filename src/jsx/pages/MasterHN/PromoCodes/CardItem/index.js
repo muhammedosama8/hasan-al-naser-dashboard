@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { Translate } from "../../../../Enums/Tranlate";
 import DeleteModal from "../../../../common/DeleteModal";
+import PromoCodeService from "../../../../../services/PromoCodeService";
 
 const CardItem = ({item, index, setShouldUpdate}) =>{
     const [status, setStatus] = useState(null)
@@ -12,7 +13,7 @@ const CardItem = ({item, index, setShouldUpdate}) =>{
     const Auth = useSelector(state=> state.auth?.auth)
     const lang = useSelector(state=> state.auth?.lang)
     const isExist = (data)=> Auth?.admin?.admin_roles?.includes(data)
-    // const promoCodeService = new PromoCodeService()
+    const promoCodeService = new PromoCodeService()
     const navigate = useNavigate()
 
     useEffect(()=>{
@@ -21,11 +22,11 @@ const CardItem = ({item, index, setShouldUpdate}) =>{
 
     const changeStatusToggle = (e)=>{
         setStatus(e.target.checked)
-        // promoCodeService.toggleStatus(item?.id, {is_active: e.target.checked}).then(res=>{
-        //   if(res?.status === 200){
-        //     toast.success('Update Status Successfully')
-        //   }
-        // })
+        promoCodeService.toggleStatus(item?.id, {is_active: e.target.checked}).then(res=>{
+          if(res?.status === 200){
+            toast.success('Update Status Successfully')
+          }
+        })
     }
     
     return(
@@ -69,7 +70,7 @@ const CardItem = ({item, index, setShouldUpdate}) =>{
                       open={deleteModal}
                       titleMsg={item.name}
                       deletedItem={item}
-                      // modelService={promoCodeService}
+                      modelService={promoCodeService}
                       onCloseModal={setDeleteModal}
                       setShouldUpdate={setShouldUpdate}
                     />}

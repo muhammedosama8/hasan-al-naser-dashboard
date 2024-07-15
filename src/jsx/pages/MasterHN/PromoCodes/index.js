@@ -2,24 +2,24 @@ import { useState } from "react";
 import { Button, Card, Table } from "react-bootstrap";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-// import PromoCodeService from "../../../services/PromoCodeService";
 import CardItem from "./CardItem";
 import { Translate } from "../../../Enums/Tranlate";
 import Loader from "../../../common/Loader";
 import NoData from "../../../common/NoData";
 import Pagination from "../../../common/Pagination/Pagination";
+import PromoCodeService from "../../../../services/PromoCodeService";
 
 const PromCodes = () =>{
     const [promCodes, setPromCodes] =useState([])
     const [search, setSearch] =useState(null)
-    const [hasData, setHasData] = useState(0)
+    const [hasData, setHasData] = useState(null)
     const [loading, setLoading] =useState(false)
     const [shouldUpdate, setShouldUpdate] = useState(false)
     const navigate = useNavigate()
     const Auth = useSelector(state=> state.auth?.auth)
     const lang = useSelector(state=> state.auth?.lang)
     const isExist = (data)=> Auth?.admin?.admin_roles?.includes(data)
-    // const promoCodeService = new PromoCodeService()
+    const promoCodeService = new PromoCodeService()
 
     return(
         <>
@@ -94,14 +94,14 @@ const PromCodes = () =>{
               </Table>}
 
               {hasData === 0 && <NoData />}
-              {/* <Pagination
+              <Pagination
                   setData={setPromCodes}
-                  // service={promoCodeService}
+                  service={promoCodeService}
                   shouldUpdate={shouldUpdate}
                   setHasData={setHasData}
                   setLoading={setLoading}
                   search={search}
-              /> */}
+              />
             </Card.Body>
           </Card>
         </>

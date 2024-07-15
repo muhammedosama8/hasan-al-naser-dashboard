@@ -139,12 +139,12 @@ export const MenuList = [
             to: "masterHN/contact-us",
             rule: "home",
           },
-          {
-            title: "Currency",
-            text: "currency",
-            to: "currency",
-            rule: "masterHN",
-          },
+          // {
+          //   title: "Currency",
+          //   text: "currency",
+          //   to: "currency",
+          //   rule: "masterHN",
+          // },
           {
             title: "Payment",
             text: "payment",

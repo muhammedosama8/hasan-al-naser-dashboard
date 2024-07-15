@@ -5,8 +5,14 @@ import { useLocation, useNavigate } from "react-router-dom";
 import Select from 'react-select'
 import { toast } from "react-toastify";
 import { Translate } from "../../../../Enums/Tranlate";
+import PromoCodeService from "../../../../../services/PromoCodeService";
 
 const AddPromoCodes = () => {
+   const lang = useSelector(state=> state.auth.lang)
+   let tOptions = [
+      {label: Translate[lang].percentage, value: 'percentage'},
+      {label: Translate[lang].fixed, value: 'fixed'},
+   ]
    const location = useLocation();
    const stateData = location.state;
    const [formData, setFormData] = useState({
@@ -19,25 +25,21 @@ const AddPromoCodes = () => {
    })
    const [isAdd, setIsAdd] = useState(false)
    const [loading, setLoading] = useState(false)
-   // const promoCodeService = new PromoCodeService()
+   const promoCodeService = new PromoCodeService()
    const navigate = useNavigate()
    const [ typesOptions, setTypesOptions]= useState([])
-   const lang = useSelector(state=> state.auth.lang)
 
    const handlerText = (e)=>{
       setFormData({...formData, [e.target.name]: e.target.value})
    }
 
    useEffect(()=>{
-      setTypesOptions([
-         {label: Translate[lang].percentage, value: 'percentage'},
-         {label: Translate[lang].fixed, value: 'fixed'},
-      ])
+      setTypesOptions(tOptions)
       if(stateData){
          setFormData({
             name: stateData.item?.name,
             amount: stateData.item?.amount,
-            type: typesOptions?.filter(res=> res.value === stateData.item?.Type)[0],
+            type: tOptions?.find(res=> res.value === stateData.item?.Type),
             end_date: stateData.item?.end_date.split('T')[0],
             max_usage: stateData.item?.max_usage || '',
             count_usage: stateData.item?.count_usage || '',
@@ -59,23 +61,23 @@ const AddPromoCodes = () => {
          count_usage: parseInt(formData?.count_usage) || 0
         }
          setLoading(true)
-         // if(isAdd){
-         //    promoCodeService.create(data).then(res=>{
-         //       if(res?.status === 201){
-         //          toast?.success('Promocode Added Succssefully')
-         //          navigate('/promo-codes')
-         //       }
-         //       setLoading(false)
-         //   })
-         // } else {
-         //    promoCodeService.update(stateData?.item?.id, data).then(res=>{
-         //       if(res?.status === 200){
-         //          toast?.success('Promocode Updated Succssefully')
-         //          navigate('/promo-codes')
-         //       }
-         //      })
-         //      setLoading(false)
-         //    }
+         if(isAdd){
+            promoCodeService.create(data).then(res=>{
+               if(res?.status === 201){
+                  toast?.success('Promocode Added Succssefully')
+                  navigate('/promo-codes')
+               }
+               setLoading(false)
+           })
+         } else {
+            promoCodeService.update(stateData?.item?.id, data).then(res=>{
+               if(res?.status === 200){
+                  toast?.success('Promocode Updated Succssefully')
+                  navigate('/promo-codes')
+               }
+              })
+              setLoading(false)
+            }
    }
 
    return(<Card>
