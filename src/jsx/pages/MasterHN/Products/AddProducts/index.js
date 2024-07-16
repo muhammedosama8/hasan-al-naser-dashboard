@@ -47,7 +47,7 @@ const MasterHNAddProducts = () => {
   const [id, setId] = useState(null);
   const [loading, setLoadning] = useState(false);
   const [imagesForAll, setImagesForAll] = useState(false);
-  const [productForAll, setProductForAll] = useState(false);
+  const [productForAll, setProductForAll] = useState(true);
   const [hasVariant, setHasVariant] = useState(false);
   const [view, setView] = useState(false);
   const [categoriesOptions, setCategoriesOptions] = useState([]);
@@ -86,9 +86,11 @@ const MasterHNAddProducts = () => {
           if(res?.data?.data.data?.length > 0){
             setHasVariant(true)
             setImagesForAll(false)
+            setProductForAll(false)
           } else {
             setHasVariant(false)
             setImagesForAll(true)
+            setProductForAll(true)
           }
           let custom = res.data?.data.data?.reduce((result, item) => {
             result[item.name_en] = '';
@@ -509,7 +511,7 @@ const MasterHNAddProducts = () => {
               onChange={(e) => handlerText(e)}
             />
           </Col>
-          {!id && <Col md={6} sm={6} className="mb-3">
+          {(!id && hasVariant)&& <Col md={6} sm={6} className="mb-3">
             <label className="d-block text-label mb-0 mt-4" style={{ marginLeft: "8px" }}>
               <input
                 type='checkbox' 
