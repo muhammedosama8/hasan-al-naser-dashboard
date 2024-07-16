@@ -15,6 +15,7 @@ export const Arabic = {
   collection: "Collection",
   tags: "العلامات",
   catalog: "فهرس",
+  price_for_all_products: "السعر لكل المنتجات",
   tag: "العلامه",
   contact_us: "تواصل معنا",
   youtube: "يوتيوب",

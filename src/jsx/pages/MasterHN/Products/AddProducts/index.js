@@ -47,6 +47,7 @@ const MasterHNAddProducts = () => {
   const [id, setId] = useState(null);
   const [loading, setLoadning] = useState(false);
   const [imagesForAll, setImagesForAll] = useState(false);
+  const [productForAll, setProductForAll] = useState(false);
   const [hasVariant, setHasVariant] = useState(false);
   const [view, setView] = useState(false);
   const [categoriesOptions, setCategoriesOptions] = useState([]);
@@ -184,7 +185,7 @@ const MasterHNAddProducts = () => {
         }
         setProduct({ ...data });
         dispatch(loadingToggleAction(false));
-        setCustomVariant([{ ...obj, quantity: res[0].data?.data?.product?.amount }])
+        setCustomVariant([{ ...obj, quantity: res[0].data?.data?.product?.amount, price: res[0].data?.data?.product?.price }])
       })
     }
   }, []);
@@ -275,7 +276,6 @@ const MasterHNAddProducts = () => {
     let data = {
       name_en: product.name_en,
       name_ar: product.name_ar,
-      price: parseFloat(product.price),
       code: product.code,
       cost: product?.cost,
       category_id: product.category?.value,
@@ -291,29 +291,34 @@ const MasterHNAddProducts = () => {
       description_ar: product.description_ar,
       bestSeller: product.bestSeller,
       newIn: product.newIn,
-      offer: product.offer
+      offer: product.offer,
     };
+    if(productForAll) data['price'] = parseFloat(product.price)
     if(!!product.offerPrice) data['offerPrice'] = product.offerPrice
     if(!id) data['all_image']= imagesForAll
-    if(!id && hasVariant) data['variant_data'] = customVariant?.map(({ quantity, images }) => ({ quantity,images }))?.map((res) => {
-      return {
+    if(!id) data['all_price']= productForAll
+    if(!!id) data['price']= Number(customVariant[0]?.price)
+    if(!id && hasVariant) data['variant_data'] = customVariant?.map(({ quantity, images, price }) => ({ quantity,images, price }))?.map((res) => {
+      let info = {
+        price: Number(res?.price) || 0,
         images: res?.images?.filter(img=> !!img.src)?.map(img=> img.src),
         amount: Number(res?.quantity),
       };
+      return info
     })
     if(hasVariant){
-      data['variant'] = !id ? customVariant.map(({ quantity, images, ...rest }) => ({ ...rest }))?.map(res=>{
+      data['variant'] = !id ? customVariant.map(({ quantity, images, price, ...rest }) => ({ ...rest }))?.map(res=>{
         return Object.values(res).filter(item => !!item)?.map(data=>{
           return {
             variant_value_id: data?.id,
-                variant_id: data?.variant_id,
+            variant_id: data?.variant_id,
           }
         })
-      }) : customVariant.map(({ quantity, images, ...rest }) => ({ ...rest }))?.map(res=>{
+      }) : customVariant.map(({ quantity, images, price, ...rest }) => ({ ...rest }))?.map(res=>{
         return Object.values(res).filter(item => !!item)?.map(data=>{
           return {
             variant_value_id: data?.id,
-                variant_id: data?.variant_id,
+            variant_id: data?.variant_id,
           }
         })
       })[0]
@@ -504,7 +509,18 @@ const MasterHNAddProducts = () => {
               onChange={(e) => handlerText(e)}
             />
           </Col>
-          <Col md={6} sm={6} className="mb-3">
+          {!id && <Col md={6} sm={6} className="mb-3">
+            <label className="d-block text-label mb-0 mt-4" style={{ marginLeft: "8px" }}>
+              <input
+                type='checkbox' 
+                name='productForAll' 
+                className={`${lang === 'ar' ? 'ml-2' : 'mr-2'}`} 
+                onClick={(e) => setProductForAll(e.target.checked)} />
+              {Translate[lang]?.price_for_all_products}
+
+            </label>
+          </Col>}
+          {productForAll && <Col md={6} sm={6} className="mb-3">
             <AvField
               label={`${Translate[lang]?.price}*`}
               type="number"
@@ -522,7 +538,7 @@ const MasterHNAddProducts = () => {
               value={product.price}
               onChange={(e) => handlerText(e)}
             />
-          </Col>
+          </Col>}
           <Col md={6} sm={6} className="mb-3">
             <AvField
               label={`${Translate[lang]?.cost}*`}
@@ -738,6 +754,37 @@ const MasterHNAddProducts = () => {
                   }}
                 />
           </Col>
+          {!productForAll && <Col md={4}>
+                <AvField
+                  label={Translate[lang]?.price}
+                  type="number"
+                  placeholder={Translate[lang]?.price}
+                  min="0"
+                  bsSize="lg"
+                  disabled={view}
+                  name={`price${index}`}
+                  value={cVariant?.price}
+                  validate={{
+                    required: {
+                      value: true,
+                      errorMessage: Translate[lang].field_required,
+                    },
+                  }}
+                  onChange={(e) => {
+                    let update = customVariant?.map((res, ind) => {
+                      if (ind === index) {
+                        return {
+                          ...res,
+                          price: e.target.value,
+                        };
+                      } else{
+                        return res
+                      }
+                    });
+                    setCustomVariant([...update]);
+                  }}
+                />
+          </Col>}
           <Col md={12}>
           {(!id && !imagesForAll) && <>
             <label className="text-label mb-0 mt-4" style={{ marginLeft: "8px" }}>

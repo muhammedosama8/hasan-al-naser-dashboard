@@ -17,24 +17,51 @@ const Pagination = ({
 }) => {
   const [totalPages, setTotalPages] = useState();
   const [page, setPage] = useState(1);
-  const [pageShow, setPageShow] = useState(1);
   const lang = useSelector((state) => state.auth.lang);
+
+  useEffect(() => setPage(1),[search])
+  
+  const getPageNumbers = () => {
+    let maxPagesToShow = 10
+    let startPage, endPage;
+    if (totalPages <= 10) {
+      startPage = 1;
+      endPage = totalPages;
+    } else {
+      const maxPagesBeforeCurrentPage = Math.floor(maxPagesToShow / 2);
+      const maxPagesAfterCurrentPage = Math.ceil(maxPagesToShow / 2) - 1;
+      if (page <= maxPagesBeforeCurrentPage) {
+        startPage = 1;
+        endPage = maxPagesToShow;
+      } else if (page + maxPagesAfterCurrentPage >= totalPages) {
+        startPage = totalPages - maxPagesToShow + 1;
+        endPage = totalPages;
+      } else {
+        startPage = page - maxPagesBeforeCurrentPage;
+        endPage = page + maxPagesAfterCurrentPage;
+      }
+    }
+
+    return Array.from(Array(endPage - startPage + 1).keys()).map(i => startPage + i);
+  };
 
   useEffect(() => {
     setLoading(true);
     let params = {
-      offset: (page - 1) * 15,
-      limit: 15,
+      offset: (page - 1) * 20,
+      limit: 20,
       isDeleted: isDeleted,
     };
     if (!!type) params["type"] = type;
-    if (!!search) params["search"] = search;
+    if (!!search){ 
+      params["search"] = search;
+    }
     if (!!status) params["status"] = status;
 
     service?.getList({ ...params }).then((res) => {
       if (res?.status === 200) {
         setData([...res.data?.data?.data]);
-        let total = Math.ceil(res.data?.data?.totalItems / 15);
+        let total = Math.ceil(res.data?.data?.totalItems / 20);
         setTotalPages(total);
         if (res.data?.data?.totalItems > 0) {
           setHasData(1);
@@ -60,7 +87,6 @@ const Pagination = ({
               className="previous-button"
               onClick={() => {
                 setPage((prev) => parseInt(prev) - 1);
-                setPageShow(page - 1);
               }}
               disabled={parseInt(page) === 1}
             >
@@ -72,10 +98,7 @@ const Pagination = ({
               {Translate[lang]?.previous}
             </button>
             <div className="d-flex" style={{ gap: "5px" }}>
-                {Array.from(
-                  { length: totalPages },
-                  (_, index) => index + 1
-                )?.map((num) => {
+                {getPageNumbers().map((num) => {
                   return (
                     <p
                       onClick={() => {
@@ -100,7 +123,6 @@ const Pagination = ({
               className="next-button"
               onClick={() => {
                 setPage((prev) => parseInt(prev) + 1);
-                setPageShow(page + 1);
               }}
               disabled={parseInt(page) === totalPages}
             >
