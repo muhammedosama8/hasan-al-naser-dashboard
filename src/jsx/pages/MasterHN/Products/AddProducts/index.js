@@ -299,7 +299,7 @@ const MasterHNAddProducts = () => {
     if(!!product.offerPrice) data['offerPrice'] = product.offerPrice
     if(!id) data['all_image']= imagesForAll
     if(!id) data['all_price']= productForAll
-    if(!!id) data['price']= Number(customVariant[0]?.price)
+    if(!!id && !productForAll) data['price']= Number(customVariant[0]?.price)
     if(!id && hasVariant) data['variant_data'] = customVariant?.map(({ quantity, images, price }) => ({ quantity,images, price }))?.map((res) => {
       let info = {
         price: Number(res?.price) || 0,
