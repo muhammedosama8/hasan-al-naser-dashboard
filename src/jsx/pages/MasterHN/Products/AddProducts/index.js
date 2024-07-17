@@ -335,7 +335,7 @@ const MasterHNAddProducts = () => {
           navigate(`/masterHN/products`)
         }
         setLoadning(false);
-      });
+      }).catch(e=> toast.error(e.response?.data?.message?.replaceAll('_', ' ')));
     } else {
       productsService.create(data)?.then((res) => {
         if (res.data?.status === 201) {
@@ -343,7 +343,7 @@ const MasterHNAddProducts = () => {
           toast.success("Product Added Successfully");
         }
         setLoadning(false);
-      });
+      }).catch(e=> toast.error(e.response?.data?.message?.replaceAll('_', ' ')));
     }
   };
 
