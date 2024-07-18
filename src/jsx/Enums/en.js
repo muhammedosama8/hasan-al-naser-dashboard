@@ -1,4 +1,6 @@
 export const English = {
+  kitchen_one: "Kitchen One",
+  kitchen_two: "Kitchen Two",
   about_us: "About Us",
   masterHN: 'Master HN',
   dashboard: "Dashboard",

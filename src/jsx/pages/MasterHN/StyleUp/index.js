@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import { Button, Card, Col, Row } from "react-bootstrap";
 import uploadImg from '../../../../images/upload-img.png';
-import Select from 'react-select';
 import './style.scss'
 import { useSelector } from "react-redux";
 import { toast } from "react-toastify";
@@ -11,7 +10,22 @@ import { Translate } from "../../../Enums/Tranlate";
 import { AvField, AvForm } from "availity-reactstrap-validation";
 import StyleUpService from "../../../../services/StyleUpService";
 
+const initial = {
+    main_image: {src:'', loading: false},
+    sheets: [{
+        title: '',
+        items: [{
+            src: '', srcLoading: false, 
+            color: '', colorLoading: false
+        }]
+    }]
+}
 const StyleUp = () =>{
+    const tabs = [
+        {label: 'kitchen_one', value: 'one'},
+        {label: 'kitchen_two', value: 'two'},
+    ]
+    const [selectTab, setSelectTab] = useState({label: 'kitchen_one', value: 'one'})
     const [loading, setLoading] = useState(false)
     const [submitLoading, setSumbitLoading] = useState(false)
     const Auth = useSelector(state=> state.auth?.auth)
@@ -19,27 +33,23 @@ const StyleUp = () =>{
     const isExist = (data)=> Auth?.admin?.admin_roles?.includes(data)
     const styleUpService = new StyleUpService()
 
-    const [formData, setFormData] = useState({
-        main_image: {src:'', loading: false},
-        sheets: [{
-            title: '',
-            items: [{
-                src: '', srcLoading: false, 
-                color: '', colorLoading: false
-            }]
-        }]
-    })
+    const [formData, setFormData] = useState(initial)
 
     useEffect(()=>{
-        styleUpService?.getList()?.then(res=>{
-            if(res?.status === 200 && res.data?.data?.length > 0){
-                let response = res.data?.data[0]
+        let type= selectTab?.value
+        styleUpService?.getList(type)?.then(res=>{
+            if(res?.status === 200 ){
+                if(!res.data?.data){
+                    setFormData(initial)
+                    return
+                }
+                let response = res.data?.data
                 let data = {
-                    main_image: {src: response.main_image, loading: false},
-                    sheets: response?.sheets?.map(sheet=>{
+                    main_image: {src: response.main_image || '', loading: false},
+                    sheets: response?.sheets?.length === 0 ? initial.sheets : response?.sheets?.map(sheet=>{
                         return {
                             title: sheet.title,
-                            items: sheet?.item_sheet?.map(item=>{
+                            items: sheet?.item_sheet?.length === 0 ? initial.sheets[0].items : sheet?.item_sheet?.map(item=>{
                                 return {
                                     src: item?.image, srcLoading: false, 
                                     color: item?.color, colorLoading: false
@@ -52,7 +62,7 @@ const StyleUp = () =>{
             }
             setLoading(false)
         })
-    },[])
+    },[selectTab])
 
     const fileMainImageHandler = (e) => {
         if(e?.target.files?.length === 0){
@@ -184,7 +194,8 @@ const StyleUp = () =>{
         }
         
         setSumbitLoading(true)
-            styleUpService.create(data)?.then(res=>{
+        let type= selectTab?.value
+        styleUpService.create(type, data)?.then(res=>{
             if(res && res?.status === 201){
                 toast.success('Style Sheet Added Successfully')
             }
@@ -201,216 +212,235 @@ const StyleUp = () =>{
         </Card>
     }
     return(
-    <AvForm className='form-horizontal' onValidSubmit={onSubmit}>
-        <Card className="p-4">
-            <Row className="mb-2">
-                <Col md={12}>
-                    <h4>{Translate[lang].main_image}</h4>
-                    <div className="image-placeholder">	
-                        <div className="avatar-edit">
-                            <input type="file" 
-                                    onChange={(e) => {
-                                        if(!isExist('masterHN')){
-                                            toast.error('Not Allowed, Don`t have Permission')
-                                            return
-                                        }
-                                        fileMainImageHandler(e)
-                                    }} 
-                                    id={`imageUpload`} /> 					
-                            <label htmlFor={`imageUpload`}  name=''></label>
-                        </div>
-                        <button 
-                            className="delete"
-                            type="button"
-                            onClick={()=>{
-                                setFormData({...formData, main_image: {src:'', loading: false}})
-                            }}
-                        >
-                            <i className="la la-trash text-danger"></i>
-                        </button>
-                        <div className="avatar-preview">
-                            <div>
-                            {(!!formData?.main_image?.src && !formData?.main_image.loading) && <img src={formData?.main_image?.src} alt='icon' />}
-                            {(!formData?.main_image?.src && !formData?.main_image.loading) && <img src={uploadImg} alt='icon'
-                                style={{
-                                    width: '80px',
-                                    height: '80px',
-                                }}
-							/>}
-                            {formData?.main_image.loading && <Loader />}
-                            </div>
-                        </div>
-                    </div>
-                </Col>
-            </Row>
-            <hr />
-            {formData?.sheets?.map((sheet, index) => {
-                return <>
-                    <Row key={index} className="mb-4">
-                        <Col md={12}>
-                            <h2>Sheet {index+1}</h2>
-                            {index > 0 && <button 
-                                className="delete"
-                                type="button"
-                                    onClick={()=>{
-                                        let update = formData?.sheets?.filter((_,ind)=> ind !== index)
-                                        setFormData({...formData, sheets: update})
-                                    }}
-                                >
-                                    <i className="la la-trash"></i>
-                            </button>}
-                        </Col>
-                        <Col md={6}>
-                            <AvField
-                                label={Translate[lang]?.title}
-                                type='text'
-                                placeholder={Translate[lang]?.english}
-                                bsSize="lg"
-                                name={`title${index}`}
-                                    validate={{
-                                        required: {
-                                            value: true,
-                                            errorMessage: Translate[lang].field_required
-                                        },
-                                    }}
-                                value={sheet.title}
-                                onChange={(e) => {
-                                    let update = formData?.sheets?.map((item, ind)=>{
-                                        if(index === ind){
-                                            return{
-                                                ...item,
-                                                title: e.target?.value
-                                            }
-                                        } else {
-                                            return item
-                                        }
-                                    })
-                                    setFormData({...formData, sheets: update})
-                                }}
-                            />
-                        </Col>
-                        <Col md={6}></Col>
-                        {sheet?.items?.map((item,ind)=> {
-                            return <>
-                            <Col md={6} className="item-image mt-2">
-                            <h4>{Translate[lang].color}</h4>
-                            <div className="image-placeholder color">	
-                                <div className="avatar-edit">
-                                    <input type="file" 
+    <>
+        <div className="py-4">
+            <div className="tabs-div">
+            {tabs?.map((tab,index) => {
+              return <p
+              key={index}
+              className='mb-0'
+              style={{
+                color: tab.value === selectTab.value ? "var(--primary)" : "#7E7E7E",
+                borderBottom: tab.value === selectTab.value ? "2px solid" : "none",
+              }}
+              onClick={() => setSelectTab(tab)}
+            >
+              {Translate[lang][tab.label]}
+              </p>
+            })}
+          </div>
+        </div>
+        <AvForm className='form-horizontal' onValidSubmit={onSubmit}>
+            <Card className="p-4">
+                <Row className="mb-2">
+                    <Col md={12}>
+                        <h4>{Translate[lang].main_image}</h4>
+                        <div className="image-placeholder">	
+                            <div className="avatar-edit">
+                                <input type="file" 
                                         onChange={(e) => {
                                             if(!isExist('masterHN')){
                                                 toast.error('Not Allowed, Don`t have Permission')
                                                 return
                                             }
-                                            fileHandler(e, index, ind, 'color')
-                                            }} 
-                                        id={`colorUpload${index}${ind}`} /> 					
-                                    <label htmlFor={`colorUpload${index}${ind}`}  name=''></label>					
-                                </div>
-                                <button 
-                                    className="delete"
-                                    type="button"
-                                    onClick={()=>{
-                                        removeImage(index, ind, 'color')
+                                            fileMainImageHandler(e)
+                                        }} 
+                                        id={`imageUpload`} /> 					
+                                <label htmlFor={`imageUpload`}  name=''></label>
+                            </div>
+                            <button 
+                                className="delete"
+                                type="button"
+                                onClick={()=>{
+                                    setFormData({...formData, main_image: {src:'', loading: false}})
+                                }}
+                            >
+                                <i className="la la-trash text-danger"></i>
+                            </button>
+                            <div className="avatar-preview">
+                                <div>
+                                {(!!formData?.main_image?.src && !formData?.main_image.loading) && <img src={formData?.main_image?.src} alt='icon' />}
+                                {(!formData?.main_image?.src && !formData?.main_image.loading) && <img src={uploadImg} alt='icon'
+                                    style={{
+                                        width: '80px',
+                                        height: '80px',
                                     }}
-                                >
-                                    <i className="la la-trash text-danger"></i>
-                                </button>
-                                <div className="avatar-preview">
-                                    <div>
-                                        {(!!item?.color && !item?.colorLoading) && <img src={item?.color} alt='icon' />}
-                                        {(!item?.color && !item?.colorLoading) && <img src={uploadImg} alt='icon' style={{ width: '80px', height: '80px', }} />}
-                                        {item?.colorLoading && <Loader />}
-                                    </div>
+                                />}
+                                {formData?.main_image.loading && <Loader />}
                                 </div>
                             </div>
+                        </div>
+                    </Col>
+                </Row>
+                <hr />
+                {formData?.sheets?.map((sheet, index) => {
+                    return <>
+                        <Row key={index} className="mb-4">
+                            <Col md={12}>
+                                <h2>Sheet {index+1}</h2>
+                                {index > 0 && <button 
+                                    className="delete"
+                                    type="button"
+                                        onClick={()=>{
+                                            let update = formData?.sheets?.filter((_,ind)=> ind !== index)
+                                            setFormData({...formData, sheets: update})
+                                        }}
+                                    >
+                                        <i className="la la-trash"></i>
+                                </button>}
                             </Col>
-                            <Col md={6} className="item-image mt-2">
-                                <h4>{Translate[lang].image}</h4>
-                                <div className="image-placeholder image">	
+                            <Col md={6}>
+                                <AvField
+                                    label={Translate[lang]?.title}
+                                    type='text'
+                                    placeholder={Translate[lang]?.english}
+                                    bsSize="lg"
+                                    name={`title${index}`}
+                                        validate={{
+                                            required: {
+                                                value: true,
+                                                errorMessage: Translate[lang].field_required
+                                            },
+                                        }}
+                                    value={sheet.title}
+                                    onChange={(e) => {
+                                        let update = formData?.sheets?.map((item, ind)=>{
+                                            if(index === ind){
+                                                return{
+                                                    ...item,
+                                                    title: e.target?.value
+                                                }
+                                            } else {
+                                                return item
+                                            }
+                                        })
+                                        setFormData({...formData, sheets: update})
+                                    }}
+                                />
+                            </Col>
+                            <Col md={6}></Col>
+                            {sheet?.items?.map((item,ind)=> {
+                                return <>
+                                <Col md={6} className="item-image mt-2">
+                                <h4>{Translate[lang].color}</h4>
+                                <div className="image-placeholder color">	
                                     <div className="avatar-edit">
                                         <input type="file" 
-                                                onChange={(e) => {
-                                                    if(!isExist('masterHN')){
-                                                        toast.error('Not Allowed, Don`t have Permission')
-                                                        return
-                                                    }
-                                                    fileHandler(e, index, ind, 'image')
+                                            onChange={(e) => {
+                                                if(!isExist('masterHN')){
+                                                    toast.error('Not Allowed, Don`t have Permission')
+                                                    return
+                                                }
+                                                fileHandler(e, index, ind, 'color')
                                                 }} 
-                                                id={`imageUpload${index}${ind}`} /> 					
-                                        <label htmlFor={`imageUpload${index}${ind}`}  name=''></label>
+                                            id={`colorUpload${index}${ind}`} /> 					
+                                        <label htmlFor={`colorUpload${index}${ind}`}  name=''></label>					
                                     </div>
-                                    <button 
+                                    {ind > 0 && <button 
                                         className="delete"
                                         type="button"
                                         onClick={()=>{
-                                            removeImage(index, ind, 'src')
+                                            removeImage(index, ind, 'color')
                                         }}
                                     >
                                         <i className="la la-trash text-danger"></i>
-                                    </button>
+                                    </button>}
                                     <div className="avatar-preview">
                                         <div>
-                                            {(!!item?.src && !item?.srcLoading) && <img src={item?.src} alt='icon' />}
-                                            {(!item?.src && !item?.srcLoading) && <img src={uploadImg} alt='icon' style={{ width: '80px', height: '80px', }} />}
-                                            {item?.srcLoading && <Loader />}
+                                            {(!!item?.color && !item?.colorLoading) && <img src={item?.color} alt='icon' />}
+                                            {(!item?.color && !item?.colorLoading) && <img src={uploadImg} alt='icon' style={{ width: '80px', height: '80px', }} />}
+                                            {item?.colorLoading && <Loader />}
                                         </div>
                                     </div>
                                 </div>
-                            </Col>
-                            {ind === sheet?.items?.length-1 && <Col md={12} className="text-center mt-4">
-                            <Button 
-                                variant='outline-secondary' 
-                                onClick={()=>{
-                                    let update = formData?.sheets?.map((res,i) => {
-                                        if(i === index){
-                                            return {
-                                                ...res,
-                                                items: [...res?.items , {
-                                                    src: '', srcLoading: false, 
-                                                    color: '', colorLoading: false
-                                                }]
+                                </Col>
+                                <Col md={6} className="item-image mt-2">
+                                    <h4>{Translate[lang].image}</h4>
+                                    <div className="image-placeholder image">	
+                                        <div className="avatar-edit">
+                                            <input type="file" 
+                                                    onChange={(e) => {
+                                                        if(!isExist('masterHN')){
+                                                            toast.error('Not Allowed, Don`t have Permission')
+                                                            return
+                                                        }
+                                                        fileHandler(e, index, ind, 'image')
+                                                    }} 
+                                                    id={`imageUpload${index}${ind}`} /> 					
+                                            <label htmlFor={`imageUpload${index}${ind}`}  name=''></label>
+                                        </div>
+                                        {ind > 0 && <button 
+                                            className="delete"
+                                            type="button"
+                                            onClick={()=>{
+                                                removeImage(index, ind, 'src')
+                                            }}
+                                        >
+                                            <i className="la la-trash text-danger"></i>
+                                        </button>}
+                                        <div className="avatar-preview">
+                                            <div>
+                                                {(!!item?.src && !item?.srcLoading) && <img src={item?.src} alt='icon' />}
+                                                {(!item?.src && !item?.srcLoading) && <img src={uploadImg} alt='icon' style={{ width: '80px', height: '80px', }} />}
+                                                {item?.srcLoading && <Loader />}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </Col>
+                                {ind === sheet?.items?.length-1 && <Col md={12} className="text-center mt-4">
+                                <Button 
+                                    variant='outline-secondary' 
+                                    onClick={()=>{
+                                        let update = formData?.sheets?.map((res,i) => {
+                                            if(i === index){
+                                                return {
+                                                    ...res,
+                                                    items: [...res?.items , {
+                                                        src: '', srcLoading: false, 
+                                                        color: '', colorLoading: false
+                                                    }]
+                                                }
+                                            } else {
+                                                return res
                                             }
-                                        } else {
-                                            return res
-                                        }
-                                    })
-                                    setFormData({...formData, sheets: update})
-                                }}
-                                style={{
-                                    borderRadius: '50%',
-                                    padding: '10px 13px'
-                                }}>
-                                <i 
-                                    className="la la-plus" 
-                                    style={{
-                                        fontSize: '2rem'
+                                        })
+                                        setFormData({...formData, sheets: update})
                                     }}
-                                ></i>
-                            </Button>
-                            </Col>}
-                            <Col md={12}><hr /></Col>
-                        </>
-                        })}
-                    </Row>
-            </>
-            })}
-        </Card>
+                                    style={{
+                                        borderRadius: '50%',
+                                        padding: '10px 13px'
+                                    }}>
+                                    <i 
+                                        className="la la-plus" 
+                                        style={{
+                                            fontSize: '2rem'
+                                        }}
+                                    ></i>
+                                </Button>
+                                </Col>}
+                                <Col md={12}><hr /></Col>
+                            </>
+                            })}
+                        </Row>
+                </>
+                })}
+            </Card>
 
-        {isExist('masterHN') && <div className="d-flex justify-content-between mb-4">
-            <Button 
-                variant='secondary'
-                onClick={()=> setFormData({...formData, sheets: [...formData?.sheets, { title: '', items: [{src: '', srcLoading: false, color: '', colorLoading: false}]
-            }]})}>
-                Add New Sheet
-            </Button>
-            <Button 
-                variant="primary" 
-                className="px-5"
-                disabled={submitLoading}
-                type="submit"
-            >{Translate[lang].submit}</Button>
-        </div>}
-    </AvForm>)
+            {isExist('masterHN') && <div className="d-flex justify-content-between mb-4">
+                <Button 
+                    variant='secondary'
+                    onClick={()=> setFormData({...formData, sheets: [...formData?.sheets, { title: '', items: [{src: '', srcLoading: false, color: '', colorLoading: false}]
+                }]})}>
+                    Add New Sheet
+                </Button>
+                <Button 
+                    variant="primary" 
+                    className="px-5"
+                    disabled={submitLoading}
+                    type="submit"
+                >{Translate[lang].submit}</Button>
+            </div>}
+        </AvForm>
+    </>)
 }
 export default StyleUp;
