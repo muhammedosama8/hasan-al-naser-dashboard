@@ -1,6 +1,6 @@
 export const Arabic = {
-  kitchen_one: "المطبخ الأول",
-  kitchen_two: "المطبخ الثاني",
+  kitchen_one: "مطبخ كلاسيكي",
+  kitchen_two: "المطبخ الحديث",
   about_us: "من نحن",
   masterHN: 'ماستر اتش ان',
   dashboard: "الاحصائات",
