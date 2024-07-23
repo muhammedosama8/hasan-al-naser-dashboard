@@ -15,6 +15,7 @@ export const English = {
   carrers: "Carrers",
   x: "X",
   price_for_all_products: "Price for All Products",
+  cost_for_all_products: "Cost for All Products",
   day_from: "Day From",
   day_to: "Day To",
   time_from: "Time From",

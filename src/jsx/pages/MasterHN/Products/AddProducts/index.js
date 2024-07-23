@@ -48,6 +48,7 @@ const MasterHNAddProducts = () => {
   const [loading, setLoadning] = useState(false);
   const [imagesForAll, setImagesForAll] = useState(false);
   const [productForAll, setProductForAll] = useState(true);
+  const [costForAll, setCostForAll] = useState(true);
   const [hasVariant, setHasVariant] = useState(false);
   const [view, setView] = useState(false);
   const [categoriesOptions, setCategoriesOptions] = useState([]);
@@ -87,10 +88,12 @@ const MasterHNAddProducts = () => {
             setHasVariant(true)
             setImagesForAll(false)
             setProductForAll(false)
+            setCostForAll(false)
           } else {
             setHasVariant(false)
             setImagesForAll(true)
             setProductForAll(true)
+            setCostForAll(true)
           }
           let custom = res.data?.data.data?.reduce((result, item) => {
             result[item.name_en] = '';
@@ -187,7 +190,12 @@ const MasterHNAddProducts = () => {
         }
         setProduct({ ...data });
         dispatch(loadingToggleAction(false));
-        setCustomVariant([{ ...obj, quantity: res[0].data?.data?.product?.amount, price: res[0].data?.data?.product?.price }])
+        setCustomVariant([{ 
+          ...obj, 
+          quantity: res[0].data?.data?.product?.amount, 
+          price: res[0].data?.data?.product?.price, 
+          cost: res[0].data?.data?.product?.cost 
+        }])
       })
     }
   }, []);
@@ -279,7 +287,6 @@ const MasterHNAddProducts = () => {
       name_en: product.name_en,
       name_ar: product.name_ar,
       code: product.code,
-      cost: product?.cost,
       category_id: product.category?.value,
       images: product?.images
         ?.filter((res) => !!res?.src)
@@ -296,27 +303,31 @@ const MasterHNAddProducts = () => {
       offer: product.offer,
     };
     if(productForAll) data['price'] = parseFloat(product.price)
+    if(costForAll) data['cost'] = parseFloat(product.cost)
     if(!!product.offerPrice) data['offerPrice'] = product.offerPrice
     if(!id) data['all_image']= imagesForAll
     if(!id) data['all_price']= productForAll
+    if(!id) data['all_cost']= costForAll
     if(!!id && !productForAll) data['price']= Number(customVariant[0]?.price)
-    if(!id && hasVariant) data['variant_data'] = customVariant?.map(({ quantity, images, price }) => ({ quantity,images, price }))?.map((res) => {
+    if(!!id && !costForAll) data['cost']= Number(customVariant[0]?.cost)
+    if(!id && hasVariant) data['variant_data'] = customVariant?.map(({ quantity, images, price, cost }) => ({ quantity,images, price, cost }))?.map((res) => {
       let info = {
         price: Number(res?.price) || 0,
+        cost: Number(res?.cost) || 0,
         images: res?.images?.filter(img=> !!img.src)?.map(img=> img.src),
         amount: Number(res?.quantity),
       };
       return info
     })
     if(hasVariant){
-      data['variant'] = !id ? customVariant.map(({ quantity, images, price, ...rest }) => ({ ...rest }))?.map(res=>{
+      data['variant'] = !id ? customVariant.map(({ quantity, images, price,cost, ...rest }) => ({ ...rest }))?.map(res=>{
         return Object.values(res).filter(item => !!item)?.map(data=>{
           return {
             variant_value_id: data?.id,
             variant_id: data?.variant_id,
           }
         })
-      }) : customVariant.map(({ quantity, images, price, ...rest }) => ({ ...rest }))?.map(res=>{
+      }) : customVariant.map(({ quantity, images, price, cost, ...rest }) => ({ ...rest }))?.map(res=>{
         return Object.values(res).filter(item => !!item)?.map(data=>{
           return {
             variant_value_id: data?.id,
@@ -511,8 +522,8 @@ const MasterHNAddProducts = () => {
               onChange={(e) => handlerText(e)}
             />
           </Col>
-          {(!id && hasVariant)&& <Col md={6} sm={6} className="mb-3">
-            <label className="d-block text-label mb-0 mt-4" style={{ marginLeft: "8px" }}>
+          {(!id && hasVariant)&& <Col md={6} sm={6} className="mb-4">
+            <label className="d-block text-label mb-0 mt-2" style={{ marginLeft: "8px" }}>
               <input
                 type='checkbox' 
                 name='productForAll' 
@@ -541,7 +552,18 @@ const MasterHNAddProducts = () => {
               onChange={(e) => handlerText(e)}
             />
           </Col>}
-          <Col md={6} sm={6} className="mb-3">
+          {(!id && hasVariant)&& <Col md={6} sm={6} className="mb-4">
+            <label className="d-block text-label mb-0 mt-2" style={{ marginLeft: "8px" }}>
+              <input
+                type='checkbox' 
+                name='costForAll' 
+                className={`${lang === 'ar' ? 'ml-2' : 'mr-2'}`} 
+                onClick={(e) => setCostForAll(e.target.checked)} />
+              {Translate[lang]?.cost_for_all_products}
+
+            </label>
+          </Col>}
+          {costForAll && <Col md={6} sm={6} className="mb-3">
             <AvField
               label={`${Translate[lang]?.cost}*`}
               type="number"
@@ -559,7 +581,7 @@ const MasterHNAddProducts = () => {
               value={product.cost}
               onChange={(e) => handlerText(e)}
             />
-          </Col>
+          </Col>}
           {!hasVariant && <Col md={6} sm={6} className="mb-3">
             <AvField
               label={`${Translate[lang]?.quantity}*`}
@@ -778,6 +800,37 @@ const MasterHNAddProducts = () => {
                         return {
                           ...res,
                           price: e.target.value,
+                        };
+                      } else{
+                        return res
+                      }
+                    });
+                    setCustomVariant([...update]);
+                  }}
+                />
+          </Col>}
+          {!costForAll && <Col md={4}>
+                <AvField
+                  label={Translate[lang]?.cost}
+                  type="number"
+                  placeholder={Translate[lang]?.cost}
+                  min="0"
+                  bsSize="lg"
+                  disabled={view}
+                  name={`cost${index}`}
+                  value={cVariant?.cost}
+                  validate={{
+                    required: {
+                      value: true,
+                      errorMessage: Translate[lang].field_required,
+                    },
+                  }}
+                  onChange={(e) => {
+                    let update = customVariant?.map((res, ind) => {
+                      if (ind === index) {
+                        return {
+                          ...res,
+                          cost: e.target.value,
                         };
                       } else{
                         return res
