@@ -21,7 +21,7 @@ const Payment = () =>{
                 if(!!res.data.data) setIban(res.data.data?.iban)
             }
             setLoadingPage(false)
-        })
+        }).catch(()=> {})
     },[])
 
     const deleteIban= () => {
@@ -39,9 +39,6 @@ const Payment = () =>{
     }
 
     const submit = ()=> {
-        if(!iban){
-            return
-        }
         setLoading(true)
         let data ={
             iban: iban
@@ -73,12 +70,12 @@ const Payment = () =>{
                             type='text'
                             placeholder={Translate[lang].iban}
                             value={iban}
-                            // validate={{
-                            //     required: {
-                            //         value:true,
-                            //         errorMessage: Translate[lang].field_required
-                            //     },
-                            // }}
+                            validate={{
+                                required: {
+                                    value:true,
+                                    errorMessage: Translate[lang].field_required
+                                },
+                            }}
                             onChange={(e)=> setIban(e.target.value)}
                         />
                     </Col>
@@ -103,7 +100,7 @@ const Payment = () =>{
                 </Row>
                 <div className="d-flex justify-content-between">
                     <div></div>
-                    <Button variant="primary" disabled={loading || !iban} type="submit">
+                    <Button variant="primary" disabled={loading} type="submit">
                     {Translate[lang].submit}
                     </Button>
                 </div>
