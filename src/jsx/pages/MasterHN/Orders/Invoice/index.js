@@ -4,10 +4,9 @@ import { useSelector } from "react-redux";
 import { useLocation } from "react-router-dom";
 import './style.scss'
 import { Translate } from "../../../../Enums/Tranlate";
+import logo from '../../../../../images/master.png'
 
 const Invoice = () =>{
-    const [websiteName, setWebsiteName] = useState('')
-    const [logo, setLogo] = useState('')
     const [order, setOrder] = useState({})
     const [product, setProduct] = useState({})
     const lang = useSelector(state=> state.auth?.lang)
@@ -19,24 +18,15 @@ const Invoice = () =>{
         setProduct(location?.state?.sub_carts[0]?.product)
     },[])
 
-    useEffect(()=>{
-        // controlService.getList().then(res=>{
-        //     if(res?.status === 200){
-        //         setWebsiteName(res.data?.data?.website_title)
-        //         setLogo(res.data?.data?.dashboard_logo)
-        //     }
-        // })
-    },[])
-
     const print = () => {
         const printWindow = window.open("", "_blank");
         let productsCode = ``;
         for(let i = 0; i < order.sub_carts?.length; i++){
             let itemsText = ``;
             for (let a = 0; a < order.sub_carts[i]?.product?.variant?.length; a++) {
-                if(order.sub_carts[i]?.product?.variant[a]?.name_en === 'color'){
+                if(order.sub_carts[i]?.product?.variant[a].variant?.name_en === 'color'){
                     itemsText += `<p style="margin-bottom: 0.5rem">
-                    ${lang === 'en' ? order.sub_carts[i]?.product?.variant[a]?.variant?.name_en : order.sub_carts[i]?.product?.variant[a]?.variant?.name_ar}: <span style="
+                    ${lang === 'en' ? order.sub_carts[i]?.product?.variant[a].variant?.name_en : order.sub_carts[i]?.product?.variant[a].variant?.name_ar} : <span style="
                         background: ${order.sub_carts[i]?.product?.variant[a].variant_value?.value_en};
                         height: 24px;
                         width: 24px;
@@ -51,14 +41,14 @@ const Invoice = () =>{
                 }
             }
             productsCode += `<div style="text-align: center; margin-top: 1rem">
-                <div style="display: flex; justify-content: space-between; border: 1px solid #dedede; padding: 15px 25px">
+                <div style="display: flex; justify-content: space-between; border: 1px solid #dedede; padding: 15px 25px; height: 100%">
                 <div>
-                    <img src=${order.sub_carts[i]?.product?.images?.length ? order.sub_carts[i]?.product?.images[0]?.url : ''} alt="product" style="width: 8rem" />
+                    <img src=${order.sub_carts[i]?.product?.product_images?.length ? order.sub_carts[i]?.product?.product_images[0]?.url : ''} alt="product" style="width: 8rem" />
                 </div>
                 <div className="details">
                     <p style="margin-bottom: 0.5rem">${lang === 'en' ? order.sub_carts[i]?.product?.name_en : order.sub_carts[i]?.product?.name_ar}</p>
                     <p style="margin-bottom: 0.5rem">${Translate[lang].quantity}: ${order.sub_carts[i]?.amount}</p>
-                    <p style="margin-bottom: 0.5rem">${Translate[lang].price}: ${order.sub_carts[i]?.product?.price}</p>
+                    <p style="margin-bottom: 0.5rem">${Translate[lang].price}: ${order.sub_carts[i]?.product?.price} ${Translate[lang].kwd}</p>
                     ${itemsText}
                 </div>
             </div>
@@ -68,6 +58,13 @@ const Invoice = () =>{
         let htmlCode = `<html>
         <head>
             <title>${Translate[lang]?.invoice}</title>
+            <style>
+            *{
+                margin: 0;
+                padding: 0;
+                box-sizing: border-box;
+            }
+            </style>
         </head>
         <body style="direction: ${lang==='en' ? 'ltr' : 'rtl'};">
         <div>
@@ -76,7 +73,7 @@ const Invoice = () =>{
                 <img src=${logo} alt="logo" style="width: 5rem;" />
             </div>
             <div style="margin-top: 1rem; text-align: center">
-                <p style="margin-bottom: 0.5rem">${Translate[lang].welcome} ${order?.user?.f_name} ${order?.user?.l_name}</p>
+                <p style="margin-bottom: 0.5rem">${Translate[lang].welcome} ${order?.user?.username}</p>
                 <h3 style="margin: 0">${Translate[lang].application_submitted}</h3>
             </div>
             <div style="margin-top: 1rem">
@@ -98,7 +95,7 @@ const Invoice = () =>{
                                 <h4 style="margin: 0">${Translate[lang].details} ${Translate[lang].address}</h4>
                             </div>
                             <div style="background-color: rgb(222 222 222 / 21%); padding-top: 1.5rem; padding-bottom: 1.5rem; padding-left: 1rem ; padding-right: 1rem">
-                                <p style="margin-bottom: 0.5rem">${Translate[lang].country}: ${lang==='en' ? order?.user_address?.country?.name_en : order?.user_address?.country?.name_ar}</p>
+                                <p style="margin-bottom: 0.5rem">${Translate[lang].governorate}: ${lang==='en' ? order?.user_address?.governorate?.name_en : order?.user_address?.governorate?.name_ar}</p>
                                 <p style="margin-bottom: 0.5rem">${Translate[lang].area}: ${lang==='en' ? order?.user_address?.area?.name_en : order?.user_address?.area?.name_ar}</p>
                                 <p style="margin-bottom: 0.5rem">${Translate[lang].street}: ${order?.user_address?.street}</p>
                                 <p style="margin-bottom: 0.5rem">${Translate[lang].house_number}: ${order?.user_address?.houseNumber}</p>
@@ -111,16 +108,15 @@ const Invoice = () =>{
                                 <h4 style="margin: 0">${Translate[lang].details} ${Translate[lang].order}</h4>
                             </div>
                             <div style="background-color: rgb(222 222 222 / 21%); padding-top: 1.5rem; padding-bottom: 1.5rem; padding-left: 1rem ; padding-right: 1rem ">
-                                <p style="margin-bottom: 0.5rem">${Translate[lang].total_price}: ${order?.total}</p>
-                                <p style="margin-bottom: 0.5rem">${Translate[lang].name}: ${order?.user?.f_name} ${order?.user?.l_name}</p>
+                                <p style="margin-bottom: 0.5rem">${Translate[lang].total_price}: ${order?.total} ${Translate[lang].kwd}</p>
+                                <p style="margin-bottom: 0.5rem">${Translate[lang].name}: ${order?.user?.username}</p>
                                 <p style="margin-bottom: 0.5rem">${Translate[lang].phone}: ${order?.user?.phone}</p>
-                                <p style="margin-bottom: 0.5rem">${Translate[lang].delivery_day}: ${order?.day?.split('T')[0]}</p>
                             </div>
                     </div>
                 </div>
                 <div style="text-align: center;">
-                    <p style="margin: 0; font-size: 14px">${Translate[lang].thanks} ${websiteName}</p>
-                    <p style="margin: 0; font-size: 14px">Powered by leap solutions kw</p>
+                    <p style="margin: 0; font-size: 14px">Thanks MasterHN</p>
+                    <p style="margin: 0; font-size: 14px">Powered by Cloud Lift Solutions</p>
                 </div>
             </div>
         </div>
@@ -147,7 +143,7 @@ const Invoice = () =>{
                 <img src={logo} alt="logo" />
             </div>
             <div className="invoice-title text-center mt-4">
-                <p className="mb-1">{Translate[lang].welcome} {order?.user?.f_name} {order?.user?.l_name}</p>
+                <p className="mb-1">{Translate[lang].welcome} {order?.user?.username}</p>
                 <h3>{Translate[lang].application_submitted}</h3>
             </div>
             <div className="invoice-details mt-4">
@@ -156,15 +152,15 @@ const Invoice = () =>{
                 </div>
                 <Row>
                     {location?.state?.sub_carts?.map(product=>{
-                        return <Col lg={4} md={6} sm={12}>
-                        <div className="product-card d-flex p-3 justify-content-between align-items-center">
+                        return <Col lg={4} md={6} sm={12} className="mb-3 ">
+                        <div className="product-card h-100 d-flex p-3 justify-content-between align-items-center">
                             <div className="prod-img">
-                                <img src={product?.product?.images?.length ? product?.product?.images[0]?.url : ''} alt="product" style={{width: '8rem'}} />
+                                <img src={product?.product?.product_images?.length ? product?.product?.product_images[0]?.url : ''} alt="product" style={{width: '8rem'}} />
                             </div>
                             <div className="details">
                                 <p className="mb-1">{lang === 'en' ? product?.product?.name_en : product?.product?.name_ar}</p>
                                 <p className="mb-1">{Translate[lang].quantity}: {product?.amount}</p>
-                                <p className="mb-1">{Translate[lang].price}: {product?.product?.price}</p>
+                                <p className="mb-1">{Translate[lang].price}: {product?.product?.price} {Translate[lang].kwd}</p>
                                 {product?.product?.variant?.map(res=>{
                                     if(res.variant?.name_en === 'color'){
                                         return <p className="mb-1">{lang === 'en' ? res.variant?.name_en : res.variant?.name_ar}: <span style={{
@@ -196,7 +192,7 @@ const Invoice = () =>{
                                 <h4>{Translate[lang].details} {Translate[lang].address}</h4>
                             </div>
                             <div className="details py-4 px-3" style={{background: 'rgb(222 222 222 / 21%)'}}>
-                                <p className="mb-1">{Translate[lang].country}: {lang==='en' ? order?.user_address?.country?.name_en : order?.user_address?.country?.name_ar}</p>
+                                <p className="mb-1">{Translate[lang].governorate}: {lang==='en' ? order?.user_address?.governorate?.name_en : order?.user_address?.governorate?.name_ar}</p>
                                 <p className="mb-1">{Translate[lang].area}: {lang==='en' ? order?.user_address?.area?.name_en : order?.user_address?.area?.name_ar}</p>
                                 <p className="mb-1">{Translate[lang].street}: {order?.user_address?.street}</p>
                                 <p className="mb-1">{Translate[lang].house_number}: {order?.user_address?.houseNumber}</p>
@@ -209,18 +205,16 @@ const Invoice = () =>{
                                 <h4>{Translate[lang].details} {Translate[lang].order}</h4>
                             </div>
                             <div className="details py-4 px-3" style={{background: 'rgb(222 222 222 / 21%)'}}>
-                                <p className="mb-1">{Translate[lang].total_price}: {order?.total}</p>
-                                <p className="mb-1">{Translate[lang].name}: {order?.user?.f_name} {order?.user?.l_name}</p>
+                                <p className="mb-1">{Translate[lang].total_price}: {order?.total} {Translate[lang].kwd}</p>
+                                <p className="mb-1">{Translate[lang].name}: {order?.user?.username}</p>
                                 <p className="mb-1">{Translate[lang].phone}: {order?.user?.phone}</p>
-                                <p className="mb-1">{Translate[lang].delivery_day}: {order?.day?.split('T')[0]}</p>
-                                {/* <p className="mb-1">{lang === 'en' ? product?.description_en : product?.description_ar}</p> */}
-                                {/* <p style="margin-bottom: 0.5rem">${lang === 'en' ? product?.description_en : product?.description_ar}</p> */}
+                                {/* <p className="mb-1">{Translate[lang].delivery_day}: {order?.day?.split('T')[0]}</p> */}
                             </div>
                     </Col>
                 </Row>
                 <div className="text-center mt-5">
-                    <p className="mb-0 fs-14">{Translate[lang].thanks} {websiteName}</p>
-                    <p className="mb-0 fs-14">Powered by leap solutions kw</p>
+                    <p className="mb-0 fs-14">Thanks MasterHN</p>
+                    <p className="mb-0 fs-14">Powered by Cloud Lift Solutions</p>
                 </div>
             </div>
         </Card.Body>

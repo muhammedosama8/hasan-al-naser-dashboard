@@ -13,7 +13,8 @@ const Pagination = ({
   setLoading,
   type,
   search,
-  status
+  status,
+  param
 }) => {
   const [totalPages, setTotalPages] = useState();
   const [page, setPage] = useState(1);
@@ -51,6 +52,7 @@ const Pagination = ({
       offset: (page - 1) * 20,
       limit: 20,
       isDeleted: isDeleted,
+      ...param
     };
     if (!!type) params["type"] = type;
     if (!!search){ 

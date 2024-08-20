@@ -44,7 +44,7 @@ const OrderDetails = () => {
                     return <tr key={index} className="text-center">
                         <td>{cart.id}</td>
                         <td>{lang === 'en' ? cart.product.name_en : cart.product.name_ar}</td>
-                        <td>{cart.product.variant?.map(res=> {
+                        <td>{!!cart.product.variant?.length ? cart.product.variant?.map(res=> {
                           return <Badge 
                           className="mb-2 py-2"
                             key={res?.id} 
@@ -52,7 +52,8 @@ const OrderDetails = () => {
                             style={{
                               display: 'flex',
                               alignItems: 'center',
-                              justifyContent: 'center'
+                              justifyContent: 'center',
+                              color: '#fff'
                             }}>
                               {lang === 'en' ? res?.variant?.name_en : res?.variant?.name_ar}: {res?.variant?.name_en ==='color' ? <span style={{
                                 height: '24px', width: '24px', 
@@ -61,10 +62,10 @@ const OrderDetails = () => {
                                 display: 'inline-block', margin: '0 4px'
                               }}></span> : lang === 'en' ? res?.variant_value?.value_en : res?.variant_value?.value_ar}
                             </Badge>
-                        })}</td>
+                        }) : '-'}</td>
                         <td>{cart.product.price}</td>
                         <td>{cart.amount}</td>
-                        <td>{Number(cart.amount)*Number(cart.product.price)}</td>
+                        <td>{(Number(cart.amount)*Number(cart.product.price))?.toFixed(3)}</td>
                     </tr>
                 })}
               </tbody>

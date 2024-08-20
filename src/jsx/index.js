@@ -125,7 +125,7 @@ const Markup = () => {
 
     //  => Orders
     { url: "orders", component: <Orders /> },
-    { url: "orders/add-orders", component: <AddOrders /> },
+    // { url: "orders/add-orders", component: <AddOrders /> },
     { url: "orders/details", component: <OrderDetails /> },
     { url: "orders/invoice", component: <Invoice /> },
 

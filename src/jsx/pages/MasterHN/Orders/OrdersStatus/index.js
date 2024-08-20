@@ -2,11 +2,13 @@ import { useEffect, useState } from "react";
 import { Button, Modal } from "react-bootstrap"
 import { useSelector } from "react-redux";
 import { Translate } from "../../../../Enums/Tranlate";
+import { Orders } from "../../../../Enums/Orders";
+import OrdersService from "../../../../../services/OrdersService";
 
 const OrdersStatus = ({modal, setModal, item, setShouldUpdate})=>{
     const [itemStatus, setItemStatus] = useState(null)
     const [loading, setLoading] = useState(false)
-    // const ordersService = new OrdersService()
+    const ordersService = new OrdersService()
     const lang = useSelector(state=> state.auth.lang)
 
     useEffect(() => {
@@ -21,13 +23,13 @@ const OrdersStatus = ({modal, setModal, item, setShouldUpdate})=>{
             status: itemStatus.toLowerCase()
         }
         setLoading(true)
-        // ordersService.toggleStatus(item.id, data).then(res=>{
-        //     if(res && res?.status === 200){
-        //         setShouldUpdate(prev=> !prev)
-        //         setModal(false)
-        //     }
-        //     setLoading(false)
-        // })
+        ordersService.changeStatus(item.id, data).then(res=>{
+            if(res && res?.status === 200){
+                setShouldUpdate(prev=> !prev)
+                setModal(false)
+            }
+            setLoading(false)
+        })
     }
 
     return(
@@ -44,7 +46,7 @@ const OrdersStatus = ({modal, setModal, item, setShouldUpdate})=>{
             </Modal.Header>
             <Modal.Body>
                 <div className="mt-2 mb-2">
-                    {/* {Orders?.map((order,index)=>{
+                    {Orders?.map((order,index)=>{
                         return <div key={index}>
                             <input 
                                 type='radio'
@@ -56,7 +58,7 @@ const OrdersStatus = ({modal, setModal, item, setShouldUpdate})=>{
                             />
                             <label for={order} className='mx-2'>{Translate[lang][order.toLowerCase()]}</label>
                         </div>
-                    })} */}
+                    })}
                 </div>
             </Modal.Body>
             <Modal.Footer>
