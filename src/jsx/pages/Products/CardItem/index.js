@@ -91,7 +91,9 @@ const CardItem = ({item, index, setShouldUpdate,setIndexEdit, }) =>{
                           <Dropdown.Item onClick={()=>{
                             navigate(`/home/products/add-products/${item.id}`, {state: item})
                           }}>{Translate[lang]?.edit}</Dropdown.Item>
-                          <Dropdown.Item onClick={()=> {}}>{Translate[lang]?.active}</Dropdown.Item>
+                          <Dropdown.Item onClick={()=> {
+                            setDeleteModal(true)
+                          }}>{Translate[lang]?.delete}</Dropdown.Item>
                         </Dropdown.Menu>
                       </Dropdown>}
                     </td>
