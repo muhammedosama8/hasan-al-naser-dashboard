@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Card, Table } from "react-bootstrap";
 import { useSelector } from "react-redux";
-import UserService from "../../../services/UserService";
+import UserService from "../../../../services/UserService";
 import Loader from "../../../common/Loader";
 import NoData from "../../../common/NoData";
 import Pagination from "../../common/Pagination/Pagination";
