@@ -4,7 +4,7 @@ import { useSelector } from "react-redux";
 import UserService from "../../../../services/UserService";
 import Loader from "../../../common/Loader";
 import NoData from "../../../common/NoData";
-import Pagination from "../../common/Pagination/Pagination";
+import Pagination from "../../../common/Pagination/Pagination";
 import { Translate } from "../../../Enums/Tranlate";
 import CardItem from "./CardItem";
 
