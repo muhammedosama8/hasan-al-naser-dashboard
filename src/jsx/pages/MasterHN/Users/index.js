@@ -1,22 +1,22 @@
 import { useState } from "react";
 import { Card, Table } from "react-bootstrap";
 import { useSelector } from "react-redux";
-// import UserService from "../../../services/UserService";
+import UserService from "../../../services/UserService";
 import Loader from "../../../common/Loader";
 import NoData from "../../../common/NoData";
-// import Pagination from "../../common/Pagination/Pagination";
+import Pagination from "../../common/Pagination/Pagination";
 import { Translate } from "../../../Enums/Tranlate";
 import CardItem from "./CardItem";
 
 const Users = () =>{
     const [users, setUsers] =useState([])
-    const [hasData, setHasData] =useState(0)
+    const [hasData, setHasData] =useState(null)
     const [search, setSearch] =useState(null)
     // const [isDeleted, setIsDeleted] =useState(false)
     const [shouldUpdate, setShouldUpdate] =useState(false)
     const [loading, setLoading] =useState(false)
     const lang = useSelector(state=> state?.auth.lang)
-    // const userService = new UserService()
+    const userService = new UserService()
 
     return(
         <>
@@ -93,7 +93,7 @@ const Users = () =>{
 
               {hasData === 0 && <NoData />}
 
-              {/* <Pagination
+              <Pagination
                   setData={setUsers}
                   service={userService}
                   shouldUpdate={shouldUpdate}
@@ -101,7 +101,7 @@ const Users = () =>{
                   setLoading={setLoading}
                   search={search}
                   // isDeleted={isDeleted}
-                /> */}
+                />
             </Card.Body>
           </Card>
         </>

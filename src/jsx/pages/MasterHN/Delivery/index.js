@@ -148,7 +148,7 @@ const Delivery = () => {
                     {formData.delivery_possibility && <Col md={6}>
                         <label className="text-label">{Translate[lang].type_of_area}</label>
                         <div className="d-flex mt-2" style={{gap: '24px'}}>
-                            <label className="text-label">{Translate[lang].per_area}</label>
+                            <label className="text-label">{Translate[lang].all_area}</label>
                             <Form.Check
                                 type="switch"
                                 id={`delivery_all_area`}
@@ -156,7 +156,7 @@ const Delivery = () => {
                                 checked={formData.delivery_all_area}
                                 onChange={(e)=> setFormData({...formData, delivery_all_area: e.target.checked})}
                             />
-                            <label className="text-label">{Translate[lang].all_area}</label>
+                            <label className="text-label">{Translate[lang].per_area}</label>
                         </div>
                     </Col>}
                 </Row>
@@ -169,7 +169,7 @@ const Delivery = () => {
                             onChange={e=> setFormData({...formData, country: e})}
                         />
                     </Col>}
-                    <Col md={6}>
+                    {/* <Col md={6}>
                         <AvField
                             label={Translate[lang].cash_in_delivery_fees}
                             placeholder={Translate[lang].cash_in_delivery_fees}
@@ -186,7 +186,7 @@ const Delivery = () => {
                             value={formData.cash_in_delivery}
                             onChange={(e)=> formDataHandler(e)}
                         />
-                    </Col>
+                    </Col> */}
                     <Col md={6}>
                         <AvField
                             label={Translate[lang].delivery_fees}
