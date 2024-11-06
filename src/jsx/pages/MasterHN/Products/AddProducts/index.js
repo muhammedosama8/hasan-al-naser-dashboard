@@ -223,11 +223,7 @@ const MasterHNAddProducts = () => {
         setFiles([...update]);
       }
     });
-    setTimeout(function () {
-      setProduct({ ...product, images: update });
-    }, 200);
   };
-
   const variantFileHandler = (e, imageIndex, customVariantIndex) => {
     let filesAll = e.target.files;
     const filesData = Object.values(filesAll);
