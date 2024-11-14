@@ -111,6 +111,12 @@ export const MenuList = [
             rule: 'masterHN',
           },
           {
+            title:'Orders Guest',
+            text: "orders_guest",
+            to: "orders-guest",
+            rule: 'masterHN',
+          },
+          {
             title:"Promo Codes",
             text:'promo_codes',
             to: 'promo-codes',

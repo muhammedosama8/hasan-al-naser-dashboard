@@ -52,6 +52,9 @@ import Home from "./pages/MasterHN/Dashboard";
 import Users from "./pages/MasterHN/Users";
 import UserProfile from "./pages/MasterHN/Users/Profile";
 import MHNContactUs from "./pages/MasterHN/ContactUs";
+import OrdersGuest from "./pages/MasterHN/OrdersGuest";
+import InvoiceGuest from "./pages/MasterHN/OrdersGuest/Invoice";
+import OrderGuestDetails from "./pages/MasterHN/OrdersGuest/Details";
 
 const Markup = () => {
   const location = useLocation()
@@ -128,6 +131,11 @@ const Markup = () => {
     // { url: "orders/add-orders", component: <AddOrders /> },
     { url: "orders/details", component: <OrderDetails /> },
     { url: "orders/invoice", component: <Invoice /> },
+
+    //  => Orders Guest
+    { url: "orders-guest", component: <OrdersGuest /> },
+    { url: "orders-guest/details", component: <OrderGuestDetails /> },
+    { url: "orders-guest/invoice", component: <InvoiceGuest /> },
 
     //  => Promo Codes
     { url: "promo-codes", component: <PromCodes /> },
