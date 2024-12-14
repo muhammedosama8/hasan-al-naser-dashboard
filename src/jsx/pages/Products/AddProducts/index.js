@@ -23,6 +23,7 @@ const AddProducts = () => {
   ]
   const [product, setProduct] = useState({
     title: "",
+    link: "",
     type: '',
     description: EditorState.createEmpty(),
     images: [
@@ -50,6 +51,7 @@ const AddProducts = () => {
       setProduct({
         id: item.id,
         title: item?.title,
+        link: item?.link,
         type: typesOptions?.find(res=> res.value === item.type),
         description: EditorState.createWithContent(ContentState.createFromBlockArray(htmlToDraft(item?.description))),
         images: product?.images?.map((_,ind)=>{
@@ -115,6 +117,7 @@ const AddProducts = () => {
         ?.filter((res) => !!res?.src)
         ?.map((item) => item?.src)
     };
+    if(!!product?.link) data["link"]= product?.link
 
     if (!!id) {
       productsService.update(id, data)?.then((res) => {
@@ -193,6 +196,17 @@ const AddProducts = () => {
                 {Translate[lang].field_required}
               </p>
             )}
+          </Col>
+          <Col md={12} className="mb-3">
+            <AvField
+              label={`${Translate[lang]?.link}`}
+              type="text"
+              placeholder={Translate[lang]?.link}
+              bsSize="lg"
+              name="link"
+              value={product.link}
+              onChange={(e) => handlerText(e)}
+            />
           </Col>
           <Col md={12} className="mb-5">
             <label className="text-label">
