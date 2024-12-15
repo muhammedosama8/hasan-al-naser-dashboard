@@ -10,8 +10,8 @@ import CardItem from "./CardItem";
 import ProductsService from "../../../services/ProductsService";
 
 const Products = () =>{
-    const tabs = ['Premium Products', 'High Pressure']
-    const [selectTab, setSelectTab] = useState('Premium Products')
+    // const tabs = ['Premium Products', 'High Pressure']
+    const [selectTab, setSelectTab] = useState('High Pressure')
     const [products, setProducts] =useState([])
     const [hasData, setHasData] =useState(0)
     const [search, setSearch] =useState(null)
@@ -47,7 +47,7 @@ const Products = () =>{
           </Button>}
         </div>
         
-        <div style={{width: 'max-content'}}>
+        {/* <div style={{width: 'max-content'}}>
             <div className="py-4">
             <div className="tabs-div">
             {tabs?.map((tab,index) => {
@@ -65,7 +65,7 @@ const Products = () =>{
             })}
           </div>
             </div>
-        </div>
+        </div> */}
 
         <Card>
             <Card.Body className={`${hasData === 0 && 'text-center'} `}>

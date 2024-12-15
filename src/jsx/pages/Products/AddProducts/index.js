@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
-import { Button, Card, Col, Form, Row } from "react-bootstrap";
-import Select from "react-select";
+import { Button, Card, Col, Row } from "react-bootstrap";
 import { AvField, AvForm } from "availity-reactstrap-validation";
 import uploadImg from "../../../../images/upload-img.png";
 import "../style.scss";
@@ -17,14 +16,13 @@ import htmlToDraft from 'html-to-draftjs';
 import ProductsService from "../../../../services/ProductsService";
 
 const AddProducts = () => {
-  const typesOptions = [
-    {label: 'Premium Products', value: 'premium_products'},
-    {label: 'High Pressure', value: 'high_pressure'},
-  ]
+  // const typesOptions = [
+  //   {label: 'Premium Products', value: 'premium_products'},
+  //   {label: 'High Pressure', value: 'high_pressure'},
+  // ]
   const [product, setProduct] = useState({
     title: "",
-    link: "",
-    type: '',
+    // type: '',
     description: EditorState.createEmpty(),
     images: [
       { src: "", loading: false },
@@ -34,7 +32,7 @@ const AddProducts = () => {
       { src: "", loading: false }],
   });
   const [errors, setErrors] = useState({
-    type: false
+    desc: false
   });
   const [id, setId] = useState(null);
   const [loading, setLoadning] = useState(false);
@@ -51,8 +49,7 @@ const AddProducts = () => {
       setProduct({
         id: item.id,
         title: item?.title,
-        link: item?.link,
-        type: typesOptions?.find(res=> res.value === item.type),
+        // type: typesOptions?.find(res=> res.value === item.type),
         description: EditorState.createWithContent(ContentState.createFromBlockArray(htmlToDraft(item?.description))),
         images: product?.images?.map((_,ind)=>{
           return{
@@ -96,10 +93,10 @@ const AddProducts = () => {
   };
 
   const submit = () => {
-    if (!product.type) {
+    if (!product?.description) {
       setErrors({
         ...errors,
-        type: !product.type,
+        desc: !product.description,
       });
       return;
     }
@@ -111,13 +108,12 @@ const AddProducts = () => {
     setLoadning(true);
     let data = {
       title: product.title,
-      type: product.type.value,
+      type: "high_pressure", //product.type.value,
       description: draftToHtml(convertToRaw(product?.description.getCurrentContent())),
       images: product?.images
         ?.filter((res) => !!res?.src)
         ?.map((item) => item?.src)
     };
-    if(!!product?.link) data["link"]= product?.link
 
     if (!!id) {
       productsService.update(id, data)?.then((res) => {
@@ -180,34 +176,6 @@ const AddProducts = () => {
               onChange={(e) => handlerText(e)}
             />
           </Col>
-          <Col md={6} className="mb-3">
-            <label>{Translate[lang].type}</label>
-            <Select
-              options={typesOptions}
-              name="name"
-              value={product.type}
-              onChange={(e) => {
-                setProduct({...product, type: e})
-                setErrors({...errors, type: false})
-              }}
-            />
-            {errors["type"] && (
-              <p className="text-danger m-0" style={{ fontSize: "12.8px" }}>
-                {Translate[lang].field_required}
-              </p>
-            )}
-          </Col>
-          <Col md={12} className="mb-3">
-            <AvField
-              label={`${Translate[lang]?.link}`}
-              type="text"
-              placeholder={Translate[lang]?.link}
-              bsSize="lg"
-              name="link"
-              value={product.link}
-              onChange={(e) => handlerText(e)}
-            />
-          </Col>
           <Col md={12} className="mb-5">
             <label className="text-label">
               {Translate[lang]?.description}
@@ -222,6 +190,11 @@ const AddProducts = () => {
                 setErrors({...errors, desc: false})
               }}
             />
+            {errors["desc"] && (
+              <p className="text-danger m-0" style={{ fontSize: "12.8px" }}>
+                {Translate[lang].field_required}
+              </p>
+            )}
           </Col>
         </Row>
 
