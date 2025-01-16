@@ -137,7 +137,7 @@ const MasterSocialMedia = () => {
                             </Col>
                         }
                     })}
-                    <Col md={3} sm={6}>
+                    {/* <Col md={3} sm={6}>
                         <label className="m-0">{Translate[lang]?.barcode}</label>
                         <div className="image-placeholder">
                         <div className="avatar-edit">
@@ -158,7 +158,7 @@ const MasterSocialMedia = () => {
                             </div>}
                         </div>
                         </div>
-                    </Col>
+                    </Col> */}
                 </Row>
                 {isExist('masterHN') && <div className="d-flex justify-content-end">
                     {isAdd && <Button variant="primary" type="submit" disabled={loading}>
