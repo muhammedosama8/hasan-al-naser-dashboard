@@ -15,7 +15,7 @@ const CardItem = ({item, index,setShouldUpdate}) =>{
                     </td>
                     <td>
                       {item?.username ? <p className="mb-0"
-                        style={{fontWeight: '800'}}>
+                        style={{fontWeight: '500'}}>
                         {item.username} 
                       </p> : '-'}
                     </td>

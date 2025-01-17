@@ -37,29 +37,20 @@ const CardItem = ({ item, index, setShouldUpdate }) => {
         <strong>{item.id}</strong>
       </td>
       <td>
-        {item.full_name ? (
-          <p
-            className="mb-0 user"
-            style={{
-              fontWeight: !!item.full_name && "800",
-              opacity: ".75",
-              textTransform: "capitalize",
-              cursor: "pointer",
-            }}
+        {!!item.f_name ?
+          <p className="mb-0"
+            style={{ fontWeight: "500" }}
           >
-            {item.full_name}
-          </p>
-        ) : (
-          "-"
-        )}
+            {item?.f_name} {item?.l_name}
+          </p> :  "-" }
       </td>
-      <td>{item.email || "-"}</td>
+      <td>{item?.email || "-"}</td>
       <td>
         {item?.phone || "-"}
       </td>
       <td>
-        <span onClick={()=> setMessageModal(true)}>
-          {item?.message?.slice(0, 15)} ...
+        <span className="cursor-pointer" onClick={()=> setMessageModal(true)}>
+          {item?.message?.slice(0, 25)} {!!item?.message?.slice(25)?.length ? '...' : ''}
         </span>
       </td>
       <td>

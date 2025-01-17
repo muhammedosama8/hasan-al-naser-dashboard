@@ -13,10 +13,8 @@
     }
     
 }
+
 .branding-description{
-    .rdw-editor-main{
-        height: 200px;
-    }
     .avatar-preview{
         height: 14rem !important;
     }
@@ -59,10 +57,13 @@
 
 .editorClassName{
     padding: 12px !important;
-    border: 1px solid #dedede;
+    // border: 1px solid #dedede;
     border-radius: 8px;
 }
 .wrapperClassName {
     height: auto;
 }
+}
+.rdw-editor-main{
+    height: auto!important;
 }
